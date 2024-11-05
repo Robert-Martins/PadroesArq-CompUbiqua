@@ -1,7 +1,7 @@
 package br.com.agendesaude.api.controller;
 
 import br.com.agendesaude.api.dto.input.CadastroUsuarioDto;
-import br.com.agendesaude.api.dto.input.ListagemUsuarioDto;
+import br.com.agendesaude.api.dto.output.ListagemUsuarioDto;
 import br.com.agendesaude.api.entity.Usuario;
 import br.com.agendesaude.api.repository.UsuarioRepository;
 import jakarta.validation.Valid;
