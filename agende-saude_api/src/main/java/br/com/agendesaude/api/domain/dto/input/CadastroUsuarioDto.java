@@ -5,24 +5,24 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 public record CadastroUsuarioDto(
-        @NotBlank
+        @NotBlank(message = "Nome é obrigatório")
         String nome,
 
-        @NotBlank
-        @Email
+        @NotBlank(message = "Email é obrigatório")
+        @Email(message = "Formato de Email inválido")
         String email,
 
-        @NotBlank
+        @NotBlank(message = "Senha é obrigatória")
         String senha,
 
-        @NotBlank
+        @NotBlank(message = "Telefone é obrigatório")
         String telefone,
 
-        @NotBlank
-        @Pattern(regexp = "\\d{11}")
+        @NotBlank(message = "CPF é obrigatório")
+        @Pattern(regexp = "\\d{11}", message = "Formato de CPF inválido")
         String cpf,
 
-        @NotNull
+        @NotNull(message = "Data de Nascimento de obrigatória")
         LocalDate dataNascimento
 ) {
 }
