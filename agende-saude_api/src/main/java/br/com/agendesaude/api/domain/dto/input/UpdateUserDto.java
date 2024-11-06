@@ -2,12 +2,11 @@ package br.com.agendesaude.api.domain.dto.input;
 
 import jakarta.validation.constraints.NotNull;
 
-public record AtualizacaoUsuarioDto(
+public record UpdateUserDto (
         @NotNull
         Long id,
-        String nome,
-        String email,
-        String senha,
-        String telefone
+        String name,
+        String login,
+        String password
 ) {
 }

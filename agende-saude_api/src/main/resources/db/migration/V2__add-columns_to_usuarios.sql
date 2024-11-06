@@ -1,4 +1,0 @@
-ALTER TABLE usuarios
-ADD COLUMN telefone VARCHAR(15),
-ADD COLUMN cpf VARCHAR(11) UNIQUE,
-ADD COLUMN data_nascimento DATE;

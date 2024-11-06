@@ -1,11 +1,11 @@
 package br.com.agendesaude.api.domain.repository;
 
-import br.com.agendesaude.api.domain.model.Usuario;
+import br.com.agendesaude.api.domain.model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    Page<Usuario> findAllByAtivoTrue(Pageable paginacao);
+    Page<User> findAllByActiveTrue(Pageable paginacao);
 }

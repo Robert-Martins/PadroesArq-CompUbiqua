@@ -8,21 +8,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class TratadorDeErros {
+public class ErrorHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity tratarErro404() {
+    public ResponseEntity handleError404() {
         return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity tratarErro400(MethodArgumentNotValidException ex) {
+    public ResponseEntity handleError400(MethodArgumentNotValidException ex) {
         var erros = ex.getFieldErrors();
-        return ResponseEntity.badRequest().body(erros.stream().map(ErroValidacaoDto::new));
+        return ResponseEntity.badRequest().body(erros.stream().map(ValidationErrorDto::new));
     }
 
-    private record ErroValidacaoDto(String campo, String mensagem) {
-        public ErroValidacaoDto(FieldError e) {
+    private record ValidationErrorDto(String field, String message) {
+        public ValidationErrorDto(FieldError e) {
             this(e.getField(), e.getDefaultMessage());
         }
     }
