@@ -18,14 +18,14 @@ public class ApiPlacesRequestBuilder {
                     "physiotherapist",
                     "spa"
                 ],
-                "maxResultCount": 10,
+                "maxResultCount": 20,
                 "locationRestriction": {
                     "circle": {
                         "center": {
                             "latitude": %.6f,
                             "longitude": %.6f
                         },
-                        "radius": 2000
+                        "radius": 10000
                     }
                 }
             }
