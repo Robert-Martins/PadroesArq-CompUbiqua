@@ -1,68 +1,52 @@
 package br.com.agendesaude.api.controller;
 
-import br.com.agendesaude.api.domain.dto.input.CreateUserDto;
-import br.com.agendesaude.api.domain.dto.input.UpdateUserDto;
-import br.com.agendesaude.api.domain.dto.output.GetUserDto;
-import br.com.agendesaude.api.domain.model.User;
-import br.com.agendesaude.api.domain.repository.UserRepository;
-import jakarta.validation.Valid;
+import br.com.agendesaude.api.domain.dto.input.UserDto;
+import br.com.agendesaude.api.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-
+import org.springframework.validation.annotation.Validated;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     @Autowired
-    private UserRepository repository;
+    private UserService userService;
 
     @PostMapping
-    @Transactional
-    public ResponseEntity create(@RequestBody @Valid CreateUserDto userDto, UriComponentsBuilder uriBuilder) {
-        var user = new User(userDto);
-        repository.save(user);
+    public ResponseEntity<UserDto> create(@Validated(UserDto.Create.class) @RequestBody UserDto userDto, UriComponentsBuilder uriBuilder) {
+        UserDto createdUser = userService.createUser(userDto);
 
-        var uri = uriBuilder.path("/usuarios/{id}").buildAndExpand(user.getId()).toUri();
-
-        return ResponseEntity.created(uri).body(new GetUserDto(user));
+        var uri = uriBuilder.path("/users/{id}").buildAndExpand(createdUser.id()).toUri();
+        return ResponseEntity.created(uri).body(createdUser);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity read(@PathVariable Long id) {
-        var user = repository.getReferenceById(id);
-        return ResponseEntity.ok(new GetUserDto(user));
+    public ResponseEntity<UserDto> read(@PathVariable Long id) {
+        UserDto user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping
-    public ResponseEntity<Page<GetUserDto>> readAll(@PageableDefault(size = 5, sort={"id"}) Pageable pageable) {
-        var page = repository.findAllByActiveTrue(pageable)
-                .map(GetUserDto::new);
-
-        return ResponseEntity.ok(page);
+    public ResponseEntity<Page<UserDto>> readAll(@PageableDefault(size = 5, sort = {"id"}) Pageable pageable) {
+        Page<UserDto> usersPage = userService.getAllUsers(pageable);
+        return ResponseEntity.ok(usersPage);
     }
 
     @PutMapping
-    @Transactional
-    public ResponseEntity update(@RequestBody @Valid UpdateUserDto userDto) {
-        var usuario = repository.getReferenceById(userDto.id());
-        usuario.updateInformations(userDto);
-
-        return ResponseEntity.ok(new GetUserDto(usuario));
+    public ResponseEntity<UserDto> update(@Validated(UserDto.Update.class) @RequestBody UserDto userDto) {
+        UserDto updatedUser = userService.updateUser(userDto);
+        return ResponseEntity.ok(updatedUser);
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
-    public ResponseEntity delete(@PathVariable Long id) {
-        var user = repository.getReferenceById(id);
-        user.delete();
-
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        userService.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 }

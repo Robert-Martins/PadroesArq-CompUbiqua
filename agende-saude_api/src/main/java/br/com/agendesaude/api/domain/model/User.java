@@ -1,7 +1,6 @@
 package br.com.agendesaude.api.domain.model;
 
-import br.com.agendesaude.api.domain.dto.input.CreateUserDto;
-import br.com.agendesaude.api.domain.dto.input.UpdateUserDto;
+import br.com.agendesaude.api.domain.dto.input.UserDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -23,14 +22,14 @@ public class User {
     private String password;
     private Boolean active;
 
-    public User(CreateUserDto userDto) {
+    public User(UserDto userDto) {
         this.name = userDto.name();
         this.login = userDto.login();
         this.password = userDto.password();
         this.active = true;
     }
 
-    public void updateInformations(UpdateUserDto userDto) {
+    public void updateInformations(UserDto userDto) {
         if (userDto.name() != null) {
             this.name = userDto.name();
         }
