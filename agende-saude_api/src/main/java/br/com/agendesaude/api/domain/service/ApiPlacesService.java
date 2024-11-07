@@ -11,21 +11,26 @@ import org.springframework.stereotype.Service;
 @Service
 public class ApiPlacesService {
 
-    @Value("${google.api.url}")
-    private String apiUrl;
-
     @Value("${google.api.key}")
     private String apiKey;
 
-    public String obterDados() {
+    public String getPlaces(Double latitude, Double longitude) {
+
+        String jsonRequest = ApiPlacesRequestBuilder.buildRequestJson(latitude, longitude);
 
         HttpClient client = HttpClient.newHttpClient();
 
+        String apiUrl = "https://places.googleapis.com/v1/places:searchNearby";
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiUrl))
                 .header("X-Goog-Api-Key", apiKey)
                 .header("Content-Type", "application/json")
                 .header("X-Goog-FieldMask", "places.displayName")
+                .header("X-Goog-FieldMask", "places.googleMapsUri")
+                .header("X-Goog-FieldMask", "places.formattedAddress")
+                .header("X-Goog-FieldMask", "places.currentOpeningHours")
+                .header("X-Goog-FieldMask", "places.nationalPhoneNumber")
+                .POST(HttpRequest.BodyPublishers.ofString(jsonRequest))
                 .build();
 
         try {
