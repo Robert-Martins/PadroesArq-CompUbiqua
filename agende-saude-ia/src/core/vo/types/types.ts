@@ -2,7 +2,7 @@ export type ApplicationInfo = {
     title: string;
     description: string;
     version: string;
-    upTime: Date;
+    startedAt: Date;
 }
 
 export type Questionnaire = {
