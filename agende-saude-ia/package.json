@@ -1,7 +1,7 @@
 {
   "name": "agende-saude-ia",
   "version": "0.0.1",
-  "description": "",
+  "description": "IA que classifica pacientes em triagem de consultas de emergência",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
