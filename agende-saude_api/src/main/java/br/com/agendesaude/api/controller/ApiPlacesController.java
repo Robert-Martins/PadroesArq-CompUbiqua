@@ -1,6 +1,6 @@
 package br.com.agendesaude.api.controller;
 
-import br.com.agendesaude.api.domain.dto.input.LocationRequestDto;
+import br.com.agendesaude.api.domain.dto.LocationRequestDto;
 import br.com.agendesaude.api.domain.service.ApiPlacesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
