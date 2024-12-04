@@ -21,6 +21,7 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserDto> create(@Validated(UserDto.Create.class) @RequestBody UserDto userDto, UriComponentsBuilder uriBuilder) {
         UserDto createdUser = userService.createUser(userDto);
+
         var uri = uriBuilder.path("/users/{id}").buildAndExpand(createdUser.id()).toUri();
         return ResponseEntity.created(uri).body(createdUser);
     }
