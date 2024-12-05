@@ -19,12 +19,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public User create(@RequestBody User user, UriComponentsBuilder uriBuilder) {
-        return userService.create(user);
-    }
-
 //    @GetMapping("/{id}")
 //    public ResponseEntity<UserDto> read(@PathVariable Long id) {
 //        UserDto user = userService.getUserById(id);
