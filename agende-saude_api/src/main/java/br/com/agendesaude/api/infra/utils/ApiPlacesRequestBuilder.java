@@ -1,4 +1,4 @@
-package br.com.agendesaude.api.domain.service;
+package br.com.agendesaude.api.infra.utils;
 
 import java.util.Locale;
 

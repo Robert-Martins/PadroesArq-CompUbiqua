@@ -1,47 +1,41 @@
 package br.com.agendesaude.api.domain.model;
 
-import br.com.agendesaude.api.domain.dto.input.UserDto;
+import br.com.agendesaude.api.domain.enums.AccessLevelType;
+import br.com.agendesaude.api.domain.enums.UserType;
+import br.com.agendesaude.api.infra.base.BaseEntity;
+import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Table(name = "tb_users")
+@Table(name = "agende_user")
 @Getter
-@EqualsAndHashCode (of = "id")
-@AllArgsConstructor
-@NoArgsConstructor
-public class User {
+@Setter
+public class User extends BaseEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String name;
-    private String login;
+    @Column(nullable = false, unique = true, length = 255)
+    private String email;
+
+    @Column(nullable = false, length = 255)
     private String password;
-    private Boolean active;
 
-    public User(UserDto userDto) {
-        this.name = userDto.name();
-        this.login = userDto.login();
-        this.password = userDto.password();
-        this.active = true;
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserType type;
 
-    public void updateInformations(UserDto userDto) {
-        if (userDto.name() != null) {
-            this.name = userDto.name();
-        }
-        if (userDto.login() != null) {
-            this.login = userDto.login();
-        }
-        if (userDto.password() != null) {
-            this.password = userDto.password();
-        }
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private AccessLevelType accessLevel = AccessLevelType.BASIC;
 
-    public void delete() {
-        this.active = false;
+    @Column(nullable = false)
+    private boolean isActive = true;
+
+    @ManyToOne
+    @JoinColumn(name = "profile_picture_id")
+    private Media profilePicture;
+
+    @Override
+    public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
+        return null;
     }
 }
