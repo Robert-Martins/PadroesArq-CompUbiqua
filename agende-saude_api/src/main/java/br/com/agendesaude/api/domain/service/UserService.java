@@ -1,5 +1,6 @@
 package br.com.agendesaude.api.domain.service;
 
+import br.com.agendesaude.api.domain.dto.UserDto;
 import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     @Autowired
-    private UserRepository repository;
+    private UserRepository userRepository;
 
-    @Transactional
-    public User create(User user) {
-        return repository.save(user);
-    }
+
+
 }
