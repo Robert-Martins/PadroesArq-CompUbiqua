@@ -4,6 +4,8 @@ import br.com.agendesaude.api.domain.enums.ConsultationType;
 import br.com.agendesaude.api.domain.model.Consultation;
 import br.com.agendesaude.api.domain.model.Location;
 import br.com.agendesaude.api.infra.base.BaseEntityDto;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,10 +15,15 @@ import java.time.LocalDateTime;
 @Setter
 public class ConsultationDto extends BaseEntityDto<Consultation> {
 
+    @NotNull
     private Location location;
+    @NotBlank
     private String responsibleDoctor;
+    @NotNull
     private ConsultationType type;
+    @NotBlank
     private String specialty;
+    @NotNull
     private LocalDateTime date;
 
     public ConsultationDto() {}

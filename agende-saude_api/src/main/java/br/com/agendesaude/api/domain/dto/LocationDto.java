@@ -5,6 +5,8 @@ import br.com.agendesaude.api.domain.model.Location;
 import br.com.agendesaude.api.domain.model.Media;
 import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.infra.base.BaseEntityDto;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +14,9 @@ import lombok.Setter;
 @Setter
 public class LocationDto extends BaseEntityDto<Location> {
 
+    @NotBlank
     private String name;
+    @NotNull
     private User user;
     private Media thumbnail;
     private Address address;
