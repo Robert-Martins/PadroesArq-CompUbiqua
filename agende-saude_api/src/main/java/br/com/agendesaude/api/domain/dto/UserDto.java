@@ -4,6 +4,9 @@ import br.com.agendesaude.api.domain.enums.AccessLevelType;
 import br.com.agendesaude.api.domain.enums.UserType;
 import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.infra.base.BaseEntityDto;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +14,9 @@ import lombok.Setter;
 @Setter
 public class UserDto extends BaseEntityDto<User> {
 
+    @NotBlank
     private String email;
+    @NotBlank
     private String password;
     private UserType userType;
     private AccessLevelType accessLevelType;
