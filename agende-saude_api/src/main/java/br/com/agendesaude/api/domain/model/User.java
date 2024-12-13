@@ -10,12 +10,14 @@ import lombok.*;
 
 import java.util.Collection;
 import java.util.List;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "agende_user")
 @Getter
 @Setter
-public class User extends BaseEntity{
+public class User extends BaseEntity implements UserDetails {
 
     @Column(nullable = false, unique = true, length = 255)
     private String email;
@@ -49,5 +51,35 @@ public class User extends BaseEntity{
         dto.setCreatedAt(this.getCreatedAt());
         dto.setUpdatedAt(this.getUpdatedAt());
         return dto;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getUsername() {
+        return "";
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 }
