@@ -3,13 +3,15 @@ import api from "../configs/axios/http-common";
 
 const AUTH_PATH: string = 'auth';
 
+export const REFRESH_TOKEN_PATH: string = `refresh-token`;
+
 export const authenticate = (authenticationRequest: AuthenticationRequest): Promise<AuthenticationResponse> => {
     return api.post<AuthenticationResponse>(`${AUTH_PATH}/login`, authenticationRequest)
         .then(response => response.data);
 }
 
 export const refreshToken = (refreshToken: string): Promise<AuthenticationResponse> => {
-    return api.post<AuthenticationResponse>(`${AUTH_PATH}/refresh-token`, { refreshToken })
+    return api.post<AuthenticationResponse>(`${AUTH_PATH}/${REFRESH_TOKEN_PATH}`, { refreshToken })
         .then(response => response.data);
 }
 
