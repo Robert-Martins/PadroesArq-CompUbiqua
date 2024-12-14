@@ -2,6 +2,7 @@ export class User {
 
     constructor(
         public id: number = null,
+        public taxId: string = null,
         public email: string = null,
         public phone: string = null,
         public password: string = null,
