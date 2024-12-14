@@ -1,3 +1,4 @@
+import { useAuth } from "@/core/contexts/auth.provider";
 import { REFRESH_TOKEN_PATH, refreshToken } from "@/core/services/auth.service";
 import { getRefreshToken, setTokens } from "@/core/utils/auth.utils";
 import { Optional } from "@/core/utils/optional";
@@ -21,7 +22,11 @@ const onUnauthorized = async (error: AxiosError): Promise<void> => {
         .map(req => req.url.includes(REFRESH_TOKEN_PATH))
         .orElse(false);
 
-    if(!isRefreshTokenRequest)
+    if(isRefreshTokenRequest) {
+        const { logout } = useAuth();
+        await logout();
+    }
+    else
         performRefreshTokenFlow()
             .then(response => originalRequest.headers['Authorization'] = `Bearer ${response.accessToken}`)
             .then(() => axios(originalRequest));
