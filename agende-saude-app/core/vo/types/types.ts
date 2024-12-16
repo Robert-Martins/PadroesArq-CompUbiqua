@@ -57,3 +57,18 @@ export type CepRequestResponse = {
     neighborhood: string;
     street: string;
 }
+
+export type Location = {
+    coords: {
+        accuracy: number;
+        altitude: number;
+        altitudeAccuracy: number;
+        heading: number;
+        latitude: number;
+        longitude: number;
+        speed: number;
+    };
+    mocked: boolean;
+    provider: string;
+    timestamp: number;
+}
