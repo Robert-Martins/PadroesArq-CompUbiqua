@@ -3,11 +3,17 @@ package br.com.agendesaude.api.domain.model;
 import br.com.agendesaude.api.domain.enums.AppointmentStatusType;
 import br.com.agendesaude.api.infra.base.BaseEntity;
 import br.com.agendesaude.api.infra.base.BaseEntityDto;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "agende_appointment")
@@ -15,26 +21,30 @@ import java.time.LocalDateTime;
 @Setter
 public class Appointment extends BaseEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "person_id", nullable = false)
-    private Person person;
+  @ManyToOne
+  @JoinColumn(name = "person_id", nullable = false)
+  private Person person;
 
-    @ManyToOne
-    @JoinColumn(name = "consultation_id", nullable = false)
-    private Consultation consultation;
+  @OneToOne
+  @JoinColumn(name = "screening_id", nullable = false)
+  private Screening screening;
 
-    @Column(nullable = false)
-    private LocalDateTime date;
+  @ManyToOne
+  @JoinColumn(name = "consultation_id", nullable = false)
+  private Consultation consultation;
 
-    @Column(columnDefinition = "TEXT")
-    private String notes;
+  @Column(nullable = false)
+  private LocalDateTime date;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private AppointmentStatusType status = AppointmentStatusType.SCHEDULED;
+  @Column(columnDefinition = "TEXT")
+  private String notes;
 
-    @Override
-    public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-        return null;
-    }
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private AppointmentStatusType status = AppointmentStatusType.SCHEDULED;
+
+  @Override
+  public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
+    return null;
+  }
 }

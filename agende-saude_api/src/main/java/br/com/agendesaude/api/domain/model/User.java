@@ -5,11 +5,15 @@ import br.com.agendesaude.api.domain.enums.AccessLevelType;
 import br.com.agendesaude.api.domain.enums.UserType;
 import br.com.agendesaude.api.infra.base.BaseEntity;
 import br.com.agendesaude.api.infra.base.BaseEntityDto;
-import jakarta.persistence.*;
-import lombok.*;
-
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,67 +23,66 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Setter
 public class User extends BaseEntity implements UserDetails {
 
-    @Column(nullable = false, unique = true, length = 255)
-    private String email;
+  @Column(nullable = false, unique = true, length = 255)
+  private String email;
 
-    @Column(nullable = false, length = 255)
-    private String password;
+  @Column(nullable = false, unique = true, length = 11)
+  private String taxId;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private UserType type;
+  @Column(nullable = false, length = 255)
+  private String password;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private AccessLevelType accessLevel = AccessLevelType.BASIC;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private UserType type;
 
-    @Column(nullable = false)
-    private boolean isActive = true;
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private AccessLevelType accessLevel = AccessLevelType.BASIC;
 
-    @ManyToOne
-    @JoinColumn(name = "profile_picture_id")
-    private Media profilePicture;
+  @Column(nullable = false)
+  private boolean isActive = true;
 
-    @Override
-    public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-        UserDto dto = new UserDto();
-        dto.setId(this.getId());
-        dto.setEmail(this.getEmail());
-        dto.setUserType(this.getType());
-        dto.setAccessLevelType(this.getAccessLevel());
-        dto.setIsActive(this.isActive());
-        dto.setCreatedAt(this.getCreatedAt());
-        dto.setUpdatedAt(this.getUpdatedAt());
-        return dto;
-    }
+  @Override
+  public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
+    UserDto dto = new UserDto();
+    dto.setId(this.getId());
+    dto.setEmail(this.getEmail());
+    dto.setUserType(this.getType());
+    dto.setAccessLevelType(this.getAccessLevel());
+    dto.setIsActive(this.isActive());
+    dto.setCreatedAt(this.getCreatedAt());
+    dto.setUpdatedAt(this.getUpdatedAt());
+    return dto;
+  }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of();
+  }
 
-    @Override
-    public String getUsername() {
-        return "";
-    }
+  @Override
+  public String getUsername() {
+    return "";
+  }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
+  @Override
+  public boolean isAccountNonExpired() {
+    return UserDetails.super.isAccountNonExpired();
+  }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
+  @Override
+  public boolean isAccountNonLocked() {
+    return UserDetails.super.isAccountNonLocked();
+  }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return UserDetails.super.isCredentialsNonExpired();
+  }
 
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
-    }
+  @Override
+  public boolean isEnabled() {
+    return UserDetails.super.isEnabled();
+  }
 }

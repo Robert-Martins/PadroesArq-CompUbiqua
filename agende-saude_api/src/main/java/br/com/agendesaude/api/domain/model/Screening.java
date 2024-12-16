@@ -3,12 +3,15 @@ package br.com.agendesaude.api.domain.model;
 import br.com.agendesaude.api.infra.base.BaseEntity;
 import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import com.vladmihalcea.hibernate.type.json.JsonType;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
-
-import java.util.Map;
 
 @Entity
 @Table(name = "agende_screening")
@@ -16,16 +19,19 @@ import java.util.Map;
 @Setter
 public class Screening extends BaseEntity {
 
-    @OneToOne
-    @JoinColumn(name = "appointment_id", nullable = false)
-    private Appointment appointment;
+  @ManyToOne
+  @JoinColumn(name = "appointment_id", nullable = false)
+  private Appointment appointment;
 
-    @Type(JsonType.class)
-    @Column(nullable = false, columnDefinition = "jsonb")
-    private Map<String, Boolean> questionnaire;
+  @Type(JsonType.class)
+  @Column(nullable = false, columnDefinition = "jsonb")
+  private Map<String, Boolean> questionnaire;
 
-    @Override
-    public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-        return null;
-    }
+  @Column(columnDefinition = "TEXT")
+  private String notes;
+
+  @Override
+  public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
+    return null;
+  }
 }
