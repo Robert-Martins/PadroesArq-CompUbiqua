@@ -5,6 +5,4 @@ export type ApplicationInfo = {
     startedAt: Date;
 }
 
-export type Questionnaire = {
-    
-}
+export type ScreeningClassification = 'vermelho' | 'laranja' | 'amarelo' | 'verde' | 'azul';
