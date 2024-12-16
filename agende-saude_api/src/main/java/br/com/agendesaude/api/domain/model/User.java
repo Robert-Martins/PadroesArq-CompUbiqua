@@ -48,6 +48,7 @@ public class User extends BaseEntity implements UserDetails {
     UserDto dto = new UserDto();
     dto.setId(this.getId());
     dto.setEmail(this.getEmail());
+    dto.setTaxId(this.getTaxId());
     dto.setUserType(this.getType());
     dto.setAccessLevelType(this.getAccessLevel());
     dto.setIsActive(this.isActive());

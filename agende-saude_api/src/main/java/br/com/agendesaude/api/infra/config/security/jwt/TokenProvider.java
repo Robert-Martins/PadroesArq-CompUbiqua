@@ -3,7 +3,6 @@ package br.com.agendesaude.api.infra.config.security.jwt;
 import static java.util.Collections.emptyList;
 
 import br.com.agendesaude.api.domain.service.UserService;
-
 import br.com.agendesaude.api.infra.config.AppConfig;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -28,15 +27,15 @@ public class TokenProvider {
     this.userService = userService;
   }
 
-  public String createToken(String email, String authentication) {
+  public String createToken(String taxId, String authentication) {
     final Instant now = Instant.now();
     final Instant expiresIn = now.plusMillis(tokenValidityInMilliseconds);
 
     return JWT.create()
         .withIssuer("agende_saude")
-        .withSubject(email)
+        .withSubject(taxId)
         .withClaim("auth", authentication)
-        .withClaim("email", email)
+        .withClaim("taxId", taxId)
         .withIssuedAt(now)
         .withExpiresAt(expiresIn)
         .sign(Algorithm.HMAC512(secretKey));
@@ -45,12 +44,12 @@ public class TokenProvider {
   @SneakyThrows
   public Authentication getAuthentication(String token) {
     var decodedJWT = JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
-    final String email = decodedJWT.getSubject();
+    final String taxId = decodedJWT.getSubject();
     final String auth = decodedJWT.getClaim("auth").asString();
     UserDetails userDetails = null;
 
     if (auth.equals("user")) {
-      userDetails = userService.loadUserByUsername(email);
+      userDetails = userService.loadUserByUsername(taxId);
     }
 
     return new UsernamePasswordAuthenticationToken(userDetails, "", emptyList());
