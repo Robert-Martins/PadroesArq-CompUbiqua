@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Injectable, Post } from "@nestjs/common";
+import { Body, Controller, Get, HttpCode, HttpStatus, Injectable, Post } from "@nestjs/common";
 import { ScreeningService } from "./screening.service";
 import { Question } from "./dtos/question.dto";
 import { Answer } from "./dtos/answer.dto";
@@ -19,7 +19,7 @@ export class ScreeningController {
 
     @Post('answers')
     @HttpCode(HttpStatus.OK)
-    public async processAnswers(answers: Answer[]): Promise<Screening> {
+    public async processAnswers(@Body() answers: Answer[]): Promise<Screening> {
         return this.screeningService.processAnswers(answers);
     }
 
