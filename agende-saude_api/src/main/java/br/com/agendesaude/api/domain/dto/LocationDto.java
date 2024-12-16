@@ -14,23 +14,28 @@ import lombok.Setter;
 @Setter
 public class LocationDto extends BaseEntityDto<Location> {
 
-    @NotBlank
-    private String name;
-    @NotNull
-    private User user;
-    private Media thumbnail;
-    private Address address;
+  @NotBlank
+  private String name;
 
-    @Override
-    public Location mapDtoToEntity() {
-        Location location = new Location();
-        location.setId(this.getId());
-        location.setName(this.getName());
-        location.setUser(this.getUser());
-        location.setThumbnail(this.getThumbnail());
-        location.setAddress(this.getAddress());
-        location.setCreatedAt(this.getCreatedAt());
-        location.setUpdatedAt(this.getUpdatedAt());
-        return location;
-    }
+  @NotNull
+  private User user;
+
+  private Boolean accessEmergencies;
+
+  private Media thumbnail;
+  private Address address;
+
+  @Override
+  public Location mapDtoToEntity() {
+    Location location = new Location();
+    location.setId(this.getId());
+    location.setName(this.getName());
+    location.setUser(this.getUser());
+    location.setAccessEmergencies(this.accessEmergencies != null ? this.accessEmergencies : false);
+    location.setThumbnail(this.getThumbnail());
+    location.setAddress(this.getAddress());
+    location.setCreatedAt(this.getCreatedAt());
+    location.setUpdatedAt(this.getUpdatedAt());
+    return location;
+  }
 }

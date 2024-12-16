@@ -4,11 +4,19 @@ import br.com.agendesaude.api.domain.enums.BloodType;
 import br.com.agendesaude.api.domain.enums.GenderType;
 import br.com.agendesaude.api.infra.base.BaseEntity;
 import br.com.agendesaude.api.infra.base.BaseEntityDto;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import java.time.LocalDate;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "agende_person")
@@ -16,33 +24,39 @@ import java.time.LocalDate;
 @Setter
 public class Person extends BaseEntity {
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+  @OneToOne
+  @JoinColumn(name = "user_id", nullable = false)
+  private User user;
 
-    @Column(nullable = false, length = 255)
-    private String fullName;
+  @OneToMany
+  @JoinColumn(name = "allergy_id", nullable = false)
+  private List<Allergy> allergy;
 
-    @Column(length = 15)
-    private String phone;
+  @OneToMany
+  @JoinColumn(name = "medicalHistory_id", nullable = false)
+  private List<MedicalHistory> medicalHistory;
 
-    @Column(nullable = false, unique = true, length = 11)
-    private String cpf;
+  @ManyToOne
+  @JoinColumn(name = "profile_picture_id")
+  private Media profilePicture;
 
-    @Column
-    private LocalDate birthDate;
+  @Column(nullable = false, length = 255)
+  private String fullName;
 
-    @Enumerated(EnumType.STRING)
-    private GenderType genderType;
+  @Column(length = 15)
+  private String phone;
 
-    @Enumerated(EnumType.STRING)
-    private BloodType bloodType;
+  @Column
+  private LocalDate birthDate;
 
-    @Column(columnDefinition = "TEXT")
-    private String medicalHistory;
+  @Enumerated(EnumType.STRING)
+  private GenderType genderType;
 
-    @Override
-    public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-        return null;
-    }
+  @Enumerated(EnumType.STRING)
+  private BloodType bloodType;
+
+  @Override
+  public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
+    return null;
+  }
 }
