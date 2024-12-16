@@ -1,4 +1,5 @@
 import { asDarkTheme, asLightTheme } from '@/core/design-system/theme';
+import { agendeSaudeAppToastConfig } from '@/core/utils/toast.utils';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
@@ -8,6 +9,7 @@ import React, { useEffect, useState } from 'react';
 import { Appearance, useColorScheme } from 'react-native';
 import 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import { ThemeProvider } from 'styled-components';
 
 export {
@@ -59,6 +61,7 @@ const RootLayoutNav: React.FC = () => {
       <SafeAreaView style={{ flex: 1 }}>
         <StatusBar style={isDarkTheme ? "light" : "dark"} translucent={true} />
         <Slot />
+        <Toast {...agendeSaudeAppToastConfig} />
       </SafeAreaView>
     </ThemeProvider>
   );
