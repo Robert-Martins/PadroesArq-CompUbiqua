@@ -1,4 +1,7 @@
 export type ASTheme = {
+    spacing: {
+        layout: number;
+    },
     colors: {
         primary: string;
         secondary: string;
@@ -46,6 +49,9 @@ export type ASTheme = {
 }
 
 const asCommonTheme: Partial<ASTheme> = {
+    spacing: {
+        layout: 16,
+    },
     fonts: {
         thin: "Inter-Thin",
         thinItalic: "Inter-ThinItalic",
