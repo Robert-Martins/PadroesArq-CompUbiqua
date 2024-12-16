@@ -50,7 +50,11 @@
           ]
         }
       ],
-      "expo-secure-store"
+      "expo-secure-store",
+      {
+        "configureAndroidBackup": true,
+        "faceIDPermission": "Permita que o Agende Saúde use o Face ID para autenticar você"
+      }
     ],
     "experiments": {
       "typedRoutes": true
