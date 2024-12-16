@@ -72,3 +72,16 @@ export type Location = {
     provider: string;
     timestamp: number;
 }
+
+export type ScreeningQuestionnaire = {
+    id: number;
+    question: string;
+    subQuestions: ScreeningQuestionnaire[];
+}
+
+export type ScreeningQuestionnaireAnswer = {
+    id: number;
+    question?: string;
+    answer: boolean;
+    subQuestionsAnswer?: ScreeningQuestionnaireAnswer[];
+}

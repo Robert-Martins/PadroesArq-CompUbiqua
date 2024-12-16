@@ -3,6 +3,7 @@ import { ScreeningService } from "./screening.service";
 import { Question } from "./dtos/question.dto";
 import { Answer } from "./dtos/answer.dto";
 import { Screening } from "./dtos/screening.dto";
+import { AnsweredQuestions } from "./dtos/answered-questions.dto";
 
 @Controller('screening')
 export class ScreeningController {
@@ -19,7 +20,7 @@ export class ScreeningController {
 
     @Post('answers')
     @HttpCode(HttpStatus.OK)
-    public async processAnswers(@Body() answers: Answer[]): Promise<Screening> {
+    public async processAnswers(@Body() answers: AnsweredQuestions[]): Promise<Screening> {
         return this.screeningService.processAnswers(answers);
     }
 
