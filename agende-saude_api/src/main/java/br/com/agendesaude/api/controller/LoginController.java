@@ -5,6 +5,8 @@ import br.com.agendesaude.api.domain.dto.LoginDto;
 import br.com.agendesaude.api.infra.config.security.AuthenticationManager;
 import br.com.agendesaude.api.infra.config.security.jwt.TokenProvider;
 import br.com.agendesaude.api.infra.utils.StringUtil;
+import java.util.HashMap;
+import java.util.Map;
 import javax.xml.bind.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -32,15 +34,38 @@ public class LoginController {
 
 
   @PostMapping("/login")
-  public String login(@RequestBody LoginDto loginDto) throws ValidationException {
+  public Map<String, String> login(@RequestBody LoginDto loginDto) throws ValidationException {
     var taxId = StringUtil.trimLowerCase(loginDto.getTaxId());
     var authenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getTaxId(),
         loginDto.getPassword());
     try {
       this.authenticationManager.authenticate(authenticationToken);
-      return this.tokenProvider.createToken(taxId, "auth");
+      String accessToken = this.tokenProvider.createAccessToken(taxId, "auth");
+      String refreshToken = this.tokenProvider.createRefreshToken(taxId);
+
+      Map<String, String> tokens = new HashMap<>();
+      tokens.put("accessToken", accessToken);
+      tokens.put("refreshToken", refreshToken);
+      return tokens;
     } catch (UsernameNotFoundException e) {
       throw new ValidationException("Usuário ou senha inválidos");
+    }
+  }
+
+  @PostMapping("/refresh-token")
+  public Map<String, String> refreshToken(@RequestBody Map<String, String> request) throws ValidationException {
+    String refreshToken = request.get("refreshToken");
+
+    if (this.tokenProvider.validateToken(refreshToken)) {
+      String username = this.tokenProvider.getUsernameFromToken(refreshToken);
+      String newAccessToken = this.tokenProvider.createAccessToken(username, "auth");
+
+      Map<String, String> tokens = new HashMap<>();
+      tokens.put("accessToken", newAccessToken);
+      tokens.put("refreshToken", refreshToken);
+      return tokens;
+    } else {
+      throw new ValidationException("Refresh token inválido");
     }
   }
 

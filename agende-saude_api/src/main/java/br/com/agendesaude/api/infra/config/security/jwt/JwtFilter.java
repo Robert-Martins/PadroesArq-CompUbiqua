@@ -28,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
     try {
       var jwt = resolveToken(request);
-      boolean valido = this.tokenProvider.isTokenValido(jwt);
+      boolean valido = this.tokenProvider.isTokenValid(jwt);
       if (valido) {
         var authentication = this.tokenProvider.getAuthentication(jwt);
         SecurityContextHolder.getContext().setAuthentication(authentication);
