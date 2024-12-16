@@ -4,6 +4,20 @@ export type ASTheme = {
         secondary: string;
         background: string;
         text: string;
+        buttons: {
+            primary: {
+                background: string;
+                text: string;
+            };
+            secondary: {
+                background: string;
+                text: string;
+            };
+            tertiary: {
+                background: string;
+                text: string;
+            };
+        }
     };
     fonts: {
         thin: string;
@@ -20,9 +34,14 @@ export type ASTheme = {
         boldItalic: string;
     };
     fontSizes: {
-        small: number;
-        medium: number;
-        large: number;
+        xxxs: number;
+        xxs: number;
+        xs: number;
+        sm: number;
+        md: number;
+        lg: number;
+        xl: number;
+        xxl: number;
     };
 }
 
@@ -42,9 +61,14 @@ const asCommonTheme: Partial<ASTheme> = {
         boldItalic: "Inter-BoldItalic",
     },
     fontSizes: {
-        small: 12,
-        medium: 16,
-        large: 20,
+        xxxs: 12,
+        xxs: 14,
+        xs: 16,
+        sm: 20,
+        md: 24,
+        lg: 32,
+        xl: 36,
+        xxl: 48
     }
 };
 
@@ -52,8 +76,22 @@ export const asLightTheme: ASTheme = {
     colors: {
         primary: "#007BFF",
         secondary: "#6C757D",
-        background: "#F8F9FA",
+        background: "red",
         text: "#212529",
+        buttons: {
+            primary: {
+                background: "#007BFF",
+                text: "#F8F9FA",
+            },
+            secondary: {
+                background: "#6C757D",
+                text: "#F8F9FA",
+            },
+            tertiary: {
+                background: "#6C757D",
+                text: "#F8F9FA",
+            },
+        }
     },
     ...asCommonTheme as Required<ASTheme>
 };
@@ -62,8 +100,22 @@ export const asDarkTheme: ASTheme = {
     colors: {
         primary: "#007BFF",
         secondary: "#6C757D",
-        background: "#212529",
+        background: "blue",
         text: "#F8F9FA",
+        buttons: {
+            primary: {
+                background: "#007BFF",
+                text: "#F8F9FA",
+            },
+            secondary: {
+                background: "#6C757D",
+                text: "#F8F9FA",
+            },
+            tertiary: {
+                background: "#6C757D",
+                text: "#F8F9FA",
+            },
+        }
     },
     ...asCommonTheme as Required<ASTheme>
 };
