@@ -1,7 +1,7 @@
 package br.com.agendesaude.api.domain.model;
 
+import br.com.agendesaude.api.domain.dto.ScreeningDto;
 import br.com.agendesaude.api.infra.base.BaseEntity;
-import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,7 +31,18 @@ public class Screening extends BaseEntity {
   private String notes;
 
   @Override
-  public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-    return null;
+  public ScreeningDto mapEntityToDto() {
+    ScreeningDto dto = new ScreeningDto();
+    dto.setId(this.getId());
+    dto.setQuestionnaire(this.getQuestionnaire());
+    dto.setNotes(this.getNotes());
+
+    if (this.getAppointment() != null) {
+      dto.setAppointment(this.getAppointment());
+    }
+
+    dto.setCreatedAt(this.getCreatedAt());
+    dto.setUpdatedAt(this.getUpdatedAt());
+    return dto;
   }
 }

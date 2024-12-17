@@ -37,7 +37,7 @@ public class Location extends BaseEntity {
   private Address address;
 
   @Override
-  public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
+  public LocationDto mapEntityToDto() {
     LocationDto locationDto = new LocationDto();
     locationDto.setId(this.getId());
     locationDto.setName(this.getName());
