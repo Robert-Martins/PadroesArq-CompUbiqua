@@ -1,13 +1,27 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ReactNode } from "react";
 
+export type IconProps = {
+    name : keyof typeof MaterialCommunityIcons.glyphMap;
+    size?: number;
+    color?: string;
+}
+
+export type TextButtonProps = {
+    children: ReactNode;
+    type?: "primary" | "secondary" | "tertiary";
+    disabled?: boolean;
+    ghost?: boolean;
+}
+
 export type ButtonProps = {
     children: ReactNode;
     onPress: () => void | (<T> (parameter: T) => void);
     icon?: keyof typeof MaterialCommunityIcons.glyphMap;
-    disabled?: boolean;
     type?: "primary" | "secondary" | "tertiary";
     ghost?: boolean;
+    disabled?: boolean;
+    theme?: any;
 }
 
 export type FlexContainerProps = {

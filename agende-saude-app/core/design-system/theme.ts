@@ -10,18 +10,31 @@ export type ASTheme = {
         buttons: {
             primary: {
                 background: string;
+                ghost: string;
                 text: string;
             };
             secondary: {
                 background: string;
+                ghost: string;
                 text: string;
             };
             tertiary: {
                 background: string;
+                ghost: string;
                 text: string;
             };
+            disabled: {
+                background: string;
+                ghost: string;
+                text: string;
+            }
         }
     };
+    border: {
+        lg: number;
+        md: number;
+        sm: number;
+    },
     fonts: {
         thin: string;
         thinItalic: string;
@@ -52,6 +65,11 @@ const asCommonTheme: Partial<ASTheme> = {
     spacing: {
         layout: 16,
     },
+    border: {
+        lg: 28,
+        md: 12,
+        sm: 1,
+    },
     fonts: {
         thin: "Inter-Thin",
         thinItalic: "Inter-ThinItalic",
@@ -79,6 +97,7 @@ const asCommonTheme: Partial<ASTheme> = {
 };
 
 export const asLightTheme: ASTheme = {
+    ...asCommonTheme as Required<ASTheme>,
     colors: {
         primary: "#007BFF",
         secondary: "#6C757D",
@@ -87,22 +106,30 @@ export const asLightTheme: ASTheme = {
         buttons: {
             primary: {
                 background: "#007BFF",
+                ghost: "#dbedff",
                 text: "#F8F9FA",
             },
             secondary: {
-                background: "#6C757D",
+                background: "#36D128",
+                ghost: "#d7fcd4",
                 text: "#F8F9FA",
             },
             tertiary: {
-                background: "#6C757D",
+                background: "#EB2D2D",
+                ghost: "#ffa8a8",
                 text: "#F8F9FA",
             },
+            disabled: {
+                background: "#9E9E9E",
+                ghost: "#E8E8E8",
+                text: "#F8F9FA",
+            }
         }
-    },
-    ...asCommonTheme as Required<ASTheme>
+    }
 };
 
 export const asDarkTheme: ASTheme = {
+    ...asCommonTheme as Required<ASTheme>,
     colors: {
         primary: "#007BFF",
         secondary: "#6C757D",
@@ -111,17 +138,24 @@ export const asDarkTheme: ASTheme = {
         buttons: {
             primary: {
                 background: "#007BFF",
+                ghost: "#F8F9FA",
                 text: "#F8F9FA",
             },
             secondary: {
                 background: "#6C757D",
+                ghost: "#F8F9FA",
                 text: "#F8F9FA",
             },
             tertiary: {
                 background: "#6C757D",
+                ghost: "#F8F9FA",
                 text: "#F8F9FA",
             },
+            disabled: {
+                background: "#6C757D",
+                ghost: "#F8F9FA",
+                text: "#F8F9FA",
+            }
         }
-    },
-    ...asCommonTheme as Required<ASTheme>
+    }
 };
