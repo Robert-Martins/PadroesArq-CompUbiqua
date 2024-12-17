@@ -2,7 +2,6 @@ package br.com.agendesaude.api.domain.model;
 
 import br.com.agendesaude.api.domain.dto.LocationDto;
 import br.com.agendesaude.api.infra.base.BaseEntity;
-import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -22,7 +21,7 @@ public class Location extends BaseEntity {
   private String name;
 
   @Column(nullable = false)
-  private boolean accessEmergencies;
+  private boolean acceptsEmergencies;
 
   @OneToOne
   @JoinColumn(name = "user_id", nullable = false)
@@ -41,7 +40,7 @@ public class Location extends BaseEntity {
     LocationDto locationDto = new LocationDto();
     locationDto.setId(this.getId());
     locationDto.setName(this.getName());
-    locationDto.setAccessEmergencies(this.isAccessEmergencies());
+    locationDto.setAccessEmergencies(this.isAcceptsEmergencies());
     locationDto.setUser(this.getUser());
     locationDto.setThumbnail(this.getThumbnail());
     locationDto.setAddress(this.getAddress());

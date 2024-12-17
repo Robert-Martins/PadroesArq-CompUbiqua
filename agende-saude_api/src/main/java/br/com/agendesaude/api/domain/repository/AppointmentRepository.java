@@ -10,11 +10,10 @@ import org.springframework.data.repository.query.Param;
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
 
-    Page<Appointment> findByStatus(AppointmentStatusType status, Pageable pageable);
+  Page<Appointment> findByStatus(AppointmentStatusType status, Pageable pageable);
 
-
-    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END " +
-            "FROM Appointment a WHERE a.consultation.id = :consultationId AND a.status = :status")
-    boolean existsByConsultationIdAndStatus(@Param("consultationId") Long consultationId,
-                                            @Param("status") AppointmentStatusType status);
+  @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END " +
+      "FROM Appointment a WHERE a.consultation.id = :consultationId AND a.status = :status")
+  boolean existsByConsultationIdAndStatus(@Param("consultationId") Long consultationId,
+      @Param("status") AppointmentStatusType status);
 }
