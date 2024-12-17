@@ -1,5 +1,5 @@
 import { handleButtonBackground, handleButtonIconColor, handleButtonTextColor } from "@/core/utils/components.utils";
-import { ButtonProps, TextButtonProps } from "@/core/vo/consts/components.props";
+import { ButtonProps, TextButtonProps } from "@/core/vo/types/components.props";
 import { Text, TouchableOpacity } from "react-native";
 import styled, { useTheme } from "styled-components";
 import Icon from "../icons/Icon";

@@ -1,4 +1,4 @@
-import { IconProps } from "@/core/vo/consts/components.props"
+import { IconProps } from "@/core/vo/types/components.props"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import React from "react"
 

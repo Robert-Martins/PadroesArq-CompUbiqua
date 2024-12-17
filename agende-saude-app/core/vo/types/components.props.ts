@@ -33,3 +33,9 @@ export type FlexContainerProps = {
     rowGap?: number;
     columnGap?: number;
 }
+
+export type ExpandableProps = {
+  expanded: boolean;
+  children: React.ReactNode;
+  duration?: number;
+}
