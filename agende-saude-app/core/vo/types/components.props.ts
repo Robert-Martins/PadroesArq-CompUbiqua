@@ -65,6 +65,12 @@ export type SelectProps = {
     onValueChange: (value: string) => void;
 }
 
+export type CheckboxProps = {
+    value?: boolean;
+    disabled?: boolean;
+    onValueChange?: (value: boolean) => void;
+}
+
 export type FlexContainerProps = {
     direction?: "row" | "column";
     justify?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around";
