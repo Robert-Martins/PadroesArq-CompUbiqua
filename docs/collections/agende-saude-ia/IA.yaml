@@ -1,0 +1,278 @@
+_type: export
+__export_format: 4
+__export_date: 2024-12-16T13:35:48.502Z
+__export_source: insomnia.desktop.app:v10.2.0
+resources:
+  - _id: req_d0b0b0bd1ce34728973b69c9967d802e
+    parentId: wrk_c01b72edcf414a1bbdb96c2dfea44992
+    modified: 1734354708709
+    created: 1732760169224
+    url: "{{ _.baseUrl }}"
+    name: Health
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/10.2.0
+        id: pair_ee84725172b747baad92c467990a4bf3
+      - id: pair_4aa16a3a53e94d14944e24c920f44c65
+        name: x-api-key
+        value: "{{ _.apiKey }}"
+        description: ""
+        disabled: false
+    authentication: {}
+    metaSortKey: -1732760169224
+    isPrivate: false
+    pathParameters: []
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: wrk_c01b72edcf414a1bbdb96c2dfea44992
+    parentId: null
+    modified: 1732760165174
+    created: 1732760165174
+    name: AI
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_c4af6a8356874fffbc51ac44c6fd4bc9
+    parentId: wrk_c01b72edcf414a1bbdb96c2dfea44992
+    modified: 1734354777161
+    created: 1734354712321
+    url: "{{ _.baseUrl }}/{{ _.screeningPath }}/questions"
+    name: Get Questions
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/10.2.0
+        id: pair_d0d7fcf234954377a062ee3c3d4050f9
+      - id: pair_7c9d7c96b86945bc91ea452cc2f4a437
+        name: x-api-key
+        value: "{{ _.apiKey }}"
+        description: ""
+        disabled: false
+    authentication: {}
+    metaSortKey: -1732760169124
+    isPrivate: false
+    pathParameters: []
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_9d126e20b5134a6592fc07280dea8806
+    parentId: wrk_c01b72edcf414a1bbdb96c2dfea44992
+    modified: 1734355910117
+    created: 1734354724143
+    url: "{{ _.baseUrl }}/{{ _.screeningPath }}/answers"
+    name: Process Answers
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        [
+        	{
+        		"id": 1,
+        		"answer": false
+        	},
+        	{
+        		"id": 2,
+        		"answer": false
+        	},
+        	{
+        		"id": 3,
+        		"answer": false,
+        		"subQuestions": [
+        			{
+        				"id": 4,
+        				"answer": false
+        			},
+        			{
+        				"id": 5,
+        				"answer": false
+        			},
+        			{
+        				"id": 6,
+        				"answer": false
+        			}
+        		]
+        	},
+        	{
+        		"id": 7,
+        		"answer": false,
+        		"subQuestions": [
+        			{
+        				"id": 8,
+        				"answer": false
+        			},
+        			{
+        				"id": 9,
+        				"answer": false
+        			},
+        			{
+        				"id": 10,
+        				"answer": false
+        			}
+        		]
+        	},
+        	{
+        		"id": 11,
+        		"answer": false,
+        		"subQuestions": [
+        			{
+        				"id": 12,
+        				"answer": false
+        			},
+        			{
+        				"id": 13,
+        				"answer": false
+        			}
+        		]
+        	},
+        	{
+        		"id": 14,
+        		"answer": false,
+        		"subQuestions": [
+        			{
+        				"id": 15,
+        				"answer": false
+        			},
+        			{
+        				"id": 16,
+        				"answer": false
+        			}
+        		]
+        	},
+        	{
+        		"id": 17,
+        		"answer": false,
+        		"subQuestions": [
+        			{
+        				"id": 18,
+        				"answer": false
+        			},
+        			{
+        				"id": 19,
+        				"answer": false
+        			}
+        		]
+        	},
+        	{
+        		"id": 20,
+        		"answer": false
+        	},
+        	{
+        		"id": 21,
+        		"answer": false,
+        		"subQuestions": [
+        			{
+        				"id": 22,
+        				"answer": false
+        			},
+        			{
+        				"id": 23,
+        				"answer": false
+        			}
+        		]
+        	},
+        	{
+        		"id": 24,
+        		"answer": false,
+        		"subQuestions": [
+        			{
+        				"id": 25,
+        				"answer": false
+        			},
+        			{
+        				"id": 26,
+        				"answer": false
+        			}
+        		]
+        	},
+        	{
+        		"id": 27,
+        		"answer": false,
+        		"subQuestions": [
+        			{
+        				"id": 28,
+        				"answer": false
+        			},
+        			{
+        				"id": 29,
+        				"answer": false
+        			}
+        		]
+        	},
+        	{
+        		"id": 30,
+        		"answer": false,
+        		"subQuestions": [
+        			{
+        				"id": 31,
+        				"answer": false
+        			},
+        			{
+        				"id": 32,
+        				"answer": false
+        			},
+        			{
+        				"id": 33,
+        				"answer": false
+        			}
+        		]
+        	}
+        ]
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/10.2.0
+        id: pair_499c61d3a6fa4c59a378ee8783e14b9a
+      - id: pair_23cc18c1c0944d87afa11d379d03994b
+        name: x-api-key
+        value: "{{ _.apiKey }}"
+        description: ""
+        disabled: false
+    authentication: {}
+    metaSortKey: -1732760169024
+    isPrivate: false
+    pathParameters: []
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_509706d1c3d95f0fb741ee089955b6c293f59117
+    parentId: wrk_c01b72edcf414a1bbdb96c2dfea44992
+    modified: 1732760165176
+    created: 1732760165176
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1732760165177
+    environmentType: kv
+    _type: environment
+  - _id: jar_509706d1c3d95f0fb741ee089955b6c293f59117
+    parentId: wrk_c01b72edcf414a1bbdb96c2dfea44992
+    modified: 1732760165179
+    created: 1732760165179
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
