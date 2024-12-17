@@ -42,6 +42,14 @@ export type InputProps = {
     onBlur?: () => void;
 }
 
+export type TextAreaProps = {
+    label?: string;
+    placeholder?: string;
+    value?: string;
+    onValueChange?: (text: string) => void;
+    onBlur?: () => void;
+}
+
 export type InputOptions = {
     label: string;
     value: any;
