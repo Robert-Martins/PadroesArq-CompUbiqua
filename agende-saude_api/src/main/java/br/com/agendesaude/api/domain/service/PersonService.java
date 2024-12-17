@@ -102,7 +102,6 @@ public class PersonService {
         .orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada."));
 
     existingPerson.setFullName(personDto.getFullName());
-    existingPerson.setPhone(personDto.getPhone());
     existingPerson.setBirthDate(personDto.getBirthDate());
     existingPerson.setGenderType(personDto.getGenderType());
     existingPerson.setBloodType(personDto.getBloodType());
