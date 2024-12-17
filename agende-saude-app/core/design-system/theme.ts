@@ -6,6 +6,7 @@ export type ASTheme = {
         primary: string;
         secondary: string;
         background: string;
+        divider: string;
         text: string;
         buttons: {
             primary: {
@@ -102,6 +103,7 @@ export const asLightTheme: ASTheme = {
         primary: "#007BFF",
         secondary: "#6C757D",
         background: "red",
+        divider: "#E9ECEF",
         text: "#212529",
         buttons: {
             primary: {
@@ -134,6 +136,7 @@ export const asDarkTheme: ASTheme = {
         primary: "#007BFF",
         secondary: "#6C757D",
         background: "blue",
+        divider: "#FFF",
         text: "#F8F9FA",
         buttons: {
             primary: {
