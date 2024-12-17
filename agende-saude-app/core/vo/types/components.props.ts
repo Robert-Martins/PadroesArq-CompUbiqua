@@ -59,6 +59,12 @@ export type ToggleProps = {
     onValueChange: (value: boolean) => void;
 }
 
+export type SelectProps = {
+    value?: string;
+    options: InputOptions[];
+    onValueChange: (value: string) => void;
+}
+
 export type FlexContainerProps = {
     direction?: "row" | "column";
     justify?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around";
