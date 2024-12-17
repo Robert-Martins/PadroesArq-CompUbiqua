@@ -36,8 +36,7 @@ const styles = StyleSheet.create({
   hiddenContent: {
     width: '100%',
     flex: 1,
-    position: 'absolute',
-    backgroundColor: 'blue',
+    position: 'absolute'
   },
 });
 
