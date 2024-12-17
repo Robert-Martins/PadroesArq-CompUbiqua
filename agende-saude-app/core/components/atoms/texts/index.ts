@@ -7,3 +7,4 @@ export { default as H6 } from "./H6";
 export { default as Paragraph } from "./Paragraph";
 export { default as Emphasis } from "./Emphasis";
 export { default as Small } from "./Small";
+export { default as InputLabel } from "./InputLabel";

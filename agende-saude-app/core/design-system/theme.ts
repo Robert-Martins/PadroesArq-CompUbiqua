@@ -69,7 +69,7 @@ const asCommonTheme: Partial<ASTheme> = {
     border: {
         lg: 28,
         md: 12,
-        sm: 1,
+        sm: 8,
     },
     fonts: {
         thin: "Inter-Thin",
