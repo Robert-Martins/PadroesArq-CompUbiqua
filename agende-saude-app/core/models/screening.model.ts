@@ -1,4 +1,4 @@
-import { ScreeningQuestionnaire, ScreeningQuestionnaireAnswer } from "../vo/types/types";
+import { ScreeningQuestionnaireAnswer } from "../vo/types/types";
 
 export class Screening {
 
@@ -6,6 +6,9 @@ export class Screening {
         public id: number = null,
         public questionnaire: ScreeningQuestionnaireAnswer[] = [],
         public notes: string = null,
+        public classification: string = null,
+        public justification: string = null,
+        public status: string = null,
         public createdAt: Date = null,
         public updatedAt: Date = null
     ) { }
