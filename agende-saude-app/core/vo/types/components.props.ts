@@ -1,9 +1,12 @@
 import { ASTheme } from "@/core/design-system/theme";
+import { Media } from "@/core/models/media.model";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ReactNode } from "react";
 
+type AppIcon = keyof typeof MaterialCommunityIcons.glyphMap;
+
 export type IconProps = {
-    name : keyof typeof MaterialCommunityIcons.glyphMap;
+    name : AppIcon;
     size?: number;
     color?: string;
 }
@@ -18,7 +21,7 @@ export type TextButtonProps = {
 export type ButtonProps = {
     children: ReactNode;
     onPress: () => void | (<T> (parameter: T) => void);
-    icon?: keyof typeof MaterialCommunityIcons.glyphMap;
+    icon?: AppIcon;
     type?: "primary" | "secondary" | "tertiary";
     ghost?: boolean;
     disabled?: boolean;
@@ -34,7 +37,7 @@ type CommonInputProps<T> = {
 }
 
 export type InputProps = CommonInputProps<string> & {
-    icon?: keyof typeof MaterialCommunityIcons.glyphMap;
+    icon?: AppIcon;
     inputMode?: "text" | "none" | "tel" | "url" | "email" | "numeric" | "decimal" | "search";
     keyboardType?: "default" | "number-pad" | "decimal-pad" | "numeric" | "email-address" | "phone-pad";
     autocomplete?: "additional-name" | "address-line1" | "address-line2" |
@@ -46,6 +49,7 @@ export type InputProps = CommonInputProps<string> & {
                     "postal-code" | "street-address" | "tel" | "username";
     onSelectionChange?: (event: any) => void;
     onBlur?: () => void;
+    mask?: string;
 }
 
 export type TextAreaProps = InputProps;
@@ -68,7 +72,7 @@ export type CommonSelectionInputProps<T> = CommonInputProps<T> & {
 export type ToggleProps<T> = CommonSelectionInputProps<T>;
 
 export type SelectProps<T> =CommonSelectionInputProps<T> & {
-    icon?: keyof typeof MaterialCommunityIcons.glyphMap;
+    icon?: AppIcon;
 };
 
 export type SelectionListProps<T> = {
@@ -86,6 +90,11 @@ export type FlexContainerProps = {
     gap?: number;
     rowGap?: number;
     columnGap?: number;
+}
+
+export type MediaRenderProps = {
+    media: Media;
+    icon: AppIcon;
 }
 
 export type ExpandableProps = {
