@@ -1,4 +1,4 @@
-import { FlexContainerProps } from "@/core/vo/consts/components.props";
+import { FlexContainerProps } from "@/core/vo/types/components.props";
 import styled from "styled-components/native";
 
 const Flex = styled.View<FlexContainerProps>`

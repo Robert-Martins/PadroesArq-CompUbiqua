@@ -1,0 +1,46 @@
+_type: export
+__export_format: 4
+__export_date: 2024-12-16T13:36:15.473Z
+__export_source: insomnia.desktop.app:v10.2.0
+resources:
+  - _id: wrk_2cea962a179e46c5b82c74e71585e33b
+    type: Workspace
+    parentId: proj_93e320024d0244afb1c88be7a35a7afb
+    modified: 1734354611609
+    created: 1734354611609
+    name: Agende Saúde IA
+    description: ""
+    scope: environment
+    _type: workspace
+  - _id: env_70dd7dfb3d382f69d8cd87e2c09468dd71a2a83b
+    type: Environment
+    parentId: wrk_2cea962a179e46c5b82c74e71585e33b
+    modified: 1734354680809
+    created: 1734354611611
+    name: Base Environment
+    data:
+      baseUrl: http://localhost:3000
+      apiKey: 52b58fce35e818b4875e231a6342c5da1143253a
+      screeningPath: screening
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1734354611611
+    environmentType: kv
+    kvPairData:
+      - id: envPair_8023373fa5824bbbbd6d43f89c1366e0
+        name: baseUrl
+        value: http://localhost:3000
+        type: str
+        enabled: true
+      - id: envPair_10d6d513690b48128a6f9ed1046db128
+        name: apiKey
+        value: 52b58fce35e818b4875e231a6342c5da1143253a
+        type: str
+        enabled: true
+      - id: envPair_f41a2461e3e244c5be48b4db9d1134aa
+        name: screeningPath
+        value: screening
+        type: str
+        enabled: true
+    _type: environment

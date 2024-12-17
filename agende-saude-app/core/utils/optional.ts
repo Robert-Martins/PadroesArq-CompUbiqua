@@ -1,4 +1,16 @@
-import { isNull, nonNull, requireNonNull } from "./utils";
+const isNull = <T> (value: T): boolean => {
+    return value == null || value == undefined;
+}
+
+const nonNull = <T> (value: T): boolean => {
+    return value != null && value != undefined;
+}
+
+const requireNonNull = <T> (value: T): T => {
+    if(isNull(value))
+        throw new Error();
+    return value;
+}
 
 /**
  * Author: Robert-Martins
