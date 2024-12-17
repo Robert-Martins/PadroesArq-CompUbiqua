@@ -31,6 +31,9 @@ public class User extends BaseEntity implements UserDetails {
   @Column(nullable = false, length = 255)
   private String password;
 
+  @Column(length = 15)
+  private String phone;
+
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private UserType type;
@@ -47,6 +50,7 @@ public class User extends BaseEntity implements UserDetails {
     UserDto userDto = new UserDto();
     userDto.setId(this.getId());
     userDto.setEmail(this.getEmail());
+    userDto.setPhone(this.getPhone());
     userDto.setTaxId(this.getTaxId());
     userDto.setUserType(this.getType());
     userDto.setAccessLevelType(this.getAccessLevel());

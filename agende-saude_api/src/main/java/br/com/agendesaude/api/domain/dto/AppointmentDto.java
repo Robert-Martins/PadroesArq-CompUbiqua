@@ -14,9 +14,9 @@ import lombok.Setter;
 @Setter
 public class AppointmentDto extends BaseEntityDto<Appointment> {
 
-  private Consultation consultation;
+  private ConsultationDto consultation;
 
-  private Screening screening;
+  private ScreeningDto screening;
 
   @NotBlank
   private String notes;
@@ -29,8 +29,8 @@ public class AppointmentDto extends BaseEntityDto<Appointment> {
 
   public AppointmentDto(Appointment appointment) {
     this.setId(appointment.getId());
-    this.setConsultation(appointment.getConsultation());
-    this.setScreening(appointment.getScreening());
+    this.setConsultation(appointment.getConsultation().mapEntityToDto());
+    this.setScreening(appointment.getScreening().mapEntityToDto());
     this.setNotes(appointment.getNotes());
     this.setStatus(appointment.getStatus());
     this.setCreatedAt(appointment.getCreatedAt());
@@ -41,8 +41,8 @@ public class AppointmentDto extends BaseEntityDto<Appointment> {
   public Appointment mapDtoToEntity() {
     Appointment appointment = new Appointment();
     appointment.setId(this.getId());
-    appointment.setConsultation(this.getConsultation());
-    appointment.setScreening(this.getScreening());
+    appointment.setConsultation(this.getConsultation().mapDtoToEntity());
+    appointment.setScreening(this.getScreening().mapDtoToEntity());
     appointment.setNotes(this.getNotes());
     appointment.setStatus(this.getStatus());
     appointment.setCreatedAt(this.getCreatedAt());

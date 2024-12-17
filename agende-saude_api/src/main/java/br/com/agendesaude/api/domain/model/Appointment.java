@@ -1,8 +1,8 @@
 package br.com.agendesaude.api.domain.model;
 
+import br.com.agendesaude.api.domain.dto.AppointmentDto;
 import br.com.agendesaude.api.domain.enums.AppointmentStatusType;
 import br.com.agendesaude.api.infra.base.BaseEntity;
-import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,7 +11,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,9 +32,6 @@ public class Appointment extends BaseEntity {
   @JoinColumn(name = "consultation_id", nullable = false)
   private Consultation consultation;
 
-  @Column(nullable = false)
-  private LocalDateTime date;
-
   @Column(columnDefinition = "TEXT")
   private String notes;
 
@@ -44,7 +40,21 @@ public class Appointment extends BaseEntity {
   private AppointmentStatusType status = AppointmentStatusType.SCHEDULED;
 
   @Override
-  public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-    return null;
+  public AppointmentDto mapEntityToDto() {
+    AppointmentDto appointmentDto = new AppointmentDto();
+    appointmentDto.setId(this.getId());
+    appointmentDto.setNotes(this.getNotes());
+    appointmentDto.setStatus(this.getStatus());
+
+    if (this.getConsultation() != null) {
+      appointmentDto.setConsultation(this.getConsultation().mapEntityToDto());
+    }
+
+    if (this.getScreening() != null) {
+      appointmentDto.setScreening(this.getScreening().mapEntityToDto());
+    }
+
+    return appointmentDto;
   }
+
 }

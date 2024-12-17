@@ -46,7 +46,6 @@ public class PersonDto extends BaseEntityDto<Person> {
     this.setId(person.getId());
     this.setUser(person.getUser());
     this.setFullName(person.getFullName());
-    this.setPhone(person.getPhone());
     this.setBirthDate(person.getBirthDate());
     this.setGenderType(person.getGenderType());
     this.setBloodType(person.getBloodType());
@@ -68,7 +67,6 @@ public class PersonDto extends BaseEntityDto<Person> {
     person.setId(this.getId());
     person.setUser(this.getUser());
     person.setFullName(this.getFullName());
-    person.setPhone(this.getPhone());
     person.setBirthDate(this.getBirthDate());
     person.setGenderType(this.getGenderType());
     person.setBloodType(this.getBloodType());

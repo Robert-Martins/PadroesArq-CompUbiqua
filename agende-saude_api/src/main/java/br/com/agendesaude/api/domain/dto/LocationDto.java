@@ -31,7 +31,7 @@ public class LocationDto extends BaseEntityDto<Location> {
     location.setId(this.getId());
     location.setName(this.getName());
     location.setUser(this.getUser());
-    location.setAccessEmergencies(this.accessEmergencies != null ? this.accessEmergencies : false);
+    location.setAcceptsEmergencies(this.accessEmergencies != null ? this.accessEmergencies : false);
     location.setThumbnail(this.getThumbnail());
     location.setAddress(this.getAddress());
     location.setCreatedAt(this.getCreatedAt());

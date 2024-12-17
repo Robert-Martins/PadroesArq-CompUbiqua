@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class ConsultationDto extends BaseEntityDto<Consultation> {
 
-  private Location location;
+  private LocationDto location;
 
   @NotBlank
   private String responsibleDoctor;
@@ -35,7 +35,7 @@ public class ConsultationDto extends BaseEntityDto<Consultation> {
 
   public ConsultationDto(Consultation consultation) {
     this.setId(consultation.getId());
-    this.setLocation(consultation.getLocation());
+    this.setLocation(consultation.getLocation().mapEntityToDto());
     this.setResponsibleDoctor(consultation.getResponsibleDoctor());
     this.setType(consultation.getType());
     this.setSpecialty(consultation.getSpecialty());
@@ -48,7 +48,7 @@ public class ConsultationDto extends BaseEntityDto<Consultation> {
   public Consultation mapDtoToEntity() {
     Consultation consultation = new Consultation();
     consultation.setId(this.getId());
-    consultation.setLocation(this.getLocation());
+    consultation.setLocation(this.getLocation().mapDtoToEntity());
     consultation.setResponsibleDoctor(this.getResponsibleDoctor());
     consultation.setType(this.getType());
     consultation.setSpecialty(this.getSpecialty());

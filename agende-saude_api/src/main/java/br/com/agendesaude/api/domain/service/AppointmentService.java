@@ -4,11 +4,20 @@ import br.com.agendesaude.api.domain.dto.AppointmentDto;
 import br.com.agendesaude.api.domain.enums.AppointmentStatusType;
 import br.com.agendesaude.api.domain.model.Appointment;
 import br.com.agendesaude.api.domain.model.Consultation;
+import br.com.agendesaude.api.domain.model.Location;
+import br.com.agendesaude.api.domain.model.Person;
+import br.com.agendesaude.api.domain.model.Screening;
+import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.repository.AppointmentRepository;
 import br.com.agendesaude.api.domain.repository.ConsultationRepository;
-import jakarta.persistence.EntityNotFoundException;
+import br.com.agendesaude.api.domain.repository.LocationRepository;
+import br.com.agendesaude.api.domain.repository.PersonRepository;
+import br.com.agendesaude.api.domain.repository.ScreeningRepository;
+import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,43 +25,108 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class AppointmentService {
 
-    @Autowired
-    private AppointmentRepository appointmentRepository;
+  @Autowired
+  private AppointmentRepository appointmentRepository;
 
-    @Autowired
-    private ConsultationRepository consultationRepository;
+  @Autowired
+  private ConsultationRepository consultationRepository;
 
-    @Transactional
-    public Long createAppointment(AppointmentDto appointmentDto) {
-        Consultation consultation = consultationRepository.findById(appointmentDto.getConsultation().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Consultation not found"));
+  @Autowired
+  private LocationRepository locationRepository;
 
-        boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(
-                consultation.getId(), AppointmentStatusType.SCHEDULED);
-        if (hasScheduledAppointments) {
-            throw new IllegalStateException("Cannot schedule appointment for consultation with an existing SCHEDULED appointment");
-        }
+  @Autowired
+  private PersonRepository personRepository;
 
-        Appointment appointment = appointmentDto.mapDtoToEntity();
-        appointment.setConsultation(consultation);
-        appointmentRepository.save(appointment);
-        return appointment.getId();
+  @Autowired
+  private ScreeningRepository screeningRepository;
+
+  public AppointmentDto createAppointment(AppointmentDto appointmentDto, User user) {
+
+    Person person = personRepository.findByUserId(user.getId());
+
+    Consultation consultation = appointmentDto.getConsultation().mapDtoToEntity();
+    Location location = locationRepository.findById(consultation.getLocation().getId())
+        .orElseThrow(() -> new CustomException("Location not found"));
+
+    if (consultation.getId() == null) {
+      consultation = new Consultation();
+      consultation.setLocation(location);
+      consultationRepository.save(consultation);
+    } else {
+      consultation = consultationRepository.findById(consultation.getId())
+          .orElseThrow(() -> new CustomException("Consultation not found"));
     }
 
-    @Transactional
-    public void updateAppointmentStatus(Long id, AppointmentDto appointmentDto) {
-        Appointment appointment = appointmentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Appointment not found"));
-
-        if (appointmentDto.getStatus() == AppointmentStatusType.SCHEDULED) {
-            boolean hasConflictingAppointment = appointmentRepository.existsByConsultationIdAndStatus(
-                    appointment.getConsultation().getId(), AppointmentStatusType.SCHEDULED);
-            if (hasConflictingAppointment) {
-                throw new IllegalStateException("Cannot change status to SCHEDULED due to conflicting appointment");
-            }
-        }
-
-        appointment.setStatus(appointmentDto.getStatus());
-        appointmentRepository.save(appointment);
+    Screening screening = appointmentDto.getScreening().mapDtoToEntity();
+    if (screening.getId() == null) {
+      screening = new Screening();
+      screeningRepository.save(screening);
+    } else {
+      screening = screeningRepository.findById(screening.getId())
+          .orElseThrow(() -> new CustomException("Screening not found"));
     }
+
+    boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(
+        consultation.getId(), AppointmentStatusType.SCHEDULED);
+    if (hasScheduledAppointments) {
+      throw new CustomException(
+          "Cannot schedule appointment for consultation with an existing SCHEDULED appointment");
+    }
+
+    Appointment appointment = appointmentDto.mapDtoToEntity();
+    appointment.setConsultation(consultation);
+    appointment.setScreening(screening);
+
+    appointmentRepository.save(appointment);
+    return appointment.mapEntityToDto();
+  }
+
+
+  @Transactional
+  public AppointmentDto updateAppointment(AppointmentDto appointmentDto) {
+
+    Long appointmentDtoId = appointmentDto.getId();
+
+    Consultation consultation = appointmentDto.getConsultation().mapDtoToEntity();
+    if (consultation.getId() == null) {
+      consultation = new Consultation();
+      consultationRepository.save(consultation);
+    } else {
+      consultation = consultationRepository.findById(consultation.getId())
+          .orElseThrow(() -> new CustomException("Consultation not found"));
+    }
+
+    Screening screening = appointmentDto.getScreening().mapDtoToEntity();
+    if (screening.getId() == null) {
+      screening = new Screening();
+      screeningRepository.save(screening);
+    } else {
+      screening = screeningRepository.findById(screening.getId())
+          .orElseThrow(() -> new CustomException("Screening not found"));
+    }
+
+    Appointment appointment = appointmentRepository.findById(appointmentDtoId)
+        .orElseThrow(() -> new CustomException("Appointment not found"));
+
+    boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(
+        consultation.getId(), AppointmentStatusType.SCHEDULED);
+    if (hasScheduledAppointments && appointmentDto.getStatus() == AppointmentStatusType.SCHEDULED) {
+      throw new CustomException(
+          "Cannot update appointment for consultation with an existing SCHEDULED appointment");
+    }
+
+    appointment.setConsultation(consultation);
+    appointment.setScreening(screening);
+    appointment.setStatus(appointmentDto.getStatus());
+    appointment.setNotes(appointmentDto.getNotes());
+
+    appointmentRepository.save(appointment);
+    return appointment.mapEntityToDto();
+  }
+
+  public Page<AppointmentDto> findAllByPerson(AppointmentStatusType status, Pageable pageable) {
+    return appointmentRepository.findByStatus(status, pageable)
+        .map(Appointment::mapEntityToDto);
+  }
+
 }

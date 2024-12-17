@@ -5,7 +5,6 @@ import br.com.agendesaude.api.domain.enums.UserType;
 import br.com.agendesaude.api.domain.model.Address;
 import br.com.agendesaude.api.domain.model.Location;
 import br.com.agendesaude.api.domain.model.Media;
-import br.com.agendesaude.api.domain.model.Person;
 import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.repository.AddressRepository;
 import br.com.agendesaude.api.domain.repository.LocationRepository;
@@ -14,6 +13,8 @@ import br.com.agendesaude.api.domain.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +60,7 @@ public class LocationService {
 
     location = locationRepository.save(location);
 
-    return (LocationDto) location.mapEntityToDto();
+    return location.mapEntityToDto();
   }
 
 
@@ -76,6 +77,19 @@ public class LocationService {
     locationDto.setCreatedAt(location.getCreatedAt());
     locationDto.setUpdatedAt(location.getUpdatedAt());
     return locationDto;
+  }
+
+  public Page<LocationDto> findAllLocations(String name, Boolean acceptsEmergencies, Pageable pageable) {
+    if (name == null && acceptsEmergencies == null) {
+      return locationRepository.findAll(pageable).map(Location::mapEntityToDto);
+    } else if (name == null) {
+      return locationRepository.findByAcceptsEmergencies(acceptsEmergencies, pageable).map(Location::mapEntityToDto);
+    } else if (acceptsEmergencies == null) {
+      return locationRepository.findByNameContaining(name, pageable).map(Location::mapEntityToDto);
+    } else {
+      return locationRepository.findByNameContainingAndAcceptsEmergencies(name, acceptsEmergencies, pageable)
+          .map(Location::mapEntityToDto);
+    }
   }
 
   @Transactional
