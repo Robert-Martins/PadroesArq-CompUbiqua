@@ -20,7 +20,7 @@ public class LocationDto extends BaseEntityDto<Location> {
   @NotNull
   private User user;
 
-  private Boolean accessEmergencies;
+  private Boolean acceptsEmergencies;
 
   private Media thumbnail;
   private Address address;
@@ -31,7 +31,7 @@ public class LocationDto extends BaseEntityDto<Location> {
     location.setId(this.getId());
     location.setName(this.getName());
     location.setUser(this.getUser());
-    location.setAcceptsEmergencies(this.accessEmergencies != null ? this.accessEmergencies : false);
+    location.setAcceptsEmergencies(this.acceptsEmergencies != null ? this.acceptsEmergencies : false);
     location.setThumbnail(this.getThumbnail());
     location.setAddress(this.getAddress());
     location.setCreatedAt(this.getCreatedAt());

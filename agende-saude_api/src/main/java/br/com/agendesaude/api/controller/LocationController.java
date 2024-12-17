@@ -35,17 +35,15 @@ public class LocationController {
 
   @GetMapping
   public ResponseEntity<Page<LocationDto>> findAllLocations(
-      @RequestParam int page,
-      @RequestParam int size,
-      @RequestParam String sort,
-      @RequestParam String direction,
+      LocationDto locationDto,
       @RequestParam(required = false) String name,
-      @RequestParam(required = false) Boolean acceptsEmergencies
-  ) {
-    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort));
+      @RequestParam(required = false) Boolean acceptsEmergencies,
+      Pageable pageable) {
+
     Page<LocationDto> result = locationService.findAllLocations(name, acceptsEmergencies, pageable);
     return ResponseEntity.ok(result);
   }
+
 
   @PostMapping
   public ResponseEntity<LocationDto> createLocation(@Valid @RequestBody LocationDto locationDto) {
