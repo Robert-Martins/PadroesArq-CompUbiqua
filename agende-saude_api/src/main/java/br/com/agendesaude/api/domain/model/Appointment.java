@@ -33,9 +33,6 @@ public class Appointment extends BaseEntity {
   @JoinColumn(name = "consultation_id", nullable = false)
   private Consultation consultation;
 
-  @Column(nullable = false)
-  private LocalDateTime date;
-
   @Column(columnDefinition = "TEXT")
   private String notes;
 

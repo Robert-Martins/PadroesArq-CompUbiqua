@@ -45,9 +45,6 @@ public class Person extends BaseEntity {
   @Column(nullable = false, length = 255)
   private String fullName;
 
-  @Column(length = 15)
-  private String phone;
-
   @Column
   private LocalDate birthDate;
 
@@ -62,7 +59,6 @@ public class Person extends BaseEntity {
     PersonDto personDto = new PersonDto();
     personDto.setId(this.getId());
     personDto.setFullName(this.getFullName());
-    personDto.setPhone(this.getPhone());
     personDto.setBirthDate(this.getBirthDate());
     personDto.setGenderType(this.getGenderType());
     personDto.setBloodType(this.getBloodType());

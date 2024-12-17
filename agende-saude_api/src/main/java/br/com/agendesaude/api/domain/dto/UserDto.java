@@ -18,6 +18,7 @@ public class UserDto extends BaseEntityDto<User> {
   private String password;
   @NotBlank
   private String taxId;
+  private String phone;
 
   private UserType userType;
   private AccessLevelType accessLevelType;
@@ -30,6 +31,7 @@ public class UserDto extends BaseEntityDto<User> {
     this.setId(user.getId());
     this.setEmail(user.getEmail());
     this.setTaxId(user.getTaxId());
+    this.setPhone(user.getPhone());
     this.setPassword(user.getPassword());
     this.setUserType(user.getType());
     this.setAccessLevelType(user.getAccessLevel());
@@ -45,6 +47,7 @@ public class UserDto extends BaseEntityDto<User> {
     user.setId(this.getId());
     user.setEmail(this.getEmail());
     user.setTaxId(this.getTaxId());
+    user.setPhone(this.getPhone());
     user.setPassword(this.getPassword());
     user.setType(this.getUserType());
     user.setAccessLevel(this.getAccessLevelType());
