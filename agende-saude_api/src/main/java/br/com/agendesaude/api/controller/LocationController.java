@@ -6,33 +6,39 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/location")
 @RequiredArgsConstructor
 public class LocationController {
 
-    @Autowired
-    private LocationService locationService;
+  @Autowired
+  private LocationService locationService;
 
-    @PostMapping
-    public ResponseEntity<Long> createLocation(@Valid @RequestBody LocationDto locationDto) {
-        Long id = locationService.createLocation(locationDto);
-        return ResponseEntity.ok(id);
-    }
+  @PostMapping
+  public ResponseEntity<LocationDto> createLocation(@Valid @RequestBody LocationDto locationDto) {
+    LocationDto createdLocation = locationService.createLocation(locationDto);
+    return ResponseEntity.ok(createdLocation);
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<LocationDto> getLocation(@PathVariable Long id) {
-        LocationDto locationDto = locationService.getLocationById(id);
-        return ResponseEntity.ok(locationDto);
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<LocationDto> getLocation(@PathVariable Long id) {
+    LocationDto locationDto = locationService.getLocationById(id);
+    return ResponseEntity.ok(locationDto);
+  }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Void> updateLocation(@PathVariable Long id, @Valid @RequestBody LocationDto locationDto) {
-        locationService.updateLocation(id, locationDto);
-        return ResponseEntity.ok().build();
-    }
+  @PutMapping("/{id}")
+  public ResponseEntity<Void> updateLocation(@PathVariable Long id, @Valid @RequestBody LocationDto locationDto) {
+    locationService.updateLocation(id, locationDto);
+    return ResponseEntity.ok().build();
+  }
 
 //    @DeleteMapping("/{id}")
 //    public ResponseEntity<Void> deleteLocation(@PathVariable Long id) {

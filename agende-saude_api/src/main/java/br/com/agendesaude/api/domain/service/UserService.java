@@ -19,14 +19,14 @@ public class UserService implements UserDetailsService {
   }
 
   @Override
-  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-    if (email == null || email.trim().isEmpty()) {
-      throw new ValidationException("Username is null or empty");
+  public UserDetails loadUserByUsername(String taxId) throws UsernameNotFoundException {
+    if (taxId == null || taxId.trim().isEmpty()) {
+      throw new ValidationException("TaxId is null or empty");
     }
 
-    return userRepository.findByEmail(email)
+    return userRepository.findByTaxId(taxId)
         .orElseThrow(() -> new ValidationException(
-            String.format("No user found with email: %s", email)));
+            String.format("No user found with taxId: %s", taxId)));
   }
 
 }

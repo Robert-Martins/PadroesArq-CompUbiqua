@@ -32,7 +32,7 @@ public class SecurityConfig {
     JwtFilter jwtFilter = new JwtFilter(this.tokenProvider);
 
     http.authorizeHttpRequests(authz -> authz
-            .requestMatchers("/login").permitAll()
+            .requestMatchers("/auth/login", "/auth/refresh-token").permitAll()
             .anyRequest().authenticated()
         ).csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

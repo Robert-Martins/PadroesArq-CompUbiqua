@@ -1,13 +1,20 @@
 package br.com.agendesaude.api.domain.service;
 
 import br.com.agendesaude.api.domain.dto.LocationDto;
+import br.com.agendesaude.api.domain.enums.UserType;
+import br.com.agendesaude.api.domain.model.Address;
 import br.com.agendesaude.api.domain.model.Location;
+import br.com.agendesaude.api.domain.model.Media;
+import br.com.agendesaude.api.domain.model.Person;
 import br.com.agendesaude.api.domain.model.User;
+import br.com.agendesaude.api.domain.repository.AddressRepository;
 import br.com.agendesaude.api.domain.repository.LocationRepository;
+import br.com.agendesaude.api.domain.repository.MediaRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,48 +22,72 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LocationService {
 
-    @Autowired
-    private LocationRepository locationRepository;
+  @Autowired
+  private AddressRepository addressRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired
+  private MediaRepository mediaRepository;
 
-    @Transactional
-    public Long createLocation(LocationDto locationDto) {
-        User user = userRepository.findById(locationDto.getUser().getId())
-                .orElseThrow(() -> new EntityNotFoundException("User not found"));
+  @Autowired
+  private LocationRepository locationRepository;
 
-        Location location = locationDto.mapDtoToEntity();
-        location.setUser(user);
-        locationRepository.save(location);
-        return location.getId();
+  @Autowired
+  private UserRepository userRepository;
+
+  @Transactional
+  public LocationDto createLocation(LocationDto locationDto) {
+
+    User user = locationDto.getUser();
+    user.setType(UserType.LOCATION);
+    user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+    User savedUser = userRepository.save(user);
+
+    Media thumbnail = locationDto.getThumbnail();
+    if (thumbnail != null) {
+      thumbnail = mediaRepository.save(thumbnail);
     }
 
-    @Transactional(readOnly = true)
-    public LocationDto getLocationById(Long id) {
-        Location location = locationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Location not found"));
-        LocationDto locationDto = new LocationDto();
-        locationDto.setId(location.getId());
-        locationDto.setName(location.getName());
-        locationDto.setUser(location.getUser());
-        locationDto.setThumbnail(location.getThumbnail());
-        locationDto.setAddress(location.getAddress());
-        locationDto.setCreatedAt(location.getCreatedAt());
-        locationDto.setUpdatedAt(location.getUpdatedAt());
-        return locationDto;
+    Address address = locationDto.getAddress();
+    if (address != null) {
+      address = addressRepository.save(address);
     }
 
-    @Transactional
-    public void updateLocation(Long id, LocationDto locationDto) {
-        Location location = locationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+    Location location = locationDto.mapDtoToEntity();
+    location.setUser(savedUser);
+    location.setThumbnail(thumbnail);
+    location.setAddress(address);
 
-        location.setName(locationDto.getName());
-        location.setThumbnail(locationDto.getThumbnail());
-        location.setAddress(locationDto.getAddress());
-        locationRepository.save(location);
-    }
+    location = locationRepository.save(location);
+
+    return (LocationDto) location.mapEntityToDto();
+  }
+
+
+  @Transactional(readOnly = true)
+  public LocationDto getLocationById(Long id) {
+    Location location = locationRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+    LocationDto locationDto = new LocationDto();
+    locationDto.setId(location.getId());
+    locationDto.setName(location.getName());
+    locationDto.setUser(location.getUser());
+    locationDto.setThumbnail(location.getThumbnail());
+    locationDto.setAddress(location.getAddress());
+    locationDto.setCreatedAt(location.getCreatedAt());
+    locationDto.setUpdatedAt(location.getUpdatedAt());
+    return locationDto;
+  }
+
+  @Transactional
+  public void updateLocation(Long id, LocationDto locationDto) {
+    Location location = locationRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+
+    location.setName(locationDto.getName());
+    location.setThumbnail(locationDto.getThumbnail());
+    location.setAddress(locationDto.getAddress());
+    locationRepository.save(location);
+  }
 
 //    @Transactional
 //    public void deleteLocation(Long id) {

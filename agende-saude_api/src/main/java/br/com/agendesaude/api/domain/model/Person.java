@@ -1,9 +1,11 @@
 package br.com.agendesaude.api.domain.model;
 
+import br.com.agendesaude.api.domain.dto.AllergyDto;
+import br.com.agendesaude.api.domain.dto.MedicalHistoryDto;
+import br.com.agendesaude.api.domain.dto.PersonDto;
 import br.com.agendesaude.api.domain.enums.BloodType;
 import br.com.agendesaude.api.domain.enums.GenderType;
 import br.com.agendesaude.api.infra.base.BaseEntity;
-import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -56,7 +58,38 @@ public class Person extends BaseEntity {
   private BloodType bloodType;
 
   @Override
-  public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-    return null;
+  public PersonDto mapEntityToDto() {
+    PersonDto personDto = new PersonDto();
+    personDto.setId(this.getId());
+    personDto.setFullName(this.getFullName());
+    personDto.setPhone(this.getPhone());
+    personDto.setBirthDate(this.getBirthDate());
+    personDto.setGenderType(this.getGenderType());
+    personDto.setBloodType(this.getBloodType());
+
+    if (this.getAllergy() != null) {
+      List<AllergyDto> allergyDtos = this.getAllergy().stream()
+          .map(allergy -> new AllergyDto(allergy))
+          .toList();
+      personDto.setAllergies(allergyDtos);
+    }
+
+    if (this.getMedicalHistory() != null) {
+      List<MedicalHistoryDto> medicalHistoryDtos = this.getMedicalHistory().stream()
+          .map(history -> new MedicalHistoryDto(history))
+          .toList();
+      personDto.setMedicalHistories(medicalHistoryDtos);
+    }
+
+    if (this.getProfilePicture() != null) {
+      personDto.setProfilePicture(this.getProfilePicture());
+    }
+
+    if (this.getUser() != null) {
+      personDto.setUser(this.getUser());
+    }
+
+    return personDto;
   }
+
 }

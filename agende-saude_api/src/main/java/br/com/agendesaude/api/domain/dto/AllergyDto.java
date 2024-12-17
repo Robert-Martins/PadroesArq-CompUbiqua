@@ -13,7 +13,7 @@ import lombok.Setter;
 public class AllergyDto extends BaseEntityDto<Allergy> {
 
   @NotNull
-  private Person person;
+  private Long personId;
 
   @NotNull
   private String description;
@@ -25,7 +25,7 @@ public class AllergyDto extends BaseEntityDto<Allergy> {
 
   public AllergyDto(Allergy allergy) {
     this.setId(allergy.getId());
-    this.setPerson(allergy.getPerson());
+    this.setPersonId(allergy.getPerson().getId());
     this.setDescription(allergy.getDescription());
     this.setSeverity(allergy.getSeverity());
     this.setCreatedAt(allergy.getCreatedAt());
@@ -36,7 +36,9 @@ public class AllergyDto extends BaseEntityDto<Allergy> {
   public Allergy mapDtoToEntity() {
     Allergy allergy = new Allergy();
     allergy.setId(this.getId());
-    allergy.setPerson(this.getPerson());
+    Person person = new Person();
+    person.setId(this.getPersonId());
+    allergy.setPerson(person);
     allergy.setDescription(this.getDescription());
     allergy.setSeverity(this.getSeverity());
     allergy.setCreatedAt(this.getCreatedAt());
