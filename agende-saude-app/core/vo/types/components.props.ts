@@ -1,3 +1,4 @@
+import { ASTheme } from "@/core/design-system/theme";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ReactNode } from "react";
 
@@ -21,14 +22,20 @@ export type ButtonProps = {
     type?: "primary" | "secondary" | "tertiary";
     ghost?: boolean;
     disabled?: boolean;
-    theme?: any;
+    theme?: ASTheme;
 }
 
-export type InputProps = {
+type CommonInputProps<T> = {
     label?: string;
-    icon?: keyof typeof MaterialCommunityIcons.glyphMap;
     placeholder?: string;
-    value?: string;
+    value?: T;
+    onValueChange?: (value: T) => void;
+    editable?: boolean;
+}
+
+export type InputProps = CommonInputProps<string> & {
+    icon?: keyof typeof MaterialCommunityIcons.glyphMap;
+    inputMode?: "text" | "none" | "tel" | "url" | "email" | "numeric" | "decimal" | "search";
     keyboardType?: "default" | "number-pad" | "decimal-pad" | "numeric" | "email-address" | "phone-pad";
     autocomplete?: "additional-name" | "address-line1" | "address-line2" |
                     "birthdate-day" | "birthdate-full" | "birthdate-month" | "birthdate-year" |
@@ -37,22 +44,15 @@ export type InputProps = {
                     "family-name" | "given-name" | "honorific-prefix" | "honorific-suffix" |
                     "name" | "new-password" | "off" | "one-time-code" |
                     "postal-code" | "street-address" | "tel" | "username";
-    onValueChange?: (text: string) => void;
     onSelectionChange?: (event: any) => void;
     onBlur?: () => void;
 }
 
-export type TextAreaProps = {
-    label?: string;
-    placeholder?: string;
-    value?: string;
-    onValueChange?: (text: string) => void;
-    onBlur?: () => void;
-}
+export type TextAreaProps = InputProps;
 
-export type InputOptions = {
+export type InputOptions<T> = {
     label: string;
-    value: any;
+    value: T;
 }
 
 export type ToggleButtonProps = {
@@ -61,23 +61,22 @@ export type ToggleButtonProps = {
     isRight?: boolean;
 }
 
-export type ToggleProps = {
-    value: boolean;
-    options: InputOptions[];
-    onValueChange: (value: boolean) => void;
+export type CommonSelectionInputProps<T> = CommonInputProps<T> & {
+    options: InputOptions<T>[];
 }
 
-export type SelectProps = {
-    value?: string;
-    options: InputOptions[];
-    onValueChange: (value: string) => void;
+export type ToggleProps<T> = CommonSelectionInputProps<T>;
+
+export type SelectProps<T> =CommonSelectionInputProps<T> & {
+    icon?: keyof typeof MaterialCommunityIcons.glyphMap;
+};
+
+export type SelectionListProps<T> = {
+    options: InputOptions<T>[];
+    onSelect: (value: T) => void;
 }
 
-export type CheckboxProps = {
-    value?: boolean;
-    disabled?: boolean;
-    onValueChange?: (value: boolean) => void;
-}
+export type CheckboxProps = CommonInputProps<boolean>;
 
 export type FlexContainerProps = {
     direction?: "row" | "column";
@@ -93,4 +92,11 @@ export type ExpandableProps = {
   expanded: boolean;
   children: React.ReactNode;
   duration?: number;
+}
+
+export type ConfirmationModalProps = {
+    title: string;
+    message: string;
+    onConfirm: () => void;
+    onCancel: () => void;
 }

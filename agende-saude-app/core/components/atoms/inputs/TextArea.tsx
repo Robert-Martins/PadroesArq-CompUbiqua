@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components/native";
 import { TextAreaProps } from "@/core/vo/types/components.props";
+import { FormField } from "../../molecules";
+import { InputLabel } from "../texts";
 
 const StyledTextArea = styled.TextInput`
     padding: 8px;
@@ -19,15 +21,26 @@ const TextArea: React.FC<TextAreaProps> = ({
   value,
   onValueChange,
   onBlur,
+  label
 }) => {
+    const [isFocused, setIsFocused] = useState(false);
+
     return (
-        <StyledTextArea
-            placeholder={placeholder}
-            value={value}
-            onChangeText={onValueChange}
-            onBlur={onBlur}
-            multiline={true} // Ativa suporte para múltiplas linhas
-        />
+        <FormField>
+            <InputLabel isFocused={isFocused}>{label}</InputLabel>
+            <StyledTextArea
+                placeholder={placeholder}
+                value={value}
+                onChangeText={onValueChange}
+                isFocused={isFocused}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => {
+                    setIsFocused(false);
+                    onBlur?.();
+                }}
+                multiline={true}
+            />
+        </FormField>
     );
 };
 

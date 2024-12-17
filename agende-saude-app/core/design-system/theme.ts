@@ -6,9 +6,14 @@ export type ASTheme = {
         primary: string;
         secondary: string;
         background: string;
+        disabled: string;
         divider: string;
         text: string;
         white: string;
+        icons: {
+            unfocused: string;
+            disabled: string;
+        },
         buttons: {
             primary: {
                 background: string;
@@ -104,9 +109,14 @@ export const asLightTheme: ASTheme = {
         primary: "#007BFF",
         secondary: "#6C757D",
         background: "red",
+        disabled: "#9E9E9E",
         divider: "#E9ECEF",
         text: "#212529",
         white: "#FFF",
+        icons: {
+            unfocused: "#E9ECEF",
+            disabled: "#E9ECEF",
+        },
         buttons: {
             primary: {
                 background: "#007BFF",
@@ -138,9 +148,14 @@ export const asDarkTheme: ASTheme = {
         primary: "#007BFF",
         secondary: "#6C757D",
         background: "blue",
+        disabled: "#9E9E9E",
         divider: "#FFF",
         text: "#F8F9FA",
         white: "#FFF",
+        icons: {
+            unfocused: "#E9ECEF",
+            disabled: "#E9ECEF",
+        },
         buttons: {
             primary: {
                 background: "#007BFF",

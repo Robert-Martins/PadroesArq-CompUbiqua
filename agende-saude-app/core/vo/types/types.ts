@@ -85,3 +85,10 @@ export type ScreeningQuestionnaireAnswer = {
     answer: boolean;
     subQuestionsAnswer?: ScreeningQuestionnaireAnswer[];
 }
+  
+export type DisplayModalArguments<T> = {
+    modal: (props: T) => React.ReactNode;
+    header?: string;
+    showCloseButton?: boolean;
+    modalProps?: T;
+};

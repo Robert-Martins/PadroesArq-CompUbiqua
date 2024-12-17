@@ -1,12 +1,10 @@
 import React from "react";
 import styled from "styled-components/native";
 import { ToggleProps, ToggleButtonProps } from "@/core/vo/types/components.props";
+import { handleToggleButtonBackground, handleToggleButtonBorder } from "@/core/utils/components.utils";
 
 const ToggleContainer = styled.View`
     flex-direction: row;
-    border-width: 1px;
-    border-color: ${({ theme }) => theme.colors.divider};
-    border-radius: ${({ theme }) => theme.border.md}px;
     overflow: hidden;
 `;
 
@@ -15,9 +13,8 @@ const ToggleButton = styled.TouchableOpacity<ToggleButtonProps>`
     padding: 10px;
     justify-content: center;
     align-items: center;
-    background-color: ${({ theme, isSelected }) =>
-        isSelected ? theme.colors.primary : theme.colors.white};
-    border-color: ${({ theme, isSelected }) => isSelected ? theme.colors.primary : theme.colors.divider};
+    background-color: ${({ theme, isSelected, disabled }) => handleToggleButtonBackground({ isSelected, disabled }, theme)};
+    border: 1px solid ${({ theme, isSelected, disabled }) => handleToggleButtonBorder({ isSelected, disabled }, theme)};
     border-top-left-radius: ${({ theme, isLeft }) =>
         isLeft ? theme.border.md : 0}px;
     border-bottom-left-radius: ${({ theme, isLeft }) =>
@@ -35,25 +32,29 @@ const ToggleText = styled.Text<ToggleButtonProps>`
     font-family: ${({ theme }) => theme.fonts.medium};
 `;
 
-const Toggle: React.FC<ToggleProps> = ({ value, options, onValueChange }) => {
-  return (
-    <ToggleContainer>
-        {options.map((option, index) => {
-            const isSelected = option.value === value;
-            return (
-                <ToggleButton
-                    key={option.value}
-                    isSelected={isSelected}
-                    isLeft={index === 0}
-                    isRight={index === options.length - 1}
-                    onPress={() => onValueChange(option.value)}
-                >
-                    <ToggleText isSelected={isSelected}>{option.label}</ToggleText>
-                </ToggleButton>
-            );
-        })}
-    </ToggleContainer>
-  );
+const Toggle = <T,> (props: ToggleProps<T>) => {
+    const { value, options, onValueChange, editable = true } = props;
+
+    return (
+        <ToggleContainer>
+            {options.map((option, index) => {
+                const isSelected = option.value === value;
+                const isDisabled = !editable;
+                return (
+                    <ToggleButton
+                        key={option.value}
+                        isSelected={isSelected}
+                        isLeft={index === 0}
+                        isRight={index === options.length - 1}
+                        onPress={() => !isDisabled && onValueChange(option.value)}
+                        disabled={isDisabled}
+                    >
+                        <ToggleText isSelected={isSelected}>{option.label}</ToggleText>
+                    </ToggleButton>
+                );
+            })}
+        </ToggleContainer>
+    );
 };
 
 export default Toggle;

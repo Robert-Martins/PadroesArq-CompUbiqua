@@ -13,19 +13,19 @@ const StyledTouchableOpacity = styled(TouchableOpacity)<ButtonProps>`
 
 const StyledText = styled(Text)<TextButtonProps>`
     color: ${(props => handleButtonTextColor(props))};
-    font-size: ${({ theme }) => theme.fontSizes.xs}px;
+    font-size: ${({ theme }) => theme.fontSizes.xxs}px;
     font-family: ${({ theme }) => theme.fonts.medium};
 `;
 
 const FlatButton: React.FC<ButtonProps> = (props) => {
-    const { icon } = props;
+    const { icon, disabled, type, children, ghost } = props;
 
     const theme = useTheme();
 
     return (
         <StyledTouchableOpacity {...props} activeOpacity={0.5}>
-            <StyledText type={props.type} ghost={props.ghost} disabled={props.disabled}>
-                { props.children }
+            <StyledText type={type} ghost={ghost} disabled={disabled}>
+                { children }
             </StyledText>
             { icon && <Icon name={icon} size={24} color={handleButtonIconColor(props, theme)} /> }
         </StyledTouchableOpacity>
