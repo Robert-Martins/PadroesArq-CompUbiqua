@@ -32,10 +32,10 @@ public class TokenProvider {
     this.algorithm = Algorithm.HMAC512(secretKey);
   }
 
-  public String createAccessToken(String username, String role) {
+  public String createAccessToken(String username, String authentication) {
     return JWT.create()
         .withSubject(username)
-        .withClaim("role", role)
+        .withClaim("auth", authentication)
         .withIssuedAt(new Date())
         .withExpiresAt(new Date(System.currentTimeMillis() + (tokenValidityInMilliseconds * 24))) // 24 horas
         .sign(algorithm);
@@ -71,12 +71,13 @@ public class TokenProvider {
     final String auth = decodedJWT.getClaim("auth").asString();
     UserDetails userDetails = null;
 
-    if ("user".equals(auth)) {
+    if (auth.equals("user")) {
       userDetails = userService.loadUserByUsername(taxId);
     }
 
     return new UsernamePasswordAuthenticationToken(userDetails, "", emptyList());
   }
+
 
   public boolean isTokenValid(String jwt) {
     try {

@@ -40,7 +40,7 @@ public class LoginController {
         loginDto.getPassword());
     try {
       this.authenticationManager.authenticate(authenticationToken);
-      String accessToken = this.tokenProvider.createAccessToken(taxId, "auth");
+      String accessToken = this.tokenProvider.createAccessToken(taxId, "user");
       String refreshToken = this.tokenProvider.createRefreshToken(taxId);
 
       Map<String, String> tokens = new HashMap<>();

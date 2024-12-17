@@ -23,6 +23,22 @@ public class UserDto extends BaseEntityDto<User> {
   private AccessLevelType accessLevelType;
   private Boolean isActive = true;
 
+  public UserDto() {
+  }
+
+  public UserDto (User user) {
+    this.setId(user.getId());
+    this.setEmail(user.getEmail());
+    this.setTaxId(user.getTaxId());
+    this.setPassword(user.getPassword());
+    this.setUserType(user.getType());
+    this.setAccessLevelType(user.getAccessLevel());
+    this.setIsActive(user.isActive());
+    this.setCreatedAt(user.getCreatedAt());
+    this.setUpdatedAt(user.getUpdatedAt());
+  }
+
+
   @Override
   public User mapDtoToEntity() {
     User user = new User();
