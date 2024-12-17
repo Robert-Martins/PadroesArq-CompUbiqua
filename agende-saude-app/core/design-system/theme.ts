@@ -8,6 +8,7 @@ export type ASTheme = {
         background: string;
         divider: string;
         text: string;
+        white: string;
         buttons: {
             primary: {
                 background: string;
@@ -69,7 +70,7 @@ const asCommonTheme: Partial<ASTheme> = {
     border: {
         lg: 28,
         md: 12,
-        sm: 1,
+        sm: 8,
     },
     fonts: {
         thin: "Inter-Thin",
@@ -105,6 +106,7 @@ export const asLightTheme: ASTheme = {
         background: "red",
         divider: "#E9ECEF",
         text: "#212529",
+        white: "#FFF",
         buttons: {
             primary: {
                 background: "#007BFF",
@@ -138,6 +140,7 @@ export const asDarkTheme: ASTheme = {
         background: "blue",
         divider: "#FFF",
         text: "#F8F9FA",
+        white: "#FFF",
         buttons: {
             primary: {
                 background: "#007BFF",
