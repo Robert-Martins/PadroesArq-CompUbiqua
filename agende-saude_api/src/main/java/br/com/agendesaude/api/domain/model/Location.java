@@ -1,5 +1,6 @@
 package br.com.agendesaude.api.domain.model;
 
+import br.com.agendesaude.api.domain.dto.LocationDto;
 import br.com.agendesaude.api.infra.base.BaseEntity;
 import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import jakarta.persistence.Column;
@@ -37,6 +38,16 @@ public class Location extends BaseEntity {
 
   @Override
   public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-    return null;
+    LocationDto locationDto = new LocationDto();
+    locationDto.setId(this.getId());
+    locationDto.setName(this.getName());
+    locationDto.setAccessEmergencies(this.isAccessEmergencies());
+    locationDto.setUser(this.getUser());
+    locationDto.setThumbnail(this.getThumbnail());
+    locationDto.setAddress(this.getAddress());
+    locationDto.setCreatedAt(this.getCreatedAt());
+    locationDto.setUpdatedAt(this.getUpdatedAt());
+    return locationDto;
   }
+
 }

@@ -4,7 +4,6 @@ import br.com.agendesaude.api.domain.dto.UserDto;
 import br.com.agendesaude.api.domain.enums.AccessLevelType;
 import br.com.agendesaude.api.domain.enums.UserType;
 import br.com.agendesaude.api.infra.base.BaseEntity;
-import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -44,17 +43,17 @@ public class User extends BaseEntity implements UserDetails {
   private boolean isActive = true;
 
   @Override
-  public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-    UserDto dto = new UserDto();
-    dto.setId(this.getId());
-    dto.setEmail(this.getEmail());
-    dto.setTaxId(this.getTaxId());
-    dto.setUserType(this.getType());
-    dto.setAccessLevelType(this.getAccessLevel());
-    dto.setIsActive(this.isActive());
-    dto.setCreatedAt(this.getCreatedAt());
-    dto.setUpdatedAt(this.getUpdatedAt());
-    return dto;
+  public UserDto mapEntityToDto() {
+    UserDto userDto = new UserDto();
+    userDto.setId(this.getId());
+    userDto.setEmail(this.getEmail());
+    userDto.setTaxId(this.getTaxId());
+    userDto.setUserType(this.getType());
+    userDto.setAccessLevelType(this.getAccessLevel());
+    userDto.setIsActive(this.isActive());
+    userDto.setCreatedAt(this.getCreatedAt());
+    userDto.setUpdatedAt(this.getUpdatedAt());
+    return userDto;
   }
 
   @Override

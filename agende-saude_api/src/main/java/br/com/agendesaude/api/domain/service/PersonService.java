@@ -3,6 +3,7 @@ package br.com.agendesaude.api.domain.service;
 import br.com.agendesaude.api.domain.dto.AllergyDto;
 import br.com.agendesaude.api.domain.dto.MedicalHistoryDto;
 import br.com.agendesaude.api.domain.dto.PersonDto;
+import br.com.agendesaude.api.domain.enums.UserType;
 import br.com.agendesaude.api.domain.model.Allergy;
 import br.com.agendesaude.api.domain.model.Media;
 import br.com.agendesaude.api.domain.model.MedicalHistory;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,6 +50,8 @@ public class PersonService {
     }
 
     User user = personDto.getUser();
+    user.setType(UserType.PERSON);
+    user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
     User savedUser = userRepository.save(user);
 
     Media profilePicture = personDto.getProfilePicture();
