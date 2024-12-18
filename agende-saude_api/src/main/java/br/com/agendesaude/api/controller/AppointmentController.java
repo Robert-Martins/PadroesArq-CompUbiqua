@@ -1,11 +1,13 @@
 package br.com.agendesaude.api.controller;
 
+import static br.com.agendesaude.api.domain.service.UserService.verifyFullAcessUser;
+
 import br.com.agendesaude.api.domain.dto.AppointmentDto;
-import br.com.agendesaude.api.domain.dto.UserDto;
 import br.com.agendesaude.api.domain.enums.AppointmentStatusType;
 import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.service.AppointmentService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,16 +45,33 @@ public class AppointmentController {
     return ResponseEntity.ok(result);
   }
 
+  @GetMapping("/next")
+  public ResponseEntity<List<AppointmentDto>> getNextAppointments(Authentication principal) {
+    User user = ((User) principal.getPrincipal());
+    List<AppointmentDto> appointments = appointmentService.getNextAppointments(user.getId());
+    return ResponseEntity.ok(appointments);
+  }
+
+  @GetMapping("/scheduled-emergency")
+  public List<AppointmentDto> getScheduledEmergencyAppointments(Authentication principal) {
+    User user = ((User) principal.getPrincipal());
+    return appointmentService.getScheduledEmergencyAppointments(user);
+  }
+
   @PostMapping
   public ResponseEntity<AppointmentDto> createAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
       Authentication principal) {
     User user = ((User) principal.getPrincipal());
+    verifyFullAcessUser(user);
     AppointmentDto appointment = appointmentService.createAppointment(appointmentDto, user);
     return ResponseEntity.ok(appointment);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<AppointmentDto> updateAppointment(@Valid @RequestBody AppointmentDto appointmentDto) {
+  public ResponseEntity<AppointmentDto> updateAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
+      Authentication principal) {
+    User user = ((User) principal.getPrincipal());
+    verifyFullAcessUser(user);
     appointmentService.updateAppointment(appointmentDto);
     return ResponseEntity.ok().build();
   }

@@ -12,10 +12,6 @@ import lombok.Setter;
 @Setter
 public class MedicalHistory extends BaseEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "person_id", nullable = false)
-    private Person person;
-
     @Column(nullable = false, length = 255)
     private String condition;
 

@@ -2,6 +2,7 @@ package br.com.agendesaude.api.domain.service;
 
 import br.com.agendesaude.api.domain.dto.AppointmentDto;
 import br.com.agendesaude.api.domain.enums.AppointmentStatusType;
+import br.com.agendesaude.api.domain.enums.ConsultationType;
 import br.com.agendesaude.api.domain.model.Appointment;
 import br.com.agendesaude.api.domain.model.Consultation;
 import br.com.agendesaude.api.domain.model.Location;
@@ -14,9 +15,15 @@ import br.com.agendesaude.api.domain.repository.LocationRepository;
 import br.com.agendesaude.api.domain.repository.PersonRepository;
 import br.com.agendesaude.api.domain.repository.ScreeningRepository;
 import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +47,7 @@ public class AppointmentService {
   @Autowired
   private ScreeningRepository screeningRepository;
 
+  @Transactional
   public AppointmentDto createAppointment(AppointmentDto appointmentDto, User user) {
 
     Person person = personRepository.findByUserId(user.getId());
@@ -49,9 +57,8 @@ public class AppointmentService {
         .orElseThrow(() -> new CustomException("Location not found"));
 
     if (consultation.getId() == null) {
-      consultation = new Consultation();
       consultation.setLocation(location);
-      consultationRepository.save(consultation);
+      consultation = consultationRepository.save(consultation);
     } else {
       consultation = consultationRepository.findById(consultation.getId())
           .orElseThrow(() -> new CustomException("Consultation not found"));
@@ -59,8 +66,7 @@ public class AppointmentService {
 
     Screening screening = appointmentDto.getScreening().mapDtoToEntity();
     if (screening.getId() == null) {
-      screening = new Screening();
-      screeningRepository.save(screening);
+      screening = screeningRepository.save(screening);
     } else {
       screening = screeningRepository.findById(screening.getId())
           .orElseThrow(() -> new CustomException("Screening not found"));
@@ -73,9 +79,18 @@ public class AppointmentService {
           "Cannot schedule appointment for consultation with an existing SCHEDULED appointment");
     }
 
+    boolean hasScheduledEmergencyAppointments = appointmentRepository.existsEmergencyScheduledAppointment(
+        person.getId(), ConsultationType.EMERGENCY, AppointmentStatusType.SCHEDULED);
+
+    if (hasScheduledEmergencyAppointments) {
+      throw new CustomException(
+          "Cannot schedule two EMERGENCY appointment simultaneously");
+    }
+
     Appointment appointment = appointmentDto.mapDtoToEntity();
     appointment.setConsultation(consultation);
     appointment.setScreening(screening);
+    appointment.setPerson(person);
 
     appointmentRepository.save(appointment);
     return appointment.mapEntityToDto();
@@ -122,6 +137,35 @@ public class AppointmentService {
 
     appointmentRepository.save(appointment);
     return appointment.mapEntityToDto();
+  }
+
+  @Transactional
+  public List<AppointmentDto> getNextAppointments(Long userId) {
+
+    Person person = personRepository.findByUserId(userId);
+
+    LocalDateTime now = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+    Pageable pageable = PageRequest.of(0, 2);
+
+    List<Appointment> appointments = appointmentRepository.findNextAppointments(now, person.getId(),
+        AppointmentStatusType.SCHEDULED, pageable);
+
+    return appointments.stream()
+        .map(appointment -> appointment.mapEntityToDto())
+        .collect(Collectors.toList());
+  }
+
+  @Transactional
+  public List<AppointmentDto> getScheduledEmergencyAppointments(User user) {
+
+    Person person = personRepository.findByUserId(user.getId());
+
+    List<Appointment> appointments = appointmentRepository.findScheduledEmergencyAppointments(person.getId());
+
+    return appointments.stream()
+        .map(appointment -> appointment.mapEntityToDto())
+        .collect(Collectors.toList());
   }
 
   public Page<AppointmentDto> findAllByPerson(AppointmentStatusType status, Pageable pageable) {

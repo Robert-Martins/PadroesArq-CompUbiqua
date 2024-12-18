@@ -34,7 +34,8 @@ public class SecurityConfig {
 
     http.authorizeHttpRequests(authz -> authz
             .requestMatchers(HttpMethod.POST, "/person").permitAll()
-            .requestMatchers("/auth/login", "/auth/refresh-token").permitAll()
+            .requestMatchers("/auth/login", "/auth/refresh-token", "/auth/password-reset-request", "/auth/password-reset",
+                "/token/validate").permitAll()
             .anyRequest().authenticated()
         ).csrf(AbstractHttpConfigurer::disable)
         .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))

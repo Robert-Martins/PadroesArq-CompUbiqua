@@ -4,12 +4,18 @@ import br.com.agendesaude.api.domain.dto.ConsultationDto;
 import br.com.agendesaude.api.domain.enums.AppointmentStatusType;
 import br.com.agendesaude.api.domain.model.Consultation;
 import br.com.agendesaude.api.domain.model.Location;
+import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.repository.AppointmentRepository;
 import br.com.agendesaude.api.domain.repository.ConsultationRepository;
 import br.com.agendesaude.api.domain.repository.LocationRepository;
+import br.com.agendesaude.api.domain.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,9 +25,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ConsultationService {
 
-  private final ConsultationRepository consultationRepository;
-  private final LocationRepository locationRepository;
-  private final AppointmentRepository appointmentRepository;
+  @Autowired
+  private AppointmentRepository appointmentRepository;
+
+  @Autowired
+  private ConsultationRepository consultationRepository;
+
+  @Autowired
+  private LocationRepository locationRepository;
+
+  @Autowired
+  private UserRepository userRepository;
+
 
   @Transactional
   public Long createConsultation(ConsultationDto consultationDto) {
@@ -43,20 +58,47 @@ public class ConsultationService {
   }
 
   @Transactional
-  public Page<ConsultationDto> findAllConsultations(String responsibleDoctor, String specialty, LocalDateTime startDate,
-      LocalDateTime endDate, Pageable pageable) {
+  public boolean areConsultationsAvailableNearby(BigDecimal latitude, BigDecimal longitude, User user) {
 
-    if (responsibleDoctor != null) {
-      responsibleDoctor.toLowerCase();
+    if (latitude == null || longitude == null) {
+      if (user != null && user.getAddress() != null) {
+        latitude = user.getAddress().getLatitude();
+        longitude = user.getAddress().getLongitude();
+      }
     }
+    double radius = 7.0;
 
-    if (specialty != null) {
-      specialty.toLowerCase();
-    }
+    List<Consultation> consultations = consultationRepository.findConsultationsNearLocation(latitude, longitude,
+        radius);
+    return !consultations.isEmpty();
+  }
+
+  @Transactional
+  public boolean findConsultationsWithinNext7Days() {
+    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime sevenDaysFromNow = now.plusDays(7);
+
+    List<Consultation> consultations = consultationRepository.findConsultationsWithinNext7Days(now, sevenDaysFromNow);
+
+    return !consultations.isEmpty();
+  }
+
+  @Transactional
+  public Page<ConsultationDto> findAllConsultations(
+      String responsibleDoctor, String specialty, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
+
+    responsibleDoctor = (responsibleDoctor != null && !responsibleDoctor.isEmpty())
+        ? responsibleDoctor.toLowerCase()
+        : null;
+
+    specialty = (specialty != null && !specialty.isEmpty())
+        ? specialty.toLowerCase()
+        : null;
 
     return consultationRepository.findConsultations(responsibleDoctor, specialty, startDate, endDate, pageable)
         .map(Consultation::mapEntityToDto);
   }
+
 
   @Transactional
   public void updateConsultation(Long id, ConsultationDto consultationDto) {

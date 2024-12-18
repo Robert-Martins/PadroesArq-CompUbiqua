@@ -25,7 +25,6 @@ public class AllergyDto extends BaseEntityDto<Allergy> {
 
   public AllergyDto(Allergy allergy) {
     this.setId(allergy.getId());
-    this.setPersonId(allergy.getPerson().getId());
     this.setDescription(allergy.getDescription());
     this.setSeverity(allergy.getSeverity());
     this.setCreatedAt(allergy.getCreatedAt());
@@ -35,14 +34,17 @@ public class AllergyDto extends BaseEntityDto<Allergy> {
   @Override
   public Allergy mapDtoToEntity() {
     Allergy allergy = new Allergy();
-    allergy.setId(this.getId());
-    Person person = new Person();
-    person.setId(this.getPersonId());
-    allergy.setPerson(person);
+
+    if (this.getId() != null) {
+      allergy.setId(this.getId());
+    }
+
     allergy.setDescription(this.getDescription());
     allergy.setSeverity(this.getSeverity());
     allergy.setCreatedAt(this.getCreatedAt());
     allergy.setUpdatedAt(this.getUpdatedAt());
+
     return allergy;
   }
+
 }
