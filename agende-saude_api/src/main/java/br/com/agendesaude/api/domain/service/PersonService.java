@@ -4,16 +4,19 @@ import br.com.agendesaude.api.domain.dto.AllergyDto;
 import br.com.agendesaude.api.domain.dto.MedicalHistoryDto;
 import br.com.agendesaude.api.domain.dto.PersonDto;
 import br.com.agendesaude.api.domain.enums.UserType;
+import br.com.agendesaude.api.domain.model.Address;
 import br.com.agendesaude.api.domain.model.Allergy;
 import br.com.agendesaude.api.domain.model.Media;
 import br.com.agendesaude.api.domain.model.MedicalHistory;
 import br.com.agendesaude.api.domain.model.Person;
 import br.com.agendesaude.api.domain.model.User;
+import br.com.agendesaude.api.domain.repository.AddressRepository;
 import br.com.agendesaude.api.domain.repository.AllergyRepository;
 import br.com.agendesaude.api.domain.repository.MediaRepository;
 import br.com.agendesaude.api.domain.repository.MedicalHistoryRepository;
 import br.com.agendesaude.api.domain.repository.PersonRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
+import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
 import br.com.agendesaude.api.infra.exception.ResourceNotFoundException;
 import br.com.agendesaude.api.infra.exception.ValidationException;
 import java.util.ArrayList;
@@ -27,6 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class PersonService {
+
+  @Autowired
+  private AddressRepository addressRepository;
 
   @Autowired
   private AllergyRepository allergyRepository;
@@ -49,9 +55,17 @@ public class PersonService {
       throw new ValidationException("CPF já cadastrado.");
     }
 
+    Address address = personDto.getUser().getAddress();
+    if (address != null) {
+      address = addressRepository.save(address);
+    } else {
+      throw new CustomException("Null address");
+    }
+
     User user = personDto.getUser();
     user.setType(UserType.PERSON);
     user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+    user.setAddress(address);
     User savedUser = userRepository.save(user);
 
     Media profilePicture = personDto.getProfilePicture();

@@ -10,6 +10,7 @@ import br.com.agendesaude.api.domain.repository.AddressRepository;
 import br.com.agendesaude.api.domain.repository.LocationRepository;
 import br.com.agendesaude.api.domain.repository.MediaRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
+import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,25 +39,27 @@ public class LocationService {
   @Transactional
   public LocationDto createLocation(LocationDto locationDto) {
 
-    User user = locationDto.getUser();
-    user.setType(UserType.LOCATION);
-    user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-    User savedUser = userRepository.save(user);
+    Address address = locationDto.getUser().getAddress();
+    if (address != null) {
+      address = addressRepository.save(address);
+    } else {
+      throw new CustomException("Null address");
+    }
 
     Media thumbnail = locationDto.getThumbnail();
     if (thumbnail != null) {
       thumbnail = mediaRepository.save(thumbnail);
     }
 
-    Address address = locationDto.getAddress();
-    if (address != null) {
-      address = addressRepository.save(address);
-    }
+    User user = locationDto.getUser();
+    user.setType(UserType.LOCATION);
+    user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+    user.setAddress(address);
+    User savedUser = userRepository.save(user);
 
     Location location = locationDto.mapDtoToEntity();
     location.setUser(savedUser);
     location.setThumbnail(thumbnail);
-    location.setAddress(address);
 
     location = locationRepository.save(location);
 
@@ -73,7 +76,6 @@ public class LocationService {
     locationDto.setName(location.getName());
     locationDto.setUser(location.getUser());
     locationDto.setThumbnail(location.getThumbnail());
-    locationDto.setAddress(location.getAddress());
     locationDto.setCreatedAt(location.getCreatedAt());
     locationDto.setUpdatedAt(location.getUpdatedAt());
     return locationDto;
@@ -98,7 +100,6 @@ public class LocationService {
 
     location.setName(locationDto.getName());
     location.setThumbnail(locationDto.getThumbnail());
-    location.setAddress(locationDto.getAddress());
     locationRepository.save(location);
   }
 

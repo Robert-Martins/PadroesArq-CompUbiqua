@@ -8,6 +8,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
@@ -21,6 +23,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @Setter
 public class User extends BaseEntity implements UserDetails {
+
+  @ManyToOne
+  @JoinColumn(name = "address_id", nullable = false)
+  private Address address;
 
   @Column(nullable = false, unique = true, length = 255)
   private String email;
@@ -52,6 +58,7 @@ public class User extends BaseEntity implements UserDetails {
     userDto.setEmail(this.getEmail());
     userDto.setPhone(this.getPhone());
     userDto.setTaxId(this.getTaxId());
+    userDto.setAddress(this.getAddress());
     userDto.setUserType(this.getType());
     userDto.setAccessLevelType(this.getAccessLevel());
     userDto.setIsActive(this.isActive());
