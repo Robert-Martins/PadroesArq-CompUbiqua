@@ -20,7 +20,7 @@ export type TextButtonProps = {
 
 export type ButtonProps = {
     children: ReactNode;
-    onPress: () => void | (<T> (parameter: T) => void);
+    onPress: (() => void | Promise<void>) | (<T> (parameter: T) => void);
     icon?: AppIcon;
     type?: "primary" | "secondary" | "tertiary";
     ghost?: boolean;
@@ -95,6 +95,10 @@ export type FlexContainerProps = {
 export type MediaRenderProps = {
     media: Media;
     icon: AppIcon;
+}
+
+export type FileInputProps = MediaRenderProps & {
+    onChangeValue: (updatedMedia: Media | null) => void;
 }
 
 export type ExpandableProps = {

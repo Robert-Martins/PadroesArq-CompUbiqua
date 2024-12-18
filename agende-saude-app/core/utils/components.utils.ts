@@ -1,3 +1,6 @@
+import { ImagePickerResult } from "expo-image-picker";
+import { Optional } from "./optional";
+
 export const handleFormFieldIconColor = (props, theme): string => {
     return props.isFocused ? theme.colors.primary : theme.colors.divider;
 }
@@ -34,4 +37,20 @@ export const handleCheckboxColor = (props, theme): string => {
     if(props.disabled)
         return theme.colors.disabled;
     return props.value ? theme.colors.primary : theme.colors.divider
+}
+
+export const convertImagePickerResultToFile = (result: ImagePickerResult): File => {
+    return Optional.ofNullable(result)
+                    .filter(result => !result.canceled)
+                    .map(result => result.assets)
+                    .filter((assets) => assets.length > 0)
+                    .map((assets) => assets[0])
+                    .map(asset => {
+                        return {
+                            uri: asset.uri,
+                            type: "image/png",
+                            name: "profile-picture"
+                        } as unknown as File;
+                    })
+                    .orElse(null);
 }

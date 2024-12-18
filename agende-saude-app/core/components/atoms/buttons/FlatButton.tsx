@@ -22,6 +22,8 @@ const StyledText = styled(Text)<TextButtonProps>`
 
 const FlatButton: React.FC<ButtonProps> = (props: ButtonProps) => {
     const { icon, disabled, type, children, ghost } = props;
+
+    console.log(props);
     
     const theme = useTheme();
     
