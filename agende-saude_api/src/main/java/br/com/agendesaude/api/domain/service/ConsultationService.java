@@ -8,7 +8,10 @@ import br.com.agendesaude.api.domain.repository.AppointmentRepository;
 import br.com.agendesaude.api.domain.repository.ConsultationRepository;
 import br.com.agendesaude.api.domain.repository.LocationRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,56 +19,74 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ConsultationService {
 
-    private final ConsultationRepository consultationRepository;
-    private final LocationRepository locationRepository;
-    private final AppointmentRepository appointmentRepository;
+  private final ConsultationRepository consultationRepository;
+  private final LocationRepository locationRepository;
+  private final AppointmentRepository appointmentRepository;
 
-    @Transactional
-    public Long createConsultation(ConsultationDto consultationDto) {
-        Location location = locationRepository.findById(consultationDto.getLocation().getId())
-                .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+  @Transactional
+  public Long createConsultation(ConsultationDto consultationDto) {
+    Location location = locationRepository.findById(consultationDto.getLocation().getId())
+        .orElseThrow(() -> new EntityNotFoundException("Location not found"));
 
-        Consultation consultation = consultationDto.mapDtoToEntity();
-        consultation.setLocation(location);
-        consultationRepository.save(consultation);
-        return consultation.getId();
+    Consultation consultation = consultationDto.mapDtoToEntity();
+    consultation.setLocation(location);
+    consultationRepository.save(consultation);
+    return consultation.getId();
+  }
+
+  @Transactional(readOnly = true)
+  public ConsultationDto getConsultationById(Long id) {
+    Consultation consultation = consultationRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Consultation not found"));
+
+    return new ConsultationDto(consultation);
+  }
+
+  @Transactional
+  public Page<ConsultationDto> findAllConsultations(String responsibleDoctor, String specialty, LocalDateTime startDate,
+      LocalDateTime endDate, Pageable pageable) {
+
+    if (responsibleDoctor != null) {
+      responsibleDoctor.toLowerCase();
     }
 
-    @Transactional(readOnly = true)
-    public ConsultationDto getConsultationById(Long id) {
-        Consultation consultation = consultationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Consultation not found"));
-
-        return new ConsultationDto(consultation);
+    if (specialty != null) {
+      specialty.toLowerCase();
     }
 
-    @Transactional
-    public void updateConsultation(Long id, ConsultationDto consultationDto) {
-        Consultation consultation = consultationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Consultation not found"));
+    return consultationRepository.findConsultations(responsibleDoctor, specialty, startDate, endDate, pageable)
+        .map(Consultation::mapEntityToDto);
+  }
 
-        boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(id, AppointmentStatusType.SCHEDULED);
-        if (hasScheduledAppointments) {
-            throw new IllegalStateException("Cannot update consultation with scheduled appointments");
-        }
+  @Transactional
+  public void updateConsultation(Long id, ConsultationDto consultationDto) {
+    Consultation consultation = consultationRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Consultation not found"));
 
-        consultation.setResponsibleDoctor(consultationDto.getResponsibleDoctor());
-        consultation.setType(consultationDto.getType());
-        consultation.setSpecialty(consultationDto.getSpecialty());
-        consultation.setDate(consultationDto.getDate());
-        consultationRepository.save(consultation);
+    boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(id,
+        AppointmentStatusType.SCHEDULED);
+    if (hasScheduledAppointments) {
+      throw new IllegalStateException("Cannot update consultation with scheduled appointments");
     }
 
-    @Transactional
-    public void deleteConsultation(Long id) {
-        Consultation consultation = consultationRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Consultation not found"));
+    consultation.setResponsibleDoctor(consultationDto.getResponsibleDoctor());
+    consultation.setType(consultationDto.getType());
+    consultation.setSpecialty(consultationDto.getSpecialty());
+    consultation.setDate(consultationDto.getDate());
+    consultationRepository.save(consultation);
+  }
 
-        boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(id, AppointmentStatusType.SCHEDULED);
-        if (hasScheduledAppointments) {
-            throw new IllegalStateException("Cannot delete consultation with scheduled appointments");
-        }
+  @Transactional
+  public void deleteConsultation(Long id) {
+    Consultation consultation = consultationRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("Consultation not found"));
 
-        consultationRepository.delete(consultation);
+    boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(id,
+        AppointmentStatusType.SCHEDULED);
+    if (hasScheduledAppointments) {
+      throw new IllegalStateException("Cannot delete consultation with scheduled appointments");
     }
+
+    consultationRepository.delete(consultation);
+  }
 }

@@ -79,18 +79,17 @@ public class LocationService {
     return locationDto;
   }
 
+  @Transactional
   public Page<LocationDto> findAllLocations(String name, Boolean acceptsEmergencies, Pageable pageable) {
-    if (name == null && acceptsEmergencies == null) {
-      return locationRepository.findAll(pageable).map(Location::mapEntityToDto);
-    } else if (name == null) {
-      return locationRepository.findByAcceptsEmergencies(acceptsEmergencies, pageable).map(Location::mapEntityToDto);
-    } else if (acceptsEmergencies == null) {
-      return locationRepository.findByNameContaining(name, pageable).map(Location::mapEntityToDto);
-    } else {
-      return locationRepository.findByNameContainingAndAcceptsEmergencies(name, acceptsEmergencies, pageable)
-          .map(Location::mapEntityToDto);
+
+    if (name != null) {
+      name.toLowerCase();
     }
+
+    return locationRepository.findByNameContainingAndAcceptsEmergencies(name, acceptsEmergencies, pageable)
+        .map(Location::mapEntityToDto);
   }
+
 
   @Transactional
   public void updateLocation(Long id, LocationDto locationDto) {

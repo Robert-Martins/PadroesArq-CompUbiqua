@@ -40,7 +40,7 @@ public class Location extends BaseEntity {
     LocationDto locationDto = new LocationDto();
     locationDto.setId(this.getId());
     locationDto.setName(this.getName());
-    locationDto.setAccessEmergencies(this.isAcceptsEmergencies());
+    locationDto.setAcceptsEmergencies(this.isAcceptsEmergencies());
     locationDto.setUser(this.getUser());
     locationDto.setThumbnail(this.getThumbnail());
     locationDto.setAddress(this.getAddress());
