@@ -29,11 +29,17 @@ public class MedicalHistoryDto extends BaseEntityDto<MedicalHistory> {
   @Override
   public MedicalHistory mapDtoToEntity() {
     MedicalHistory medicalHistory = new MedicalHistory();
-    medicalHistory.setId(this.getId());
+
+    if (this.getId() != null) {
+      medicalHistory.setId(this.getId());
+    }
+
     medicalHistory.setCondition(this.getCondition());
     medicalHistory.setDetails(this.getDetails());
     medicalHistory.setCreatedAt(this.getCreatedAt());
     medicalHistory.setUpdatedAt(this.getUpdatedAt());
+
     return medicalHistory;
   }
+
 }

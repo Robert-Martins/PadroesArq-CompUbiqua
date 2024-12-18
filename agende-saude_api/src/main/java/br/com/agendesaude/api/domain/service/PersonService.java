@@ -1,13 +1,8 @@
 package br.com.agendesaude.api.domain.service;
 
-import br.com.agendesaude.api.domain.dto.AllergyDto;
-import br.com.agendesaude.api.domain.dto.MedicalHistoryDto;
 import br.com.agendesaude.api.domain.dto.PersonDto;
 import br.com.agendesaude.api.domain.enums.UserType;
-import br.com.agendesaude.api.domain.model.Address;
-import br.com.agendesaude.api.domain.model.Allergy;
 import br.com.agendesaude.api.domain.model.Media;
-import br.com.agendesaude.api.domain.model.MedicalHistory;
 import br.com.agendesaude.api.domain.model.Person;
 import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.repository.AddressRepository;
@@ -16,11 +11,8 @@ import br.com.agendesaude.api.domain.repository.MediaRepository;
 import br.com.agendesaude.api.domain.repository.MedicalHistoryRepository;
 import br.com.agendesaude.api.domain.repository.PersonRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
-import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
 import br.com.agendesaude.api.infra.exception.ResourceNotFoundException;
 import br.com.agendesaude.api.infra.exception.ValidationException;
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -55,17 +47,9 @@ public class PersonService {
       throw new ValidationException("CPF já cadastrado.");
     }
 
-    Address address = personDto.getUser().getAddress();
-    if (address != null) {
-      address = addressRepository.save(address);
-    } else {
-      throw new CustomException("Null address");
-    }
-
     User user = personDto.getUser();
     user.setType(UserType.PERSON);
     user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-    user.setAddress(address);
     User savedUser = userRepository.save(user);
 
     Media profilePicture = personDto.getProfilePicture();
@@ -76,31 +60,9 @@ public class PersonService {
     Person person = personDto.mapDtoToEntity();
     person.setUser(savedUser);
     person.setProfilePicture(profilePicture);
-    person = personRepository.save(person);
+    Person savedPerson = personRepository.save(person);
 
-    if (personDto.getAllergies() != null) {
-      List<Allergy> allergies = new ArrayList<>();
-      for (AllergyDto allergyDto : personDto.getAllergies()) {
-        Allergy allergy = allergyDto.mapDtoToEntity();
-        allergy.setPerson(person);
-        allergies.add(allergy);
-      }
-      person.setAllergy(allergies);
-    }
-
-    if (personDto.getMedicalHistories() != null) {
-      List<MedicalHistory> medicalHistories = new ArrayList<>();
-      for (MedicalHistoryDto historyDto : personDto.getMedicalHistories()) {
-        MedicalHistory history = historyDto.mapDtoToEntity();
-        history.setPerson(person);
-        medicalHistories.add(history);
-      }
-      person.setMedicalHistory(medicalHistories);
-    }
-
-    person = personRepository.save(person);
-
-    return person.mapEntityToDto();
+    return savedPerson.mapEntityToDto();
   }
 
 

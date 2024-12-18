@@ -4,6 +4,7 @@ import br.com.agendesaude.api.domain.dto.UserDto;
 import br.com.agendesaude.api.domain.enums.AccessLevelType;
 import br.com.agendesaude.api.domain.enums.UserType;
 import br.com.agendesaude.api.infra.base.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,7 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Setter
 public class User extends BaseEntity implements UserDetails {
 
-  @ManyToOne
+  @ManyToOne(cascade = CascadeType.ALL)
   @JoinColumn(name = "address_id", nullable = false)
   private Address address;
 
