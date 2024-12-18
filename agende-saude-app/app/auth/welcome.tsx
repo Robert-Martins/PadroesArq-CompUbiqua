@@ -1,4 +1,4 @@
-import { AppName, FlatButton, Flex, H4, Layout, Paragraph, Slider } from "@/core/components";
+import { AppName, FlatButton, Flex, H4, Layout, Paragraph, Slider, TextButton } from "@/core/components";
 import { SliderRef } from "@/core/vo/types/components.props";
 import { useRouter } from "expo-router";
 import { useRef, useState } from "react";
@@ -23,6 +23,10 @@ const Welcome: React.FC = () => {
     const goToLogin = () => {
         router.push('/auth/login');
     };
+
+    const goToRegister = () => {
+        router.push('/auth/register');
+    }
 
     return (
         <Layout>
@@ -60,9 +64,17 @@ const Welcome: React.FC = () => {
                 </Slider>
                 <Flex gap={16}>
                     {isLastSlide 
-                    ?   <FlatButton type='secondary' onPress={goToLogin} ghost icon="login">
-                            Acessar
-                        </FlatButton>
+                    ? (
+                        <>
+                            <FlatButton type='secondary' onPress={goToLogin} ghost icon="login">
+                                Acessar
+                            </FlatButton>
+                            <Flex align="center">
+                                <Paragraph>Ainda não se cadastro?</Paragraph>
+                                <TextButton type="primary" onPress={goToRegister}>Realizar cadastro</TextButton>
+                            </Flex>
+                        </>
+                    )
                     : (
                         <>
                             <FlatButton type='primary' onPress={handleNext} icon="chevron-right">
