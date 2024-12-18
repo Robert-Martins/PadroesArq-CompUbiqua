@@ -42,7 +42,7 @@ public class TokenService {
     deleteExpiredTokens();
     TokenDto tokenDto = generateToken();
 
-    String subject = "O usuário %s entrou em contato para recuperação de senha".formatted(email);
+    String subject = "Recuperação de senha AgendeSaude".formatted(email);
 
     String message = """
             <html>
