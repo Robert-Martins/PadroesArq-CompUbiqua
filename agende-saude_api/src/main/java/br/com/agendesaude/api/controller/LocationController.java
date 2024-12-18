@@ -35,7 +35,6 @@ public class LocationController {
 
   @GetMapping
   public ResponseEntity<Page<LocationDto>> findAllLocations(
-      LocationDto locationDto,
       @RequestParam(required = false) String name,
       @RequestParam(required = false) Boolean acceptsEmergencies,
       Pageable pageable) {
@@ -43,7 +42,6 @@ public class LocationController {
     Page<LocationDto> result = locationService.findAllLocations(name, acceptsEmergencies, pageable);
     return ResponseEntity.ok(result);
   }
-
 
   @PostMapping
   public ResponseEntity<LocationDto> createLocation(@Valid @RequestBody LocationDto locationDto) {
