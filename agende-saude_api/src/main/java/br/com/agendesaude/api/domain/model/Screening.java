@@ -8,8 +8,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Map;
 import lombok.Getter;
@@ -21,10 +19,6 @@ import org.hibernate.annotations.Type;
 @Getter
 @Setter
 public class Screening extends BaseEntity {
-
-  @ManyToOne
-  @JoinColumn(name = "appointment_id", nullable = false)
-  private Appointment appointment;
 
   @Type(JsonType.class)
   @Column(nullable = false, columnDefinition = "jsonb")
@@ -48,10 +42,6 @@ public class Screening extends BaseEntity {
     screeningDto.setId(this.getId());
     screeningDto.setQuestionnaire(this.getQuestionnaire());
     screeningDto.setNotes(this.getNotes());
-
-    if (this.getAppointment() != null) {
-      screeningDto.setAppointment(this.getAppointment());
-    }
 
     screeningDto.setClassification(this.getClassification());
     screeningDto.setJustification(this.getJustification());

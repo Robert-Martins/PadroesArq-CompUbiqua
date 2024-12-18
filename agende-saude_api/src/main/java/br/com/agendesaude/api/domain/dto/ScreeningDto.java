@@ -32,7 +32,6 @@ public class ScreeningDto extends BaseEntityDto<Screening> {
 
   public ScreeningDto(Screening screening) {
     this.setId(screening.getId());
-    this.setAppointment(screening.getAppointment());
     this.setQuestionnaire(screening.getQuestionnaire());
     this.setNotes(screening.getNotes());
     this.setClassification(screening.getClassification());
@@ -46,7 +45,6 @@ public class ScreeningDto extends BaseEntityDto<Screening> {
   public Screening mapDtoToEntity() {
     Screening screening = new Screening();
     screening.setId(this.getId());
-    screening.setAppointment(this.getAppointment());
     screening.setQuestionnaire(this.getQuestionnaire());
     screening.setNotes(this.getNotes());
     screening.setClassification(this.getClassification());

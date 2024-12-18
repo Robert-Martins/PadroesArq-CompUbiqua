@@ -1,11 +1,11 @@
 package br.com.agendesaude.api.controller;
 
 import br.com.agendesaude.api.domain.dto.AppointmentDto;
-import br.com.agendesaude.api.domain.dto.UserDto;
 import br.com.agendesaude.api.domain.enums.AppointmentStatusType;
 import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.service.AppointmentService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -42,6 +42,14 @@ public class AppointmentController {
     Page<AppointmentDto> result = appointmentService.findAllByPerson(status, pageable);
     return ResponseEntity.ok(result);
   }
+
+  @GetMapping("/next")
+  public ResponseEntity<List<AppointmentDto>> getNextAppointments(Authentication principal) {
+    User user = ((User) principal.getPrincipal());
+    List<AppointmentDto> appointments = appointmentService.getNextAppointments(user.getId());
+    return ResponseEntity.ok(appointments);
+  }
+
 
   @PostMapping
   public ResponseEntity<AppointmentDto> createAppointment(@Valid @RequestBody AppointmentDto appointmentDto,

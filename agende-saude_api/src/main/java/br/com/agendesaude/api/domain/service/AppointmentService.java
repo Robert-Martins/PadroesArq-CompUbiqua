@@ -14,9 +14,15 @@ import br.com.agendesaude.api.domain.repository.LocationRepository;
 import br.com.agendesaude.api.domain.repository.PersonRepository;
 import br.com.agendesaude.api.domain.repository.ScreeningRepository;
 import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -122,6 +128,23 @@ public class AppointmentService {
 
     appointmentRepository.save(appointment);
     return appointment.mapEntityToDto();
+  }
+
+  @Transactional
+  public List<AppointmentDto> getNextAppointments(Long userId) {
+
+    Person person = personRepository.findByUserId(userId);
+
+    LocalDateTime now = Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime();
+
+    Pageable pageable = PageRequest.of(0, 2);
+
+    List<Appointment> appointments = appointmentRepository.findNextAppointments(now, person.getId(),
+        AppointmentStatusType.SCHEDULED, pageable);
+
+    return appointments.stream()
+        .map(appointment -> appointment.mapEntityToDto())
+        .collect(Collectors.toList());
   }
 
   public Page<AppointmentDto> findAllByPerson(AppointmentStatusType status, Pageable pageable) {
