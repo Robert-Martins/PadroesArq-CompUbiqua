@@ -1,14 +1,28 @@
-import { Checkbox, Divider, Emphasis, Expandable, FlatButton, Flex, H1, H2, H3, H4, H5, H6, Layout, MediaRender, Paragraph, Select, Small, TextArea, TextButton, TextInput, Toggle } from "@/core/components";
+import { Checkbox, Divider, Emphasis, Expandable, FlatButton, Flex, H1, H2, H3, H4, H5, H6, Layout, MediaRender, Paragraph, Select, Slider, Small, TextArea, TextButton, TextInput, Toggle } from "@/core/components";
 import { Media } from "@/core/models/media.model";
 import { Link } from "expo-router";
-import { useState } from "react";
-import { ScrollView, Text } from "react-native";
+import { useRef, useState } from "react";
+import { ScrollView, Text, View } from "react-native";
 
 const Home: React.FC = () => {
     const [isExpanded, setIsExpanded] = useState(true);
     const [value, setValue] = useState<boolean>(true);
     const [selectedValue, setSelectedValue] = useState<string>("Option 20x");
     const [checked, setChecked] = useState<boolean>(false);
+
+    const sliderRef = useRef(null);
+
+    const handleNext = () => {
+        if (sliderRef.current) {
+            sliderRef.current.nextSlide();
+        }
+    };
+
+    const handlePrevious = () => {
+        if (sliderRef.current) {
+            sliderRef.current.previousSlide();
+        }
+    };
 
     const mockedMedia: Media = {
         id: null,
@@ -98,6 +112,19 @@ const Home: React.FC = () => {
                     <Text>Text 2</Text>
                 </Flex>
                 <MediaRender media={media} icon="hospital-building" />
+                <Slider ref={sliderRef} showNavigation={true}>
+                    <Text style={{ fontSize: 48 }}>Slide 1</Text>
+                    <Text style={{ fontSize: 48 }}>Slide 2</Text>
+                    <Text style={{ fontSize: 48 }}>Slide 3</Text>
+                </Slider>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-around', padding: 20 }}>
+                    <FlatButton type='primary' onPress={handlePrevious} ghost icon="chevron-left">
+                        Anterior
+                    </FlatButton>
+                    <FlatButton type='primary' onPress={handleNext} ghost icon="chevron-right">
+                        Próximo
+                    </FlatButton>
+                </View>
             </Layout>
         </ScrollView>
     );
