@@ -1,6 +1,7 @@
 package br.com.agendesaude.api.domain.model;
 
 import br.com.agendesaude.api.domain.dto.ScreeningDto;
+import br.com.agendesaude.api.domain.dto.ScreeningQuestionnaireAnswerDto;
 import br.com.agendesaude.api.domain.enums.ScreeningStatus;
 import br.com.agendesaude.api.infra.base.BaseEntity;
 import com.vladmihalcea.hibernate.type.json.JsonType;
@@ -40,19 +41,19 @@ public class Screening extends BaseEntity {
   public ScreeningDto mapEntityToDto() {
     ScreeningDto screeningDto = new ScreeningDto();
     screeningDto.setId(this.getId());
-    screeningDto.setQuestionnaire(this.getQuestionnaire());
+    screeningDto.setQuestionnaire(
+        ScreeningQuestionnaireAnswerDto.fromMap(this.getQuestionnaire())
+    );
     screeningDto.setNotes(this.getNotes());
-
     screeningDto.setClassification(this.getClassification());
     screeningDto.setJustification(this.getJustification());
-
     screeningDto.setStatus(
-        this.getStatus() != null ? this.getStatus().name() : null);
-
+        this.getStatus() != null ? this.getStatus().name() : null
+    );
     screeningDto.setCreatedAt(this.getCreatedAt());
     screeningDto.setUpdatedAt(this.getUpdatedAt());
-
     return screeningDto;
   }
+
 
 }

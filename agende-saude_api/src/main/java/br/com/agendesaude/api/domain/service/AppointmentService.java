@@ -2,6 +2,7 @@ package br.com.agendesaude.api.domain.service;
 
 import br.com.agendesaude.api.domain.dto.AppointmentDto;
 import br.com.agendesaude.api.domain.enums.AppointmentStatusType;
+import br.com.agendesaude.api.domain.enums.ConsultationType;
 import br.com.agendesaude.api.domain.model.Appointment;
 import br.com.agendesaude.api.domain.model.Consultation;
 import br.com.agendesaude.api.domain.model.Location;
@@ -46,6 +47,7 @@ public class AppointmentService {
   @Autowired
   private ScreeningRepository screeningRepository;
 
+  @Transactional
   public AppointmentDto createAppointment(AppointmentDto appointmentDto, User user) {
 
     Person person = personRepository.findByUserId(user.getId());
@@ -55,9 +57,8 @@ public class AppointmentService {
         .orElseThrow(() -> new CustomException("Location not found"));
 
     if (consultation.getId() == null) {
-      consultation = new Consultation();
       consultation.setLocation(location);
-      consultationRepository.save(consultation);
+      consultation = consultationRepository.save(consultation);
     } else {
       consultation = consultationRepository.findById(consultation.getId())
           .orElseThrow(() -> new CustomException("Consultation not found"));
@@ -65,8 +66,7 @@ public class AppointmentService {
 
     Screening screening = appointmentDto.getScreening().mapDtoToEntity();
     if (screening.getId() == null) {
-      screening = new Screening();
-      screeningRepository.save(screening);
+      screening = screeningRepository.save(screening);
     } else {
       screening = screeningRepository.findById(screening.getId())
           .orElseThrow(() -> new CustomException("Screening not found"));
@@ -79,9 +79,18 @@ public class AppointmentService {
           "Cannot schedule appointment for consultation with an existing SCHEDULED appointment");
     }
 
+    boolean hasScheduledEmergencyAppointments = appointmentRepository.existsEmergencyScheduledAppointment(
+        person.getId(), ConsultationType.EMERGENCY, AppointmentStatusType.SCHEDULED);
+
+    if (hasScheduledEmergencyAppointments) {
+      throw new CustomException(
+          "Cannot schedule two EMERGENCY appointment simultaneously");
+    }
+
     Appointment appointment = appointmentDto.mapDtoToEntity();
     appointment.setConsultation(consultation);
     appointment.setScreening(screening);
+    appointment.setPerson(person);
 
     appointmentRepository.save(appointment);
     return appointment.mapEntityToDto();
