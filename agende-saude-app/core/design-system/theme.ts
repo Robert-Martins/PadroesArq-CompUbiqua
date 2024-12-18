@@ -108,7 +108,7 @@ export const asLightTheme: ASTheme = {
     colors: {
         primary: "#007BFF",
         secondary: "#6C757D",
-        background: "red",
+        background: "white",
         disabled: "#9E9E9E",
         divider: "#E9ECEF",
         text: "#212529",
@@ -147,10 +147,10 @@ export const asDarkTheme: ASTheme = {
     colors: {
         primary: "#007BFF",
         secondary: "#6C757D",
-        background: "blue",
+        background: "white",
         disabled: "#9E9E9E",
-        divider: "#FFF",
-        text: "#F8F9FA",
+        divider: "#E9ECEF",
+        text: "#212529",
         white: "#FFF",
         icons: {
             unfocused: "#E9ECEF",
@@ -159,22 +159,22 @@ export const asDarkTheme: ASTheme = {
         buttons: {
             primary: {
                 background: "#007BFF",
-                ghost: "#F8F9FA",
+                ghost: "#dbedff",
                 text: "#F8F9FA",
             },
             secondary: {
-                background: "#6C757D",
-                ghost: "#F8F9FA",
+                background: "#36D128",
+                ghost: "#d7fcd4",
                 text: "#F8F9FA",
             },
             tertiary: {
-                background: "#6C757D",
-                ghost: "#F8F9FA",
+                background: "#EB2D2D",
+                ghost: "#ffa8a8",
                 text: "#F8F9FA",
             },
             disabled: {
-                background: "#6C757D",
-                ghost: "#F8F9FA",
+                background: "#9E9E9E",
+                ghost: "#E8E8E8",
                 text: "#F8F9FA",
             }
         }

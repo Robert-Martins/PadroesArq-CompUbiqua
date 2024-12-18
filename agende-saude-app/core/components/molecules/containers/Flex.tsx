@@ -1,8 +1,10 @@
 import { FlexContainerProps } from "@/core/vo/types/components.props";
-import styled from "styled-components/native";
+import { View } from "react-native";
+import styled from "styled-components";
 
-const Flex = styled.View<FlexContainerProps>`
+const Flex = styled(View)<FlexContainerProps>`
     width: 100%;
+    ${({ flex }) => flex && `flex: ${flex};`}
     display: flex;
     flex-direction: ${({ direction }) => direction ?? "column"};
     justify-content: ${({ justify }) => justify ?? "flex-start"};

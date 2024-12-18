@@ -83,9 +83,10 @@ export type SelectionListProps<T> = {
 export type CheckboxProps = CommonInputProps<boolean>;
 
 export type FlexContainerProps = {
+    flex?: number;
     direction?: "row" | "column";
     justify?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around";
-    align?: "stretch" | "flex-start" | "center" | "flex-end";
+    align?: "stretch" | "flex-start" | "center" | "flex-end" | "space-between";
     wrap?: "wrap" | "nowrap";
     gap?: number;
     rowGap?: number;
@@ -114,12 +115,18 @@ export type ConfirmationModalProps = {
     onCancel: () => void;
 }
 
-export type SliderContentProps = {
-    previousSlide: () => void;
-    nextSlide: () => void;
+export type SliderRef = {
+    nextSlide: (callback: () => void) => void;
+    previousSlide: (callback: () => void) => void;
+    isLastSlide: () => boolean;
+    isFirstSlide: () => boolean;
 }
 
 export type SliderProps = {
     showNavigation?: boolean;
+    children: ReactNode;
+}
+
+export type HomeSlideProps = {
     children: ReactNode;
 }
