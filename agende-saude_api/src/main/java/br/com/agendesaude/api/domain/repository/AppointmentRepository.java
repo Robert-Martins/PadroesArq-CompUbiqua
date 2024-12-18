@@ -28,4 +28,12 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
       @Param("personId") Long personId,
       @Param("status") AppointmentStatusType status,
       Pageable pageable);
+
+  @Query("SELECT a FROM Appointment a " +
+      "WHERE a.status = 'SCHEDULED' " +
+      "AND a.consultation.type = 'EMERGENCY'" +
+      "AND a.person.id = :personId "
+  )
+  List<Appointment> findScheduledEmergencyAppointments(@Param("personId") Long personId);
+
 }

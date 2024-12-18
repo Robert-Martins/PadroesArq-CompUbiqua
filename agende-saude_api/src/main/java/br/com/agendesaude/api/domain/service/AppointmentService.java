@@ -147,6 +147,18 @@ public class AppointmentService {
         .collect(Collectors.toList());
   }
 
+  @Transactional
+  public List<AppointmentDto> getScheduledEmergencyAppointments(User user) {
+
+    Person person = personRepository.findByUserId(user.getId());
+
+    List<Appointment> appointments = appointmentRepository.findScheduledEmergencyAppointments(person.getId());
+
+    return appointments.stream()
+        .map(appointment -> appointment.mapEntityToDto())
+        .collect(Collectors.toList());
+  }
+
   public Page<AppointmentDto> findAllByPerson(AppointmentStatusType status, Pageable pageable) {
     return appointmentRepository.findByStatus(status, pageable)
         .map(Appointment::mapEntityToDto);

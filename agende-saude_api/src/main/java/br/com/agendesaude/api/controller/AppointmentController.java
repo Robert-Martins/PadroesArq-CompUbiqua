@@ -50,6 +50,12 @@ public class AppointmentController {
     return ResponseEntity.ok(appointments);
   }
 
+  @GetMapping("/scheduled-emergency")
+  public List<AppointmentDto> getScheduledEmergencyAppointments(Authentication principal) {
+    User user = ((User) principal.getPrincipal());
+    return appointmentService.getScheduledEmergencyAppointments(user);
+  }
+
   @PostMapping
   public ResponseEntity<AppointmentDto> createAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
       Authentication principal) {
