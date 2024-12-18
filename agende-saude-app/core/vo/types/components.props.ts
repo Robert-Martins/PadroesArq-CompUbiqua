@@ -114,6 +114,11 @@ export type ConfirmationModalProps = {
     onCancel: () => void;
 }
 
+export type SliderContentProps = {
+    previousSlide: () => void;
+    nextSlide: () => void;
+}
+
 export type SliderProps = {
     showNavigation?: boolean;
     children: ReactNode;

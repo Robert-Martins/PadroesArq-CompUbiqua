@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import { Animated, TouchableOpacity, Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 import { SliderProps } from '@/core/vo/types/components.props';
@@ -30,14 +30,14 @@ const NavigationDots = styled.View`
 `;
 
 const Dot = styled(TouchableOpacity)<{ active: boolean }>`
-    width: ${(props) => (props.active ? 20 : 10)}px;
-    height: 10px;
-    border-radius: 5px;
+    width: ${(props) => (props.active ? 36 : 12)}px;
+    height: 12px;
+    border-radius: 6px;
     background-color: ${({active, theme}) => (active ? theme.colors.primary : theme.colors.divider)};
     transition: all 0.3s ease;
 `;
 
-const Slider: React.FC<SliderProps> = (props) => {
+const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAttributes<unknown>> = forwardRef((props, ref) => {
 
     const { children, showNavigation = true } = props;
 
@@ -56,20 +56,20 @@ const Slider: React.FC<SliderProps> = (props) => {
         }
     };
 
-    const nextSlide = () => goToSlide((currentSlide + 1) % slideCount);
-
-    const prevSlide = () => goToSlide((currentSlide - 1 + slideCount) % slideCount);
+    useImperativeHandle(ref, () => ({
+        nextSlide() {
+            goToSlide((currentSlide + 1) % slideCount)
+        },
+        previousSlide() {
+            goToSlide((currentSlide - 1 + slideCount) % slideCount)
+        }
+    }));
 
     return (
         <SliderContainer>
             <SliderWrapper style={{ transform: [{ translateX: animatedValue }] }}>
                 {React.Children.map(children, (child, index) => (
-                    <Slide key={index}>{
-                        React.cloneElement(child as React.ReactElement, {
-                            nextSlide,
-                            prevSlide,
-                        })
-                    }</Slide>
+                    <Slide key={index}>{child}</Slide>
                 ))}
             </SliderWrapper>
             {showNavigation && (
@@ -85,6 +85,6 @@ const Slider: React.FC<SliderProps> = (props) => {
             )}
         </SliderContainer>
     );
-};
+});
 
 export default Slider;

@@ -34,6 +34,7 @@ const Home: React.FC = () => {
     const sliderRef = useRef(null);
 
     const handleNext = () => {
+        console.log(sliderRef)
         if (sliderRef.current) {
             sliderRef.current.nextSlide();
         }
@@ -41,7 +42,7 @@ const Home: React.FC = () => {
 
     const handlePrevious = () => {
         if (sliderRef.current) {
-            sliderRef.current.prevSlide();
+            sliderRef.current.previousSlide();
         }
     };
 
@@ -133,7 +134,7 @@ const Home: React.FC = () => {
                     <Text>Text 2</Text>
                 </Flex>
                 <MediaRender media={media} icon="hospital-building" />
-                <Slider showNavigation={true}>
+                <Slider ref={sliderRef} showNavigation={true}>
                     <Text style={{ fontSize: 48 }}>Slide 1</Text>
                     <Text style={{ fontSize: 48 }}>Slide 2</Text>
                     <Text style={{ fontSize: 48 }}>Slide 3</Text>
