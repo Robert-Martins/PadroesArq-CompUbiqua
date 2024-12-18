@@ -50,7 +50,6 @@ public class AppointmentController {
     return ResponseEntity.ok(appointments);
   }
 
-
   @PostMapping
   public ResponseEntity<AppointmentDto> createAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
       Authentication principal) {
