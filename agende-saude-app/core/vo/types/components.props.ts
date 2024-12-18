@@ -22,7 +22,7 @@ export type ButtonProps = {
     children: ReactNode;
     onPress: (() => void | Promise<void>) | (<T> (parameter: T) => void);
     icon?: AppIcon;
-    type?: "primary" | "secondary" | "tertiary";
+    type: "primary" | "secondary" | "tertiary";
     ghost?: boolean;
     disabled?: boolean;
     theme?: ASTheme;
@@ -118,6 +118,7 @@ export type ConfirmationModalProps = {
 export type SliderRef = {
     nextSlide: (callback: () => void) => void;
     previousSlide: (callback: () => void) => void;
+    goToLastSlide: () => void;
     isLastSlide: () => boolean;
     isFirstSlide: () => boolean;
 }

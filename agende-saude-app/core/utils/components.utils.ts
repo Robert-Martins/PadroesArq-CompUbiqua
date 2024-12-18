@@ -10,11 +10,16 @@ export const handleButtonBackground = (props): string => {
 }
 
 export const handleButtonTextColor = (props): string => {
+    console.log(props);
     return props.theme.colors.buttons[props.disabled ? 'disabled' : props.type][props.ghost ? 'background' : 'text'];
 }
 
 export const handleButtonIconColor = (props, theme): string => {
     return theme.colors.buttons[props.disabled ? 'disabled' : props.type][props.ghost ? 'background' : 'text'];
+}
+
+export const handleTextButtonIconColor = (props, theme): string => {
+    return theme.colors.buttons[props.disabled ? 'disabled' : props.type][props.ghost ? 'ghost' : 'background'];
 }
 
 export const handleToggleButtonBackground = (props, theme): string => {
