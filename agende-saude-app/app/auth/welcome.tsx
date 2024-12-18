@@ -30,7 +30,7 @@ const Welcome: React.FC = () => {
 
     return (
         <Layout>
-            <Flex flex={1} justify="space-between" align="center">
+            <Flex flex={1} justify="space-between" align="center" gap={48}>
                 <AppName />
                 <Slider ref={sliderRef} showNavigation={true}>
                     <Flex align="center" gap={4}>

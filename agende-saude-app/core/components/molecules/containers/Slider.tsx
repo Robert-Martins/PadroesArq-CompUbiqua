@@ -7,6 +7,8 @@ const { width } = Dimensions.get('window');
 
 const SliderContainer = styled.View`
     width: 100%;
+    flex: 1;
+    justify-content: center;
     padding: 24px 0;
     overflow: hidden;
 `;
@@ -64,12 +66,14 @@ const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAttributes<
 
     const nextSlide = (callback: () => void) => goToSlide((currentSlide + 1) % slideCount, callback);
     const previousSlide = (callback: () => void) => goToSlide((currentSlide - 1 + slideCount) % slideCount, callback);
+    const goToLastSlide = () => goToSlide(slideCount - 1);
     const isLastSlide = () =>  currentSlide === slideCount - 1;
     const isFirstSlide = () =>  currentSlide === 0;
 
     useImperativeHandle(ref, () => ({
         nextSlide,
         previousSlide,
+        goToLastSlide,
         isLastSlide,
         isFirstSlide
     }));
