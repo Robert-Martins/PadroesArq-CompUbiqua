@@ -113,3 +113,8 @@ export type ConfirmationModalProps = {
     onConfirm: () => void;
     onCancel: () => void;
 }
+
+export type SliderProps = {
+    showNavigation?: boolean;
+    children: ReactNode;
+}
