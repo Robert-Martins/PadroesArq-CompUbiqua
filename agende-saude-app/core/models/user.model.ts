@@ -1,3 +1,5 @@
+import { Address } from "./address.model";
+
 export class User {
 
     constructor(
@@ -9,6 +11,7 @@ export class User {
         public userType: string = null,
         public accessLevelType: string = null,
         public isActive: boolean = null,
+        public address: Address = null,
         public createdAt: Date = null,
         public updatedAt: Date = null
     ) { }
