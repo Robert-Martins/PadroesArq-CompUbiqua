@@ -14,6 +14,8 @@ import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -67,7 +69,7 @@ public class TokenService {
   }
 
   public void deleteExpiredTokens() {
-    Instant tenMinutesAgo = Instant.now().minusSeconds(10 * 60);
+    LocalDateTime tenMinutesAgo = Instant.now().minusSeconds(10 * 60).atZone(ZoneId.systemDefault()).toLocalDateTime();
 
     List<Token> expiredTokens = tokenRepository.findAllByCreatedAtBefore(tenMinutesAgo);
 
