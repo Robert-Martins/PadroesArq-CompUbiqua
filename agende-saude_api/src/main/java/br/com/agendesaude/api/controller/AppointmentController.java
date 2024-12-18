@@ -1,5 +1,7 @@
 package br.com.agendesaude.api.controller;
 
+import static br.com.agendesaude.api.domain.service.UserService.verifyFullAcessUser;
+
 import br.com.agendesaude.api.domain.dto.AppointmentDto;
 import br.com.agendesaude.api.domain.enums.AppointmentStatusType;
 import br.com.agendesaude.api.domain.model.User;
@@ -60,12 +62,16 @@ public class AppointmentController {
   public ResponseEntity<AppointmentDto> createAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
       Authentication principal) {
     User user = ((User) principal.getPrincipal());
+    verifyFullAcessUser(user);
     AppointmentDto appointment = appointmentService.createAppointment(appointmentDto, user);
     return ResponseEntity.ok(appointment);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<AppointmentDto> updateAppointment(@Valid @RequestBody AppointmentDto appointmentDto) {
+  public ResponseEntity<AppointmentDto> updateAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
+      Authentication principal) {
+    User user = ((User) principal.getPrincipal());
+    verifyFullAcessUser(user);
     appointmentService.updateAppointment(appointmentDto);
     return ResponseEntity.ok().build();
   }

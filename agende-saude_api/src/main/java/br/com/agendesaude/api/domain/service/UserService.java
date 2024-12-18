@@ -1,6 +1,9 @@
 package br.com.agendesaude.api.domain.service;
 
+import br.com.agendesaude.api.domain.enums.AccessLevelType;
+import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.repository.UserRepository;
+import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
 import br.com.agendesaude.api.infra.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +19,12 @@ public class UserService implements UserDetailsService {
 
   public UserService(UserRepository userRepository) {
     this.userRepository = userRepository;
+  }
+
+  public static void verifyFullAcessUser(User user) {
+    if (!(user.getAccessLevel().equals(AccessLevelType.FULL))) {
+      throw new CustomException("Usuário não autorizado");
+    }
   }
 
   @Override

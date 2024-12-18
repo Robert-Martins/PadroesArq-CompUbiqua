@@ -1,5 +1,7 @@
 package br.com.agendesaude.api.controller;
 
+import static br.com.agendesaude.api.domain.service.UserService.verifyFullAcessUser;
+
 import br.com.agendesaude.api.domain.dto.ConsultationDto;
 import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.service.ConsultationService;
@@ -61,20 +63,27 @@ public class ConsultationController {
   }
 
   @PostMapping
-  public ResponseEntity<Long> createConsultation(@Valid @RequestBody ConsultationDto consultationDto) {
+  public ResponseEntity<Long> createConsultation(@Valid @RequestBody ConsultationDto consultationDto,
+      Authentication principal) {
+    User user = ((User) principal.getPrincipal());
+    verifyFullAcessUser(user);
     Long id = consultationService.createConsultation(consultationDto);
     return ResponseEntity.ok(id);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<Void> updateConsultation(@PathVariable Long id,
-      @Valid @RequestBody ConsultationDto consultationDto) {
+      @Valid @RequestBody ConsultationDto consultationDto, Authentication principal) {
+    User user = ((User) principal.getPrincipal());
+    verifyFullAcessUser(user);
     consultationService.updateConsultation(id, consultationDto);
     return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteConsultation(@PathVariable Long id) {
+  public ResponseEntity<Void> deleteConsultation(@PathVariable Long id, Authentication principal) {
+    User user = ((User) principal.getPrincipal());
+    verifyFullAcessUser(user);
     consultationService.deleteConsultation(id);
     return ResponseEntity.ok().build();
   }
