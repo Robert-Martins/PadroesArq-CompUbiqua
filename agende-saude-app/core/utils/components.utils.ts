@@ -10,7 +10,6 @@ export const handleButtonBackground = (props): string => {
 }
 
 export const handleButtonTextColor = (props): string => {
-    console.log(props);
     return props.theme.colors.buttons[props.disabled ? 'disabled' : props.type][props.ghost ? 'background' : 'text'];
 }
 

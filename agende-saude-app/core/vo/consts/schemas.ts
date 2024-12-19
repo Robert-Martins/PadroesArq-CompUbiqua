@@ -25,33 +25,7 @@ export const createPersonSchema = yup.object().shape({
             .min(6, "A senha deve ter no mínimo 6 caracteres")
             .max(255, "A senha pode ter no máximo 25 caracteres")
             .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/, "A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula e um número")
-            .required("Senha é obrigatória"),
-        address: yup.object().shape({
-            address: yup
-                .string()
-                .min(25, "O endereço deve ter no mínimo 25 caracteres.")
-                .max(255, "O endereço pode ter no máximo 255 caracteres.")
-                .required("O endereço é obrigatório."),
-            neighborhood: yup
-                .string()
-                .min(5, "O bairro deve ter no mínimo 5 caracteres.")
-                .max(100, "O bairro pode ter no máximo 100 caracteres.")
-                .required("O bairro é obrigatório."),
-            city: yup
-                .string()
-                .min(5, "A cidade deve ter no mínimo 5 caracteres.")
-                .max(100, "A cidade pode ter no máximo 100 caracteres.")
-                .required("A cidade é obrigatória."),
-            state: yup
-                .string()
-                .required("O estado é obrigatório.")
-                .max(2, "O estado deve ser representado por 2 caracteres.")
-                .matches(/^[A-Z]{2}$/, "O estado deve ser representado por 2 letras maiúsculas."),
-            zipcode: yup
-                .string()
-                .matches(/^\d{5}-\d{3}$/, "O CEP deve estar no formato 12345-678.")
-                .required("O CEP é obrigatório.")
-        }),
+            .required("Senha é obrigatória")
     }),
 });
 
@@ -90,6 +64,32 @@ export const fullPersonSchema = yup.object().shape({
             .max(255, "A senha pode ter no máximo 25 caracteres")
             .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/, "A senha deve conter pelo menos uma letra maiúscula, uma letra minúscula e um número")
             .required("Senha é obrigatória"),
+        address: yup.object().shape({
+            address: yup
+                .string()
+                .min(25, "O endereço deve ter no mínimo 25 caracteres.")
+                .max(255, "O endereço pode ter no máximo 255 caracteres.")
+                .required("O endereço é obrigatório."),
+            neighborhood: yup
+                .string()
+                .min(5, "O bairro deve ter no mínimo 5 caracteres.")
+                .max(100, "O bairro pode ter no máximo 100 caracteres.")
+                .required("O bairro é obrigatório."),
+            city: yup
+                .string()
+                .min(5, "A cidade deve ter no mínimo 5 caracteres.")
+                .max(100, "A cidade pode ter no máximo 100 caracteres.")
+                .required("A cidade é obrigatória."),
+            state: yup
+                .string()
+                .required("O estado é obrigatório.")
+                .max(2, "O estado deve ser representado por 2 caracteres.")
+                .matches(/^[A-Z]{2}$/, "O estado deve ser representado por 2 letras maiúsculas."),
+            zipcode: yup
+                .string()
+                .matches(/^\d{5}-\d{3}$/, "O CEP deve estar no formato 12345-678.")
+                .required("O CEP é obrigatório.")
+        }),
     }),
     allergies: yup.array().of(
         yup.object().shape({
