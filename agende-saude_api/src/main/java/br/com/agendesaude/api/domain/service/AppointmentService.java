@@ -73,22 +73,9 @@ public class AppointmentService {
 
     Long appointmentDtoId = appointmentDto.getId();
 
-    Consultation consultation = appointmentDto.getConsultation().mapDtoToEntity();
-    if (consultation.getId() == null) {
-      consultation = new Consultation();
-      consultationRepository.save(consultation);
-    } else {
-      consultation = consultationRepository.findById(consultation.getId())
-          .orElseThrow(() -> new BadRequestException("Consultation not found"));
-    }
+    Consultation consultation = processConsultation(appointmentDto.getConsultation());
 
-    Screening screening = appointmentDto.getScreening().mapDtoToEntity();
-    if (screening.getId() == null) {
-      screening = new Screening();
-      screeningRepository.save(screening);
-    } else {
-      screening = null;
-    }
+    Screening screening = processScreening(appointmentDto.getScreening());
 
     Appointment appointment = appointmentRepository.findById(appointmentDtoId)
         .orElseThrow(() -> new BadRequestException("Appointment not found"));
@@ -100,11 +87,25 @@ public class AppointmentService {
           "Cannot update appointment for consultation with an existing SCHEDULED appointment");
     }
 
+    appointment.setStatus(AppointmentStatusType.SCHEDULED);
     appointment.setConsultation(consultation);
-    appointment.setScreening(screening);
-    appointment.setStatus(appointmentDto.getStatus());
+    appointment.setScreening(screening != null && screening.getId() != null ? screening : null);
     appointment.setNotes(appointmentDto.getNotes());
 
+    appointmentRepository.save(appointment);
+    return appointment.mapEntityToDto();
+  }
+
+
+  @Transactional
+  public AppointmentDto cancelAppointment(Long appointmentId) {
+
+    Long appointmentDtoId = appointmentId;
+
+    Appointment appointment = appointmentRepository.findById(appointmentDtoId)
+        .orElseThrow(() -> new BadRequestException("Appointment not found"));
+
+    appointment.setStatus(AppointmentStatusType.CANCELLED);
     appointmentRepository.save(appointment);
     return appointment.mapEntityToDto();
   }
@@ -136,6 +137,14 @@ public class AppointmentService {
     return !appointments.isEmpty() ? appointments.get(0).mapEntityToDto() : null;
   }
 
+  @Transactional(readOnly = true)
+  public AppointmentDto getAppointmentById(Long id) {
+    Appointment appointment = appointmentRepository.findById(id)
+        .orElseThrow(() -> new BadRequestException("Appointment not found"));
+
+    return new AppointmentDto(appointment);
+  }
+
   //METODOS AUXILIARES
 
   public Page<AppointmentDto> findAllByPerson(AppointmentStatusType status, Pageable pageable) {
@@ -160,16 +169,19 @@ public class AppointmentService {
   private Screening processScreening(ScreeningDto screeningDto) {
     Screening screening = screeningDto.mapDtoToEntity();
     if (screening.getId() == null) {
-      return new Screening();
+      return screeningRepository.save(screening);
     }
-    return null;
+    return screeningRepository.findById(screening.getId())
+        .orElseThrow(() -> new BadRequestException("Screening not found"));
+
   }
 
   private void checkExistingAppointments(Consultation consultation, Person person) {
     boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(
         consultation.getId(), AppointmentStatusType.SCHEDULED);
     if (hasScheduledAppointments) {
-      throw new BadRequestException("Cannot schedule appointment for consultation with an existing SCHEDULED appointment");
+      throw new BadRequestException(
+          "Cannot schedule appointment for consultation with an existing SCHEDULED appointment");
     }
 
     boolean hasScheduledEmergencyAppointments = appointmentRepository.existsEmergencyScheduledAppointment(
