@@ -13,9 +13,6 @@ import lombok.Setter;
 public class AllergyDto extends BaseEntityDto<Allergy> {
 
   @NotNull
-  private Long personId;
-
-  @NotNull
   private String description;
 
   private SeverityType severity;

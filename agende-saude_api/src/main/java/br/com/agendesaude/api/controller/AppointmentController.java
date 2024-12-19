@@ -34,16 +34,21 @@ public class AppointmentController {
 
   @GetMapping
   public ResponseEntity<Page<AppointmentDto>> findAllByPerson(
-      @RequestParam int page,
-      @RequestParam int size,
-      @RequestParam String sort,
-      @RequestParam String direction,
-      @RequestParam(required = false) AppointmentStatusType status
+          @RequestParam(defaultValue = "0") int page,
+          @RequestParam(defaultValue = "10") int size,
+          @RequestParam(defaultValue = "id") String sort,
+          @RequestParam(defaultValue = "ASC") String direction,
+          @RequestParam(required = false) AppointmentStatusType status
   ) {
-    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort));
-    Page<AppointmentDto> result = appointmentService.findAllByPerson(status, pageable);
-    return ResponseEntity.ok(result);
+    try {
+      Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort));
+      Page<AppointmentDto> result = appointmentService.findAllByPerson(status, pageable);
+      return ResponseEntity.ok(result);
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.badRequest().body(Page.empty());
+    }
   }
+
 
   @GetMapping("/next")
   public ResponseEntity<List<AppointmentDto>> getNextAppointments(Authentication principal) {
