@@ -5,8 +5,8 @@ import { Page } from "../vo/types/types";
 
 const APPOINTMENT_PATH: string = 'appointment';
 
-export const createAppointment = (appointment: Appointment): Promise<Appointment> => {
-    return api.post<Appointment>(APPOINTMENT_PATH, appointment)
+export const createAppointment = (consultationId: string, notes: string): Promise<Appointment> => {
+    return api.post<Appointment>(`${APPOINTMENT_PATH}/appoint/${consultationId}`, {notes})
         .then(response => response.data);
 }
 
@@ -15,7 +15,27 @@ export const findAllByPerson = (appointmentFilter: PageableFilter<AppointmentFil
         .then(response => response.data);
 }
 
+export const findNextByPerson = (): Promise<Appointment> => {
+    return api.get<Appointment>(`${APPOINTMENT_PATH}/next`)
+        .then(response => response.data);
+}
+
+export const findById = (appointmentId: string): Promise<Appointment> => {
+    return api.get<Appointment>(`${APPOINTMENT_PATH}/${appointmentId}`)
+        .then(response => response.data);
+}
+
+export const findScheduledEmergencyByPerson = (): Promise<Appointment> => {
+    return api.get<Appointment>(`${APPOINTMENT_PATH}/scheduled-emergency`)
+        .then(response => response.data);
+}
+
 export const updateAppointment = (appointment: Appointment): Promise<Appointment> => {
     return api.put<Appointment>(APPOINTMENT_PATH, appointment)
+        .then(response => response.data);
+}
+
+export const cancelAppointment = (appointmentId: string): Promise<Appointment> => {
+    return api.put<Appointment>(`${APPOINTMENT_PATH}/cancel/${appointmentId}`)
         .then(response => response.data);
 }
