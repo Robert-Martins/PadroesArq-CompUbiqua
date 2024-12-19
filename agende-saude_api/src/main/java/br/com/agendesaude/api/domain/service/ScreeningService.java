@@ -32,7 +32,7 @@ public class ScreeningService {
     HttpEntity<String> entity = new HttpEntity<>(headers);
 
     ResponseEntity<Object> response = restTemplate.exchange(
-        nestApiUrl + "/questions",
+        nestApiUrl + "/screening/questions",
         HttpMethod.GET,
         entity,
         Object.class
