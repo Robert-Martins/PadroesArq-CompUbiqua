@@ -22,13 +22,13 @@ public class PersonController {
   private PersonService personService;
 
   @GetMapping("/{id}")
-  public ResponseEntity<PersonDto> findById(@PathVariable Long id) {
+  public ResponseEntity<PersonDto> findPersonById(@PathVariable Long id) {
     PersonDto personDto = personService.findById(id);
     return ResponseEntity.ok(personDto);
   }
 
   @PostMapping
-  public ResponseEntity<PersonDto> create(@Valid @RequestBody PersonDto personDto) {
+  public ResponseEntity<PersonDto> createPerson(@Valid @RequestBody PersonDto personDto) {
     PersonDto createdPerson = personService.create(personDto);
     return ResponseEntity.ok(createdPerson);
   }

@@ -2,6 +2,7 @@ package br.com.agendesaude.api.domain.service;
 
 import br.com.agendesaude.api.domain.dto.LocationDto;
 import br.com.agendesaude.api.domain.dto.UserDto;
+import br.com.agendesaude.api.domain.enums.AccessLevelType;
 import br.com.agendesaude.api.domain.enums.UserType;
 import br.com.agendesaude.api.domain.model.Address;
 import br.com.agendesaude.api.domain.model.Location;
@@ -72,6 +73,18 @@ public class LocationService {
     location.setUser(savedUser);
     location.setThumbnail(thumbnail);
 
+    if (location.getUser().getId() != null
+        && location.getUser().getAddress() != null && location.getUser().getAddress().getId() != null
+        && location.getUser().getEmail() != null && !location.getUser().getEmail().isEmpty()
+        && location.getUser().getTaxId() != null && !location.getUser().getTaxId().isEmpty()
+        && location.getUser().getPhone() != null && !location.getUser().getPhone().isEmpty()
+
+        && location.getThumbnail() != null && locationDto.getThumbnail().getId() != null
+
+        && location.getName() != null && !location.getName().isEmpty()) {
+      location.getUser().setAccessLevel(AccessLevelType.FULL);
+    }
+
     location = locationRepository.save(location);
 
     return location.mapEntityToDto();
@@ -107,7 +120,7 @@ public class LocationService {
     Location existingLocation = locationRepository.findById(locationDto.getId())
         .orElseThrow(() -> new BadRequestException("Location not found"));
 
-    verifyUserLocation(user, existingLocation);
+//    verifyUserLocation(user, existingLocation);
 
     existingLocation.setName(
         locationDto.getName() != null ? locationDto.getName() : existingLocation.getName());
@@ -142,6 +155,19 @@ public class LocationService {
     }
 
     userRepository.save(existingUser);
+
+    if (existingLocation.getUser().getId() != null
+        && existingLocation.getUser().getAddress() != null && existingLocation.getUser().getAddress().getId() != null
+        && existingLocation.getUser().getEmail() != null && !existingLocation.getUser().getEmail().isEmpty()
+        && existingLocation.getUser().getTaxId() != null && !existingLocation.getUser().getTaxId().isEmpty()
+        && existingLocation.getUser().getPhone() != null && !existingLocation.getUser().getPhone().isEmpty()
+
+        && existingLocation.getThumbnail() != null && existingLocation.getThumbnail().getId() != null
+
+        && existingLocation.getName() != null && !existingLocation.getName().isEmpty()) {
+      existingLocation.getUser().setAccessLevel(AccessLevelType.FULL);
+    }
+
     existingLocation = locationRepository.save(existingLocation);
 
     return existingLocation.mapEntityToDto();
