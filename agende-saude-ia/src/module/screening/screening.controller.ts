@@ -20,7 +20,7 @@ export class ScreeningController {
 
     @Post('answers')
     @HttpCode(HttpStatus.OK)
-    public async processAnswers(@Body() answers: AnsweredQuestions[]): Promise<Screening> {
+    public async processAnswers(@Body() answers: AnsweredQuestions): Promise<Screening> {
         return this.screeningService.processAnswers(answers);
     }
 
