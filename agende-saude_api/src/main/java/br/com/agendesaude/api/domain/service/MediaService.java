@@ -3,6 +3,7 @@ package br.com.agendesaude.api.domain.service;
 import br.com.agendesaude.api.domain.dto.MediaDto;
 import br.com.agendesaude.api.domain.model.Media;
 import br.com.agendesaude.api.domain.repository.MediaRepository;
+import br.com.agendesaude.api.infra.exception.CustomException;
 import br.com.agendesaude.api.infra.exception.InvalidMediaTypeException;
 import br.com.agendesaude.api.infra.exception.ResourceNotFoundException;
 import java.io.IOException;
@@ -22,7 +23,7 @@ public class MediaService {
     try {
       String contentType = file.getContentType();
       if (contentType == null || !isValidImageType(contentType)) {
-        throw new InvalidMediaTypeException("Invalid media type. Only PNG, JPG, and JPEG are allowed.");
+        throw new CustomException("Invalid media type. Only PNG, JPG, and JPEG are allowed.");
       }
 
       Media media = new Media();
@@ -34,17 +35,17 @@ public class MediaService {
 
       return media.mapEntityToDto();
     } catch (IOException e) {
-      throw new RuntimeException("Error saving media file", e);
+      throw new CustomException("Error saving media file", e);
     }
   }
 
   @Transactional
   public void deleteMedia(Long id) {
     Media media = mediaRepository.findById(id).orElseThrow(() ->
-        new ResourceNotFoundException("Media not found with id: " + id));
+        new CustomException("Media not found with id: " + id));
     boolean isInUse = false;
     if (isInUse) {
-      throw new IllegalStateException("Cannot delete media that is in use");
+      throw new CustomException("Cannot delete media that is in use");
     }
     mediaRepository.delete(media);
   }

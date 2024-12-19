@@ -30,11 +30,11 @@ public class UserService implements UserDetailsService {
   @Override
   public UserDetails loadUserByUsername(String taxId) throws UsernameNotFoundException {
     if (taxId == null || taxId.trim().isEmpty()) {
-      throw new ValidationException("TaxId is null or empty");
+      throw new CustomException("TaxId is null or empty");
     }
 
     return userRepository.findByTaxId(taxId)
-        .orElseThrow(() -> new ValidationException(
+        .orElseThrow(() -> new CustomException(
             String.format("No user found with taxId: %s", taxId)));
   }
 

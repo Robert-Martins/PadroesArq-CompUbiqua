@@ -9,6 +9,7 @@ import br.com.agendesaude.api.domain.repository.AppointmentRepository;
 import br.com.agendesaude.api.domain.repository.ConsultationRepository;
 import br.com.agendesaude.api.domain.repository.LocationRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
+import br.com.agendesaude.api.infra.exception.CustomException;
 import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -40,7 +41,7 @@ public class ConsultationService {
   @Transactional
   public Long createConsultation(ConsultationDto consultationDto) {
     Location location = locationRepository.findById(consultationDto.getLocation().getId())
-        .orElseThrow(() -> new EntityNotFoundException("Location not found"));
+        .orElseThrow(() -> new CustomException("Location not found"));
 
     Consultation consultation = consultationDto.mapDtoToEntity();
     consultation.setLocation(location);
@@ -51,7 +52,7 @@ public class ConsultationService {
   @Transactional(readOnly = true)
   public ConsultationDto getConsultationById(Long id) {
     Consultation consultation = consultationRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Consultation not found"));
+        .orElseThrow(() -> new CustomException("Consultation not found"));
 
     return new ConsultationDto(consultation);
   }
@@ -96,12 +97,12 @@ public class ConsultationService {
   @Transactional
   public ConsultationDto updateConsultation(Long id, ConsultationDto consultationDto) {
     Consultation consultation = consultationRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("Consultation not found"));
+        .orElseThrow(() -> new CustomException("Consultation not found"));
 
     boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(id,
         AppointmentStatusType.SCHEDULED);
     if (hasScheduledAppointments) {
-      throw new IllegalStateException("Cannot update consultation with scheduled appointments");
+      throw new CustomException("Cannot update consultation with scheduled appointments");
     }
 
     consultation.setResponsibleDoctor(consultationDto.getResponsibleDoctor());
@@ -119,7 +120,7 @@ public class ConsultationService {
     boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(id,
         AppointmentStatusType.SCHEDULED);
     if (hasScheduledAppointments) {
-      throw new IllegalStateException("Cannot delete consultation with scheduled appointments");
+      throw new CustomException("Cannot delete consultation with scheduled appointments");
     }
 
     consultationRepository.delete(consultation);
