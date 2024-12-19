@@ -1,14 +1,20 @@
 package br.com.agendesaude.api.domain.model;
 
+import br.com.agendesaude.api.domain.dto.ScreeningDto;
+import br.com.agendesaude.api.domain.dto.ScreeningQuestionnaireAnswerDto;
+import br.com.agendesaude.api.domain.enums.ScreeningStatus;
 import br.com.agendesaude.api.infra.base.BaseEntity;
-import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import com.vladmihalcea.hibernate.type.json.JsonType;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
-
-import java.util.Map;
 
 @Entity
 @Table(name = "agende_screening")
@@ -16,16 +22,47 @@ import java.util.Map;
 @Setter
 public class Screening extends BaseEntity {
 
-    @OneToOne
-    @JoinColumn(name = "appointment_id", nullable = false)
-    private Appointment appointment;
+  @Type(JsonType.class)
+  @Column(columnDefinition = "jsonb")
+  private Map<String, Boolean> questionnaire;
 
-    @Type(JsonType.class)
-    @Column(nullable = false, columnDefinition = "jsonb")
-    private Map<String, Boolean> questionnaire;
+  @Enumerated(EnumType.STRING)
+  private ScreeningStatus status;
 
-    @Override
-    public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-        return null;
+  @Column(columnDefinition = "TEXT")
+  private String notes;
+
+  @Column
+  private String classification;
+
+  @Column
+  private String justification;
+
+  @Override
+  public ScreeningDto mapEntityToDto() {
+    if (this == null) {
+      return null;
     }
+
+    ScreeningDto screeningDto = new ScreeningDto();
+    screeningDto.setId(this.getId());
+    screeningDto.setQuestionnaire(
+        this.getQuestionnaire() != null ?
+            ScreeningQuestionnaireAnswerDto.fromMap(this.getQuestionnaire()) :
+            new ArrayList<>()
+    );
+    screeningDto.setNotes(this.getNotes() != null ? this.getNotes() : "");
+    screeningDto.setClassification(this.getClassification() != null ? this.getClassification() : "");
+    screeningDto.setJustification(this.getJustification() != null ? this.getJustification() : "");
+    screeningDto.setStatus(
+        this.getStatus() != null ? this.getStatus().name() : null
+    );
+
+    screeningDto.setCreatedAt(this.getCreatedAt());
+    screeningDto.setUpdatedAt(this.getUpdatedAt());
+
+    return screeningDto;
+  }
+
+
 }

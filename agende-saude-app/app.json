@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "agende-saude-app",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -48,6 +48,25 @@
             "./assets/fonts/Inter-Bold.ttf",
             "./assets/fonts/Inter-BoldItalic.ttf"
           ]
+        }
+      ],
+      [
+        "expo-secure-store",
+        {
+          "configureAndroidBackup": true,
+          "faceIDPermission": "Permita que o Agende Saúde use o Face ID para autenticar você"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permita que o Agende Saúde acesse sua localização enquanto estiver usando o app"
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Permita que o Agende Saúde acesse suas fotos"
         }
       ]
     ],
