@@ -29,13 +29,13 @@ public class User extends BaseEntity implements UserDetails {
   @JoinColumn(name = "address_id")
   private Address address;
 
-  @Column(nullable = false, unique = true, length = 255)
+  @Column(nullable = false, unique = true)
   private String email;
 
   @Column(nullable = false, unique = true, length = 11)
   private String taxId;
 
-  @Column(nullable = false, length = 255)
+  @Column(nullable = false)
   private String password;
 
   @Column(length = 15)

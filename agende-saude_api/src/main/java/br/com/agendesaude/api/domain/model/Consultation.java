@@ -26,14 +26,14 @@ public class Consultation extends BaseEntity {
   @JoinColumn(name = "location_id", nullable = false)
   private Location location;
 
-  @Column(nullable = false)
+  @Column()
   private String responsibleDoctor;
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   private ConsultationType type = ConsultationType.COMMON;
 
-  @Column(nullable = false)
+  @Column()
   private String specialty;
 
   @Column(nullable = false)

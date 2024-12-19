@@ -23,7 +23,7 @@ import org.hibernate.annotations.Type;
 public class Screening extends BaseEntity {
 
   @Type(JsonType.class)
-  @Column(nullable = false, columnDefinition = "jsonb")
+  @Column(columnDefinition = "jsonb")
   private Map<String, Boolean> questionnaire;
 
   @Enumerated(EnumType.STRING)
