@@ -1,4 +1,3 @@
-import { ApplicationError } from "@/core/vo/types/types";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { handleAxiosError, handleError } from "./error.handler";
 

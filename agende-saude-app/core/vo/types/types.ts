@@ -17,7 +17,7 @@ export type AgendeSaudeApplicationError = {
 }
 
 export type AuthenticationRequest = {
-    login: string;
+    taxId: string;
     password: string;
 }
 
