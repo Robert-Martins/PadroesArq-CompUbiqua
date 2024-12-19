@@ -5,10 +5,10 @@ const TabTitle = styled.Text`
     padding: 10px 0;
     color: ${({ theme }) => theme.colors.text};
     font-size: ${({ theme }) => theme.fontSizes.xxs}px;
-    font-family: ${({ theme }) => theme.fonts.regular};
+    font-family: ${({ theme }) => theme.fonts.semiBold};
     text-align: center;
     border-bottom-width: 1px;
-    border-bottom-color: ${({ theme }) => theme.colors.divider};
+    border-bottom-color: ${({ theme }) => theme.colors.disabled};
 `;
 
 export default TabTitle;

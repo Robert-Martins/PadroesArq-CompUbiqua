@@ -39,22 +39,24 @@ const Profile: React.FC = () => {
     return (
         <Layout>
             <TabTitle>Perfil</TabTitle>
-            <ProfileList gap={16}>
-                <Link href="/platform/profile/person">
-                    <ProfileListItem icon="account-outline" title="Meus dados" />
-                </Link>
-                <Link href="/platform/profile/appointment">
-                    <ProfileListItem icon="calendar-outline" title="Meus agendamentos" />
-                </Link>
-                <Link href="/platform/profile/faq">
-                    <ProfileListItem icon="help-circle-outline" title="FAQ" />
-                </Link>
-                <Link href="/platform/profile/terms">
-                    <ProfileListItem icon="shield-outline" title="Termos da Plataforma" />
-                </Link>
-                <Link href="/platform/profile/about">
-                    <ProfileListItem icon="information-outline" title="Sobre" />
-                </Link>
+            <ProfileList gap={48}>
+                <Flex gap={16}>
+                    <Link href="/platform/profile/person">
+                        <ProfileListItem icon="account-outline" title="Meus dados" />
+                    </Link>
+                    <Link href="/platform/profile/appointment">
+                        <ProfileListItem icon="calendar-outline" title="Meus agendamentos" />
+                    </Link>
+                    <Link href="/platform/profile/faq">
+                        <ProfileListItem icon="help-circle-outline" title="FAQ" />
+                    </Link>
+                    <Link href="/platform/profile/terms">
+                        <ProfileListItem icon="shield-outline" title="Termos da Plataforma" />
+                    </Link>
+                    <Link href="/platform/profile/about">
+                        <ProfileListItem icon="information-outline" title="Sobre" />
+                    </Link>
+                </Flex>
                 <TouchableOpacity onPress={displayLogoutConfirmation}>
                     <ProfileListItem icon="logout" title="Sair" />
                 </TouchableOpacity>
