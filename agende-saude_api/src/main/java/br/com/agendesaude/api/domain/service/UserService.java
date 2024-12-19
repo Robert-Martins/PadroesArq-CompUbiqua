@@ -3,7 +3,7 @@ package br.com.agendesaude.api.domain.service;
 import br.com.agendesaude.api.domain.enums.AccessLevelType;
 import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.repository.UserRepository;
-import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
+import br.com.agendesaude.api.infra.exception.CustomException;
 import br.com.agendesaude.api.infra.exception.ValidationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

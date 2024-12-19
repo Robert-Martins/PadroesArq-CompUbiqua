@@ -16,8 +16,8 @@ import br.com.agendesaude.api.domain.repository.MediaRepository;
 import br.com.agendesaude.api.domain.repository.MedicalHistoryRepository;
 import br.com.agendesaude.api.domain.repository.PersonRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
+import br.com.agendesaude.api.infra.exception.CustomException;
 import br.com.agendesaude.api.infra.exception.ResourceNotFoundException;
-import br.com.agendesaude.api.infra.exception.ValidationException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -51,7 +51,7 @@ public class PersonService {
   @Transactional
   public PersonDto create(PersonDto personDto) {
     if (userRepository.existsByTaxId(personDto.getUser().getTaxId())) {
-      throw new ValidationException("CPF já cadastrado.");
+      throw new CustomException("CPF já cadastrado.");
     }
 
     User user = personDto.getUser();

@@ -2,8 +2,7 @@ package br.com.agendesaude.api.controller;
 
 import br.com.agendesaude.api.domain.dto.MediaDto;
 import br.com.agendesaude.api.domain.service.MediaService;
-import br.com.agendesaude.api.infra.exception.ErrorHandler;
-import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
+import br.com.agendesaude.api.infra.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

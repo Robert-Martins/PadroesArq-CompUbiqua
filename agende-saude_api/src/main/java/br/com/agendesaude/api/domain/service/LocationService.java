@@ -10,7 +10,7 @@ import br.com.agendesaude.api.domain.repository.AddressRepository;
 import br.com.agendesaude.api.domain.repository.LocationRepository;
 import br.com.agendesaude.api.domain.repository.MediaRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
-import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
+import br.com.agendesaude.api.infra.exception.CustomException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +84,7 @@ public class LocationService {
   @Transactional
   public Page<LocationDto> findAllLocations(Pageable pageable) {
     return locationRepository.findAllLocations(pageable)
-            .map(Location::mapEntityToDto);
+        .map(Location::mapEntityToDto);
   }
 
   @Transactional
