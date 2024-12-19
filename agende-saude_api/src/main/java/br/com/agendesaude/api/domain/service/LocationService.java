@@ -1,6 +1,7 @@
 package br.com.agendesaude.api.domain.service;
 
 import br.com.agendesaude.api.domain.dto.LocationDto;
+import br.com.agendesaude.api.domain.dto.UserDto;
 import br.com.agendesaude.api.domain.enums.UserType;
 import br.com.agendesaude.api.domain.model.Address;
 import br.com.agendesaude.api.domain.model.Location;
@@ -88,13 +89,46 @@ public class LocationService {
   }
 
   @Transactional
-  public void updateLocation(Long id, LocationDto locationDto) {
-    Location location = locationRepository.findById(id)
+  public LocationDto updateLocation(LocationDto locationDto) {
+    Location existingLocation = locationRepository.findById(locationDto.getId())
         .orElseThrow(() -> new EntityNotFoundException("Location not found"));
 
-    location.setName(locationDto.getName());
-    location.setThumbnail(locationDto.getThumbnail());
-    locationRepository.save(location);
+    existingLocation.setName(
+        locationDto.getName() != null ? locationDto.getName() : existingLocation.getName());
+
+    if (locationDto.getThumbnail() != null) {
+      Media thumbnail = mediaRepository.save(locationDto.getThumbnail());
+      existingLocation.setThumbnail(thumbnail);
+    }
+
+    User existingUser = existingLocation.getUser();
+    UserDto userDto = locationDto.getUser().mapEntityToDto();
+
+    if (userDto.getAddress() != null) {
+      Address address = userDto.getAddress();
+      existingUser.setAddress(addressRepository.save(address));
+    }
+
+    if (userDto.getPhone() != null) {
+      existingUser.setPhone(userDto.getPhone());
+    }
+
+    if (locationDto.getUser().getPassword() != null) {
+      existingLocation.getUser().setPassword(new BCryptPasswordEncoder().encode(locationDto.getUser().getPassword()));
+    }
+
+    if (locationDto.getUser().getEmail() != null) {
+      existingLocation.getUser().setEmail(locationDto.getUser().getEmail());
+    }
+
+    if (locationDto.getUser().getTaxId() != null) {
+      existingLocation.getUser().setTaxId(locationDto.getUser().getTaxId());
+    }
+
+    userRepository.save(existingUser);
+    existingLocation = locationRepository.save(existingLocation);
+
+    return existingLocation.mapEntityToDto();
   }
 
 //    @Transactional

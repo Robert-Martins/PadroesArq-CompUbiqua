@@ -132,7 +132,15 @@ public class PersonService {
       existingPerson.setMedicalHistory(medicalHistories);
     }
 
-    if (personDto.getUser().getAccessLevel() == AccessLevelType.FULL) {
+    if (personDto.getUser().getId() != null
+        && personDto.getUser().getAddress() != null && personDto.getUser().getAddress().getId() != null
+        && personDto.getProfilePicture() != null && personDto.getProfilePicture().getId() != null
+        && personDto.getFullName() != null && !personDto.getFullName().isEmpty()
+        && personDto.getBirthDate() != null
+        && personDto.getUser().getEmail() != null && !personDto.getUser().getEmail().isEmpty()
+        && personDto.getUser().getTaxId() != null && !personDto.getUser().getTaxId().isEmpty()
+        && personDto.getUser().getPhone() != null && !personDto.getUser().getPhone().isEmpty()) {
+
       existingPerson.getUser().setAccessLevel(AccessLevelType.FULL);
     }
 

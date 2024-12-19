@@ -21,16 +21,16 @@ public class ScreeningController {
   @Autowired
   private ScreeningService screeningService;
 
-  @PostMapping("/answers")
-  public ResponseEntity<Screening> sendScreeningAnswers(@RequestBody ScreeningDto screeningDto) {
-    Screening savedScreening = screeningService.saveScreening(screeningDto);
-    return ResponseEntity.ok(savedScreening);
-  }
-
   @GetMapping("/{screeningId}/answered")
   public ResponseEntity<List<ScreeningQuestionnaireAnswerDto>> getAnsweredScreening(@PathVariable Long screeningId) {
     List<ScreeningQuestionnaireAnswerDto> answers = screeningService.getAnsweredScreening(screeningId);
     return ResponseEntity.ok(answers);
+  }
+
+  @PostMapping("/answers")
+  public ResponseEntity<Screening> sendScreeningAnswers(@RequestBody ScreeningDto screeningDto) {
+    Screening savedScreening = screeningService.saveScreening(screeningDto);
+    return ResponseEntity.ok(savedScreening);
   }
 
 //  @GetMapping("/questions")

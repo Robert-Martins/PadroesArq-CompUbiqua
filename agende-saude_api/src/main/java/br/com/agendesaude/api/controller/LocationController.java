@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,16 +24,16 @@ public class LocationController {
   @Autowired
   private LocationService locationService;
 
-  @GetMapping("/{id}")
-  public ResponseEntity<LocationDto> findLocationById(@PathVariable Long id) {
-    LocationDto locationDto = locationService.getLocationById(id);
-    return ResponseEntity.ok(locationDto);
-  }
-
   @GetMapping
   public ResponseEntity<Page<LocationDto>> findAllLocations(Pageable pageable) {
     Page<LocationDto> result = locationService.findAllLocations(pageable);
     return ResponseEntity.ok(result);
+  }
+
+  @GetMapping("/{id}")
+  public ResponseEntity<LocationDto> findLocationById(@PathVariable Long id) {
+    LocationDto locationDto = locationService.getLocationById(id);
+    return ResponseEntity.ok(locationDto);
   }
 
   @PostMapping
@@ -44,9 +42,9 @@ public class LocationController {
     return ResponseEntity.ok(createdLocation);
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<Void> updateLocation(@PathVariable Long id, @Valid @RequestBody LocationDto locationDto) {
-    locationService.updateLocation(id, locationDto);
-    return ResponseEntity.ok().build();
+  @PutMapping
+  public ResponseEntity<LocationDto> updateLocation(@Valid @RequestBody LocationDto locationDto) {
+    LocationDto updatedLocation = locationService.updateLocation(locationDto);
+    return ResponseEntity.ok(updatedLocation);
   }
 }
