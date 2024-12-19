@@ -46,7 +46,7 @@ export class ScreeningService {
             const response = await axios.post(
                 'https://api.openai.com/v1/chat/completions',
                 {
-                    model: 'gpt-4o',
+                    model: 'gpt-3.5-turbo',
                     messages: [
                         {
                             role: 'user',
@@ -58,6 +58,7 @@ export class ScreeningService {
                             Se atenha somente a esse modelo e não produza nada que não seja no padrão desse JSON.
                             Pacientes que apresentem poucos sintomas, somente dor ou sintomas que não são muito graves devem receber classificações azul ou verde.
                             Pacientes que apresentem sintomas graves, como falta de ar, febre alta, dor intensa, devem receber classificações laranja ou vermelho.
+                            Pacientes só devem apresentar classificação vermelha na presença de ao menos 6 sintomas marcados com true.
                             `
                             
                         }
