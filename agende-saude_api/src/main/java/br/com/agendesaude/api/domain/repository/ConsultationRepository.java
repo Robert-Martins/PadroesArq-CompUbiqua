@@ -28,6 +28,13 @@ public interface ConsultationRepository extends JpaRepository<Consultation, Long
           Pageable pageable
   );
 
+  @Query(value = """
+        SELECT c
+        FROM Consultation c
+        WHERE c.location.id = :locationId
+        """)
+  Page<Consultation> findAllByLocationId(@Param("locationId") Long locationId, Pageable pageable);
+
   @Query("SELECT c FROM Consultation c WHERE c.date BETWEEN :startDate AND :endDate")
   List<Consultation> findConsultationsWithinNext7Days(LocalDateTime startDate, LocalDateTime endDate);
 
