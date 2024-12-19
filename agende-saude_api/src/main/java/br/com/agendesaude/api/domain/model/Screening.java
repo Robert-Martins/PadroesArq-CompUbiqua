@@ -10,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,19 +40,26 @@ public class Screening extends BaseEntity {
 
   @Override
   public ScreeningDto mapEntityToDto() {
+    if (this == null) {
+      return null;
+    }
+
     ScreeningDto screeningDto = new ScreeningDto();
     screeningDto.setId(this.getId());
     screeningDto.setQuestionnaire(
-        ScreeningQuestionnaireAnswerDto.fromMap(this.getQuestionnaire())
+        this.getQuestionnaire() != null ?
+            ScreeningQuestionnaireAnswerDto.fromMap(this.getQuestionnaire()) :
+            new ArrayList<>()
     );
-    screeningDto.setNotes(this.getNotes());
-    screeningDto.setClassification(this.getClassification());
-    screeningDto.setJustification(this.getJustification());
+    screeningDto.setNotes(this.getNotes() != null ? this.getNotes() : "");
+    screeningDto.setClassification(this.getClassification() != null ? this.getClassification() : "");
+    screeningDto.setJustification(this.getJustification() != null ? this.getJustification() : "");
     screeningDto.setStatus(
         this.getStatus() != null ? this.getStatus().name() : null
     );
     screeningDto.setCreatedAt(this.getCreatedAt());
     screeningDto.setUpdatedAt(this.getUpdatedAt());
+
     return screeningDto;
   }
 

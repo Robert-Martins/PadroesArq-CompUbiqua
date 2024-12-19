@@ -11,7 +11,6 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -35,8 +34,8 @@ public class AppointmentController {
 
   @GetMapping
   public ResponseEntity<Page<AppointmentDto>> findAllByPerson(
-          @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
-          @RequestParam(required = false) AppointmentStatusType status) {
+      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+      @RequestParam(required = false) AppointmentStatusType status) {
 
     Page<AppointmentDto> result = appointmentService.findAllByPerson(status, pageable);
     return ResponseEntity.ok(result);
@@ -51,7 +50,7 @@ public class AppointmentController {
   }
 
   @GetMapping("/scheduled-emergency")
-  public List<AppointmentDto> getScheduledEmergencyAppointments(Authentication principal) {
+  public AppointmentDto getScheduledEmergencyAppointments(Authentication principal) {
     User user = ((User) principal.getPrincipal());
     return appointmentService.getScheduledEmergencyAppointments(user);
   }
