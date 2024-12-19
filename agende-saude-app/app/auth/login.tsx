@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { loginSchema } from "@/core/vo/consts/schemas";
 import { useForm } from "react-hook-form";
 import { displaySuccessMessage } from "@/core/utils/toast.utils";
-import { getPreviousUsers } from "@/core/utils/storage.utils";
+import { getPreviousUsers, includeNewUser } from "@/core/utils/storage.utils";
 import { AuthenticationRequest } from "@/core/vo/types/types";
 import { authenticate } from "@/core/services/auth.service";
 import { acceptTrueOrElse } from "@/core/utils/functions";
@@ -35,6 +35,7 @@ const Login: React.FC = () => {
     const onSubmit = async (data: AuthenticationRequest): Promise<void> => {
         const dt = await authenticate(data);
         displaySuccessMessage("Acesso autorizado", "Você foi autenticado com sucesso!");
+        await includeNewUser(data.taxId);
         console.log(dt);
     };
 
