@@ -6,6 +6,7 @@ import br.com.agendesaude.api.domain.dto.PersonDto;
 import br.com.agendesaude.api.domain.enums.BloodType;
 import br.com.agendesaude.api.domain.enums.GenderType;
 import br.com.agendesaude.api.infra.base.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -26,16 +27,14 @@ import lombok.Setter;
 @Setter
 public class Person extends BaseEntity {
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
-  @OneToMany
-  @JoinColumn(name = "allergy_id", nullable = false)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<Allergy> allergy;
 
-  @OneToMany
-  @JoinColumn(name = "medicalHistory_id", nullable = false)
+  @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
   private List<MedicalHistory> medicalHistory;
 
   @ManyToOne

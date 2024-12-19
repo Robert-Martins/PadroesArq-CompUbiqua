@@ -67,6 +67,12 @@
         {
           "locationAlwaysAndWhenInUsePermission": "Permita que o Agende Saúde acesse sua localização enquanto estiver usando o app"
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Permita que o Agende Saúde acesse suas fotos"
+        }
       ]
     ],
     "experiments": {

@@ -1,4 +1,3 @@
-import { ApplicationError } from "@/core/vo/types/types";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { handleAxiosError, handleError } from "./error.handler";
 
@@ -7,6 +6,7 @@ export const onResponse = (response: AxiosResponse): AxiosResponse => {
 }
 
 export const errorHandler = (error: AxiosError | Error): Promise<AxiosError> => {
+    console.log(error);
     axios.isAxiosError(error) ? handleAxiosError(error) : handleError(error);
     return Promise.reject(error);
 }

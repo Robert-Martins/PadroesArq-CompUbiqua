@@ -3,7 +3,11 @@ package br.com.agendesaude.api.domain.model;
 import br.com.agendesaude.api.domain.enums.SeverityType;
 import br.com.agendesaude.api.infra.base.BaseEntity;
 import br.com.agendesaude.api.infra.base.BaseEntityDto;
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,18 +17,14 @@ import lombok.Setter;
 @Setter
 public class Allergy extends BaseEntity {
 
-    @ManyToOne
-    @JoinColumn(name = "person_id", nullable = false)
-    private Person person;
+  @Column()
+  private String description;
 
-    @Column(nullable = false, length = 255)
-    private String description;
+  @Enumerated(EnumType.STRING)
+  private SeverityType severity;
 
-    @Enumerated(EnumType.STRING)
-    private SeverityType severity;
-
-    @Override
-    public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-        return null;
-    }
+  @Override
+  public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
+    return null;
+  }
 }

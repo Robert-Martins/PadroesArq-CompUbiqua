@@ -2,12 +2,15 @@ package br.com.agendesaude.api.controller;
 
 
 import br.com.agendesaude.api.domain.dto.LoginDto;
+import br.com.agendesaude.api.domain.dto.TokenDto;
+import br.com.agendesaude.api.domain.service.TokenService;
 import br.com.agendesaude.api.infra.config.security.AuthenticationManager;
 import br.com.agendesaude.api.infra.config.security.jwt.TokenProvider;
+import br.com.agendesaude.api.infra.exception.BadRequestException;
+import br.com.agendesaude.api.infra.exception.ValidationException;
 import br.com.agendesaude.api.infra.utils.StringUtil;
 import java.util.HashMap;
 import java.util.Map;
-import javax.xml.bind.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,12 +29,14 @@ public class LoginController {
 
   private final AuthenticationManager authenticationManager;
   private final TokenProvider tokenProvider;
+  private final TokenService tokenService;
 
-  public LoginController(AuthenticationManager authenticationManager, TokenProvider tokenProvider) {
+  public LoginController(AuthenticationManager authenticationManager, TokenProvider tokenProvider,
+      TokenService tokenService) {
     this.authenticationManager = authenticationManager;
     this.tokenProvider = tokenProvider;
+    this.tokenService = tokenService;
   }
-
 
   @PostMapping("/login")
   public Map<String, String> login(@RequestBody LoginDto loginDto) throws ValidationException {
@@ -48,7 +53,7 @@ public class LoginController {
       tokens.put("refreshToken", refreshToken);
       return tokens;
     } catch (UsernameNotFoundException e) {
-      throw new ValidationException("Usuário ou senha inválidos");
+      throw new BadRequestException("Usuário ou senha inválidos");
     }
   }
 
@@ -68,6 +73,17 @@ public class LoginController {
       throw new ValidationException("Refresh token inválido");
     }
   }
+
+  @PostMapping("/password-reset-request")
+  public void passwordResetFlow(@RequestBody TokenDto tokenDto) {
+    tokenService.enviarEmail(tokenDto.getEmail());
+  }
+
+  @PostMapping("/password-reset")
+  public void passwordReset(@RequestBody TokenDto tokenDto) {
+    this.tokenService.resetPassword(tokenDto);
+  }
+
 
   @GetMapping("/authenticate")
   @ResponseStatus(HttpStatus.NO_CONTENT)

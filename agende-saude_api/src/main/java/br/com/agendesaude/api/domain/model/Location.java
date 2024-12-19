@@ -31,10 +31,6 @@ public class Location extends BaseEntity {
   @JoinColumn(name = "thumbnail_id")
   private Media thumbnail;
 
-  @ManyToOne
-  @JoinColumn(name = "address_id", nullable = false)
-  private Address address;
-
   @Override
   public LocationDto mapEntityToDto() {
     LocationDto locationDto = new LocationDto();
@@ -43,7 +39,6 @@ public class Location extends BaseEntity {
     locationDto.setAcceptsEmergencies(this.isAcceptsEmergencies());
     locationDto.setUser(this.getUser());
     locationDto.setThumbnail(this.getThumbnail());
-    locationDto.setAddress(this.getAddress());
     locationDto.setCreatedAt(this.getCreatedAt());
     locationDto.setUpdatedAt(this.getUpdatedAt());
     return locationDto;

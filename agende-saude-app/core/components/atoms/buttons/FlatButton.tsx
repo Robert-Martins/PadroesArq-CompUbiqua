@@ -5,6 +5,7 @@ import styled, { useTheme } from "styled-components";
 import Icon from "../icons/Icon";
 
 const StyledTouchableOpacity = styled(TouchableOpacity)<ButtonProps>`
+    width: 100%;
     background-color: ${(props) => handleButtonBackground(props)};
     padding: 8px;
     border-radius: ${({ theme }) => theme.border.lg}px;
@@ -22,7 +23,7 @@ const StyledText = styled(Text)<TextButtonProps>`
 
 const FlatButton: React.FC<ButtonProps> = (props: ButtonProps) => {
     const { icon, disabled, type, children, ghost } = props;
-    
+
     const theme = useTheme();
     
     return (

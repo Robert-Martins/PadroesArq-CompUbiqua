@@ -1,9 +1,8 @@
 package br.com.agendesaude.api.infra.config.security;
 
 import br.com.agendesaude.api.domain.service.UserService;
+import br.com.agendesaude.api.infra.exception.BadRequestException;
 import org.springframework.context.annotation.Primary;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -29,16 +28,16 @@ public class AuthenticationManager implements org.springframework.security.authe
     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
     if (userDetails == null) {
-      throw new BadCredentialsException("Usuário não encontrado!");
+      throw new BadRequestException("Usuário não encontrado!");
     }
     if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), userDetails.getPassword())) {
-      throw new BadCredentialsException("Senha inválida!");
+      throw new BadRequestException("Senha inválida!");
     }
     if (!userDetails.isEnabled()) {
-      throw new DisabledException("Usuário desabilitado!");
+      throw new BadRequestException("Usuário desabilitado!");
     }
     if (!userDetails.isAccountNonLocked()) {
-      throw new DisabledException("Usuário bloqueado!");
+      throw new BadRequestException("Usuário bloqueado!");
     }
 
     return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());

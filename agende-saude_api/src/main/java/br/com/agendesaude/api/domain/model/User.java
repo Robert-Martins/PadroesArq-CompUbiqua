@@ -4,10 +4,13 @@ import br.com.agendesaude.api.domain.dto.UserDto;
 import br.com.agendesaude.api.domain.enums.AccessLevelType;
 import br.com.agendesaude.api.domain.enums.UserType;
 import br.com.agendesaude.api.infra.base.BaseEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Collection;
 import java.util.List;
@@ -22,13 +25,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Setter
 public class User extends BaseEntity implements UserDetails {
 
-  @Column(nullable = false, unique = true, length = 255)
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "address_id")
+  private Address address;
+
+  @Column(nullable = false, unique = true)
   private String email;
 
   @Column(nullable = false, unique = true, length = 11)
   private String taxId;
 
-  @Column(nullable = false, length = 255)
+  @Column(nullable = false)
   private String password;
 
   @Column(length = 15)
@@ -52,6 +59,7 @@ public class User extends BaseEntity implements UserDetails {
     userDto.setEmail(this.getEmail());
     userDto.setPhone(this.getPhone());
     userDto.setTaxId(this.getTaxId());
+    userDto.setAddress(this.getAddress());
     userDto.setUserType(this.getType());
     userDto.setAccessLevelType(this.getAccessLevel());
     userDto.setIsActive(this.isActive());

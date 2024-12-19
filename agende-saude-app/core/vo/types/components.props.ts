@@ -20,9 +20,9 @@ export type TextButtonProps = {
 
 export type ButtonProps = {
     children: ReactNode;
-    onPress: () => void | (<T> (parameter: T) => void);
+    onPress: (() => void | Promise<void>) | (<T> (parameter: T) => void);
     icon?: AppIcon;
-    type?: "primary" | "secondary" | "tertiary";
+    type: "primary" | "secondary" | "tertiary";
     ghost?: boolean;
     disabled?: boolean;
     theme?: ASTheme;
@@ -83,9 +83,10 @@ export type SelectionListProps<T> = {
 export type CheckboxProps = CommonInputProps<boolean>;
 
 export type FlexContainerProps = {
+    flex?: number;
     direction?: "row" | "column";
     justify?: "flex-start" | "center" | "flex-end" | "space-between" | "space-around";
-    align?: "stretch" | "flex-start" | "center" | "flex-end";
+    align?: "stretch" | "flex-start" | "center" | "flex-end" | "space-between";
     wrap?: "wrap" | "nowrap";
     gap?: number;
     rowGap?: number;
@@ -95,6 +96,10 @@ export type FlexContainerProps = {
 export type MediaRenderProps = {
     media: Media;
     icon: AppIcon;
+}
+
+export type FileInputProps = MediaRenderProps & {
+    onChangeValue: (updatedMedia: Media | null) => void;
 }
 
 export type ExpandableProps = {
@@ -108,4 +113,22 @@ export type ConfirmationModalProps = {
     message: string;
     onConfirm: () => void;
     onCancel: () => void;
+}
+
+export type SliderRef = {
+    nextSlide: (callback?: () => void) => void;
+    previousSlide: (callback: () => void) => void;
+    goToLastSlide: () => void;
+    isLastSlide: () => boolean;
+    isFirstSlide: () => boolean;
+}
+
+export type SliderProps = {
+    showNavigation?: boolean;
+    children: ReactNode;
+    allowDotsNavigation?: boolean;
+}
+
+export type HomeSlideProps = {
+    children: ReactNode;
 }

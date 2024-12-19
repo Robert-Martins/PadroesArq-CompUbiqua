@@ -1,3 +1,7 @@
+import AuthProvider from '@/core/contexts/auth.provider';
+import LoadingProvider from '@/core/contexts/loading.provider';
+import LocationProvider from '@/core/contexts/location.provider';
+import ModalProvider from '@/core/contexts/modal.provider';
 import { asDarkTheme, asLightTheme } from '@/core/design-system/theme';
 import { agendeSaudeAppToastConfig } from '@/core/utils/toast.utils';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
@@ -58,11 +62,19 @@ const RootLayoutNav: React.FC = () => {
 
   return (
     <ThemeProvider theme={isDarkTheme ? asDarkTheme : asLightTheme}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar style={isDarkTheme ? "light" : "dark"} translucent={true} />
-        <Slot />
-        <Toast {...agendeSaudeAppToastConfig} />
-      </SafeAreaView>
+      <ModalProvider>
+        <LoadingProvider>
+          <AuthProvider>
+            <LocationProvider>
+              <SafeAreaView style={{ flex: 1 }}>
+                <StatusBar style={isDarkTheme ? "light" : "dark"} translucent={true} />
+                <Slot />
+                <Toast {...agendeSaudeAppToastConfig} />
+              </SafeAreaView>
+            </LocationProvider>
+          </AuthProvider>
+        </LoadingProvider>
+      </ModalProvider>
     </ThemeProvider>
   );
 }

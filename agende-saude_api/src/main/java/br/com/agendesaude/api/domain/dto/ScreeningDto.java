@@ -6,7 +6,7 @@ import br.com.agendesaude.api.domain.model.Screening;
 import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.util.Map;
+import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,25 +15,28 @@ import lombok.Setter;
 public class ScreeningDto extends BaseEntityDto<Screening> {
 
   @NotNull
-  private Appointment appointment;
+  private List<ScreeningQuestionnaireAnswerDto> questionnaire;
 
   @NotNull
-  private Map<String, Boolean> questionnaire;
+  private Appointment appointment;
 
   @NotBlank
   private String notes;
 
-  private String classification;
-  private String justification;
+  @NotBlank
   private String status;
+
+  private String classification;
+
+  private String justification;
 
   public ScreeningDto() {
   }
 
   public ScreeningDto(Screening screening) {
     this.setId(screening.getId());
-    this.setAppointment(screening.getAppointment());
-    this.setQuestionnaire(screening.getQuestionnaire());
+    this.setQuestionnaire(
+        ScreeningQuestionnaireAnswerDto.fromMap(screening.getQuestionnaire()));
     this.setNotes(screening.getNotes());
     this.setClassification(screening.getClassification());
     this.setJustification(screening.getJustification());
@@ -46,8 +49,9 @@ public class ScreeningDto extends BaseEntityDto<Screening> {
   public Screening mapDtoToEntity() {
     Screening screening = new Screening();
     screening.setId(this.getId());
-    screening.setAppointment(this.getAppointment());
-    screening.setQuestionnaire(this.getQuestionnaire());
+    screening.setQuestionnaire(
+        this.questionnaire != null ? ScreeningQuestionnaireAnswerDto.toMap(this.getQuestionnaire()) :
+            null);
     screening.setNotes(this.getNotes());
     screening.setClassification(this.getClassification());
     screening.setJustification(this.getJustification());
@@ -56,5 +60,4 @@ public class ScreeningDto extends BaseEntityDto<Screening> {
     screening.setUpdatedAt(this.getUpdatedAt());
     return screening;
   }
-
 }

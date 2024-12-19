@@ -24,7 +24,7 @@ const onUnauthorized = async (error: AxiosError): Promise<void> => {
 
     if(isRefreshTokenRequest) {
         const { logout } = useAuth();
-        await logout();
+        logout();
     }
     else
         performRefreshTokenFlow()

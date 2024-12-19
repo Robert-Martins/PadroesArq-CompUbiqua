@@ -1,6 +1,7 @@
 package br.com.agendesaude.api.domain.model;
 
 import br.com.agendesaude.api.domain.dto.ScreeningDto;
+import br.com.agendesaude.api.domain.dto.ScreeningQuestionnaireAnswerDto;
 import br.com.agendesaude.api.domain.enums.ScreeningStatus;
 import br.com.agendesaude.api.infra.base.BaseEntity;
 import com.vladmihalcea.hibernate.type.json.JsonType;
@@ -8,9 +9,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
 import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,12 +22,8 @@ import org.hibernate.annotations.Type;
 @Setter
 public class Screening extends BaseEntity {
 
-  @ManyToOne
-  @JoinColumn(name = "appointment_id", nullable = false)
-  private Appointment appointment;
-
   @Type(JsonType.class)
-  @Column(nullable = false, columnDefinition = "jsonb")
+  @Column(columnDefinition = "jsonb")
   private Map<String, Boolean> questionnaire;
 
   @Enumerated(EnumType.STRING)
@@ -44,25 +40,29 @@ public class Screening extends BaseEntity {
 
   @Override
   public ScreeningDto mapEntityToDto() {
-    ScreeningDto screeningDto = new ScreeningDto();
-    screeningDto.setId(this.getId());
-    screeningDto.setQuestionnaire(this.getQuestionnaire());
-    screeningDto.setNotes(this.getNotes());
-
-    if (this.getAppointment() != null) {
-      screeningDto.setAppointment(this.getAppointment());
+    if (this == null) {
+      return null;
     }
 
-    screeningDto.setClassification(this.getClassification());
-    screeningDto.setJustification(this.getJustification());
-
+    ScreeningDto screeningDto = new ScreeningDto();
+    screeningDto.setId(this.getId());
+    screeningDto.setQuestionnaire(
+        this.getQuestionnaire() != null ?
+            ScreeningQuestionnaireAnswerDto.fromMap(this.getQuestionnaire()) :
+            new ArrayList<>()
+    );
+    screeningDto.setNotes(this.getNotes() != null ? this.getNotes() : "");
+    screeningDto.setClassification(this.getClassification() != null ? this.getClassification() : "");
+    screeningDto.setJustification(this.getJustification() != null ? this.getJustification() : "");
     screeningDto.setStatus(
-        this.getStatus() != null ? this.getStatus().name() : null);
+        this.getStatus() != null ? this.getStatus().name() : null
+    );
 
     screeningDto.setCreatedAt(this.getCreatedAt());
     screeningDto.setUpdatedAt(this.getUpdatedAt());
 
     return screeningDto;
   }
+
 
 }
