@@ -6,18 +6,22 @@ import { useRef, useState } from "react";
 const Welcome: React.FC = () => {
     const router = useRouter();
     const sliderRef = useRef<SliderRef>(null);
+    const [isFirstSlide, setIsFirstSlide] = useState(true);
     const [isLastSlide, setIsLastSlide] = useState(false);
 
+    const updateSlideState = () => {
+        setIsFirstSlide(sliderRef.current?.isFirstSlide() || false);
+        setIsLastSlide(sliderRef.current?.isLastSlide() || false);
+    }
+
     const handleNext = () => {
-        sliderRef.current?.nextSlide(() => {
-            setIsLastSlide(sliderRef.current?.isLastSlide() || false);
-        });
+        sliderRef.current?.nextSlide(updateSlideState);
     };
 
     const handlePrevious = () => {
-        sliderRef.current?.previousSlide(() => {
-            setIsLastSlide(sliderRef.current?.isLastSlide() || false);
-        });
+        if(!isFirstSlide) {
+            sliderRef.current?.previousSlide(updateSlideState);
+        }
     };
 
     const goToLogin = () => {
@@ -70,7 +74,7 @@ const Welcome: React.FC = () => {
                                 Acessar
                             </FlatButton>
                             <Flex align="center">
-                                <Paragraph>Ainda não se cadastro?</Paragraph>
+                                <Paragraph>Não possui cadastro?</Paragraph>
                                 <TextButton type="primary" onPress={goToRegister}>Realizar cadastro</TextButton>
                             </Flex>
                         </>
