@@ -1,12 +1,11 @@
-import { Text } from "react-native";
-import { Flex } from "@/core/components";
+import { Layout, TabTitle } from "@/core/components";
 
-const Consulation: React.FC = () => {
+const Consultation: React.FC = () => {
     return (
-        <Flex>
-            <Text> Consulation</Text>
-        </Flex>
+        <Layout>
+            <TabTitle>Consultation</TabTitle>
+        </Layout>
     )
 }
 
-export default Consulation;
+export default Consultation;

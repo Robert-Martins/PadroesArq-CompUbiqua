@@ -1,11 +1,10 @@
-import { Text } from "react-native";
-import { Flex } from "@/core/components";
+import { Layout, TabTitle } from "@/core/components";
 
 const Location: React.FC = () => {
     return (
-        <Flex>
-            <Text>Location</Text>
-        </Flex>
+        <Layout>
+            <TabTitle>Local</TabTitle>
+        </Layout>
     )
 }
 

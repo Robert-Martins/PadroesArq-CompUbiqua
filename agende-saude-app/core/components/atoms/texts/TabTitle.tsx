@@ -4,7 +4,7 @@ const TabTitle = styled.Text`
     width: 100%;
     padding: 10px 0;
     color: ${({ theme }) => theme.colors.text};
-    font-size: ${({ theme }) => theme.fontSizes.xxs};
+    font-size: ${({ theme }) => theme.fontSizes.xxs}px;
     font-family: ${({ theme }) => theme.fonts.regular};
     text-align: center;
     border-bottom-width: 1px;
