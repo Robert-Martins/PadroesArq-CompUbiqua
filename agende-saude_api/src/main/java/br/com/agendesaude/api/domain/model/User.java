@@ -26,7 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class User extends BaseEntity implements UserDetails {
 
   @ManyToOne(cascade = CascadeType.ALL)
-  @JoinColumn(name = "address_id", nullable = false)
+  @JoinColumn(name = "address_id")
   private Address address;
 
   @Column(nullable = false, unique = true, length = 255)
