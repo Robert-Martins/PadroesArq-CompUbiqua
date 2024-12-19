@@ -3,7 +3,7 @@ import React from "react";
 
 export const ProfileLayout: React.FC = () => {
     return (
-        <Stack screenOptions={{ headerShown: true }}>
+        <Stack screenOptions={{ headerShown: false }}>
             <Stack.Screen name="index" options={{ title: "Perfil" }} />
             <Stack.Screen name="person" options={{ title: "Dados Pessoais" }} />
             <Stack.Screen name="appointment" options={{ title: "Consultas Agendadas" }} />
