@@ -14,6 +14,18 @@ export type ASTheme = {
             unfocused: string;
             disabled: string;
         },
+        alert: {
+            error: string;
+            warning: string;
+            info: string;
+            success: string;
+            icon: {
+                error: string;
+                warning: string;
+                info: string;
+                success: string;
+            }
+        },
         buttons: {
             primary: {
                 background: string;
@@ -117,6 +129,18 @@ export const asLightTheme: ASTheme = {
             unfocused: "#E9ECEF",
             disabled: "#E9ECEF",
         },
+        alert: {
+            error: "#EB2D2D",
+            warning: "#FFC107",
+            info: "#17A2B8",
+            success: "#28A745",
+            icon: {
+                error: "#EB2D2D",
+                warning: "#FFC107",
+                info: "#17A2B8",
+                success: "#28A745",
+            }
+        },
         buttons: {
             primary: {
                 background: "#007BFF",
@@ -155,6 +179,18 @@ export const asDarkTheme: ASTheme = {
         icons: {
             unfocused: "#E9ECEF",
             disabled: "#E9ECEF",
+        },
+        alert: {
+            error: "#EB2D2D",
+            warning: "#FFC107",
+            info: "#17A2B8",
+            success: "#28A745",
+            icon: {
+                error: "#EB2D2D",
+                warning: "#FFC107",
+                info: "#17A2B8",
+                success: "#28A745",
+            }
         },
         buttons: {
             primary: {

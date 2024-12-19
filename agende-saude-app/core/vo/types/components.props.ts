@@ -2,8 +2,9 @@ import { ASTheme } from "@/core/design-system/theme";
 import { Media } from "@/core/models/media.model";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ReactNode } from "react";
+import { AlertType } from "./types";
 
-type AppIcon = keyof typeof MaterialCommunityIcons.glyphMap;
+export type AppIcon = keyof typeof MaterialCommunityIcons.glyphMap;
 
 export type IconProps = {
     name : AppIcon;
@@ -129,6 +130,8 @@ export type SliderProps = {
     allowDotsNavigation?: boolean;
 }
 
-export type HomeSlideProps = {
-    children: ReactNode;
+export type AlertProps = {
+    type: AlertType;
+    title: string;
+    message: string;
 }
