@@ -5,10 +5,9 @@ import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "agende_address")
@@ -16,29 +15,29 @@ import java.math.BigDecimal;
 @Setter
 public class Address extends BaseEntity {
 
-    @Column(nullable = false)
-    private String address;
+  @Column()
+  private String address;
 
-    @Column(nullable = false)
-    private String neighborhood;
+  @Column()
+  private String neighborhood;
 
-    @Column(nullable = false)
-    private String city;
+  @Column()
+  private String city;
 
-    @Column(nullable = false)
-    private String state;
+  @Column()
+  private String state;
 
-    @Column(nullable = false)
-    private String zipcode;
+  @Column()
+  private String zipcode;
 
-    @Column(nullable = false, precision = 10, scale = 6)
-    private BigDecimal latitude;
+  @Column(nullable = false, precision = 10, scale = 6)
+  private BigDecimal latitude;
 
-    @Column(nullable = false, precision = 10, scale = 6)
-    private BigDecimal longitude;
+  @Column(nullable = false, precision = 10, scale = 6)
+  private BigDecimal longitude;
 
-    @Override
-    public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
-        return null;
-    }
+  @Override
+  public BaseEntityDto<? extends BaseEntity> mapEntityToDto() {
+    return null;
+  }
 }

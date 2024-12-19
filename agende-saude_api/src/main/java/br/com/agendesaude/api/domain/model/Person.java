@@ -27,7 +27,7 @@ import lombok.Setter;
 @Setter
 public class Person extends BaseEntity {
 
-  @OneToOne
+  @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
