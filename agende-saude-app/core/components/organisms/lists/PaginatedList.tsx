@@ -1,8 +1,8 @@
 import { PaginatedListProps } from '@/core/vo/types/components.props';
-import React, { useState, useCallback, useEffect, useRef, forwardRef } from 'react';
+import React, { useState, useCallback, useEffect, forwardRef } from 'react';
 import { FlatList, ActivityIndicator, View, StyleSheet } from 'react-native';
 
-const PaginatedList: React.ForwardRefExoticComponent<PaginatedListProps<any> & React.RefAttributes<unknown>>  = forwardRef((props, ref) => {
+const PaginatedList = forwardRef<FlatList<any>, PaginatedListProps<any>>((props, ref) => {
     const { page, onFetchNextPage, children } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState([]);
