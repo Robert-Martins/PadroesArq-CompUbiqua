@@ -12,7 +12,6 @@ import { Person } from "@/core/models/person.model";
 import { createPerson } from "@/core/services/person.service";
 import { useRouter } from "expo-router";
 import { ConfirmationModal } from "@/core/components/molecules/modals/ConfirmationModal";
-import { applicationHealthCheck } from "@/core/services/application.service";
 
 const Register: React.FC = () => {
     const sliderRef = useRef<SliderRef>(null);
