@@ -154,3 +154,7 @@ export type LocationCardProps = {
 export type ConsultationCardProps = {
     consultation: Consultation;
 }
+
+export type AppointmentCardProps = {
+    appointment: Appointment;
+}
