@@ -18,18 +18,14 @@ import lombok.Setter;
 @Setter
 public class PersonDto extends BaseEntityDto<Person> {
 
-  @NotNull
   private User user;
 
-  @NotBlank
   private String fullName;
 
   private String phone;
 
-  @NotNull
   private LocalDate birthDate;
 
-  @NotNull
   private GenderType genderType;
 
   private BloodType bloodType;

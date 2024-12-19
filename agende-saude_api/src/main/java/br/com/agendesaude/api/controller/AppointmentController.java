@@ -41,7 +41,6 @@ public class AppointmentController {
     return ResponseEntity.ok(result);
   }
 
-
   @GetMapping("/next")
   public ResponseEntity<List<AppointmentDto>> getNextAppointments(Authentication principal) {
     User user = ((User) principal.getPrincipal());

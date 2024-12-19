@@ -57,6 +57,7 @@ public class Screening extends BaseEntity {
     screeningDto.setStatus(
         this.getStatus() != null ? this.getStatus().name() : null
     );
+
     screeningDto.setCreatedAt(this.getCreatedAt());
     screeningDto.setUpdatedAt(this.getUpdatedAt());
 
