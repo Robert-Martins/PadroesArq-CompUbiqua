@@ -44,7 +44,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setIsLoading(false);
     }
 
-    const hasBasicAccessLevelOnly: boolean = true; //user?.user?.accessLevelType === BASIC_ACCESS_LEVEL
+    const hasBasicAccessLevelOnly: boolean = Optional.ofNullable(user)
+        .map(user => user?.user)
+        .map(user => user?.accessLevelType)
+        .map(accessLevelType => accessLevelType === BASIC_ACCESS_LEVEL)
+        .orElse(true);
 
     const login = async (authenticationResponse: AuthenticationResponse) => {
         await setTokens(authenticationResponse);
