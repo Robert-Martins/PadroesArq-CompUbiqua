@@ -16,7 +16,7 @@ import br.com.agendesaude.api.domain.repository.ConsultationRepository;
 import br.com.agendesaude.api.domain.repository.LocationRepository;
 import br.com.agendesaude.api.domain.repository.PersonRepository;
 import br.com.agendesaude.api.domain.repository.ScreeningRepository;
-import br.com.agendesaude.api.infra.exception.CustomException;
+import br.com.agendesaude.api.infra.exception.BadRequestException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -79,7 +79,7 @@ public class AppointmentService {
       consultationRepository.save(consultation);
     } else {
       consultation = consultationRepository.findById(consultation.getId())
-          .orElseThrow(() -> new CustomException("Consultation not found"));
+          .orElseThrow(() -> new BadRequestException("Consultation not found"));
     }
 
     Screening screening = appointmentDto.getScreening().mapDtoToEntity();
@@ -91,12 +91,12 @@ public class AppointmentService {
     }
 
     Appointment appointment = appointmentRepository.findById(appointmentDtoId)
-        .orElseThrow(() -> new CustomException("Appointment not found"));
+        .orElseThrow(() -> new BadRequestException("Appointment not found"));
 
     boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(
         consultation.getId(), AppointmentStatusType.SCHEDULED);
     if (hasScheduledAppointments && appointmentDto.getStatus() == AppointmentStatusType.SCHEDULED) {
-      throw new CustomException(
+      throw new BadRequestException(
           "Cannot update appointment for consultation with an existing SCHEDULED appointment");
     }
 
@@ -146,14 +146,14 @@ public class AppointmentService {
   private Consultation processConsultation(ConsultationDto consultationDto) {
     Consultation consultation = consultationDto.mapDtoToEntity();
     Location location = locationRepository.findById(consultation.getLocation().getId())
-        .orElseThrow(() -> new CustomException("Location not found"));
+        .orElseThrow(() -> new BadRequestException("Location not found"));
 
     if (consultation.getId() == null) {
       consultation.setLocation(location);
       return consultationRepository.save(consultation);
     } else {
       return consultationRepository.findById(consultation.getId())
-          .orElseThrow(() -> new CustomException("Consultation not found"));
+          .orElseThrow(() -> new BadRequestException("Consultation not found"));
     }
   }
 
@@ -169,13 +169,13 @@ public class AppointmentService {
     boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(
         consultation.getId(), AppointmentStatusType.SCHEDULED);
     if (hasScheduledAppointments) {
-      throw new CustomException("Cannot schedule appointment for consultation with an existing SCHEDULED appointment");
+      throw new BadRequestException("Cannot schedule appointment for consultation with an existing SCHEDULED appointment");
     }
 
     boolean hasScheduledEmergencyAppointments = appointmentRepository.existsEmergencyScheduledAppointment(
         person.getId(), ConsultationType.EMERGENCY, AppointmentStatusType.SCHEDULED);
     if (hasScheduledEmergencyAppointments) {
-      throw new CustomException("Cannot schedule two EMERGENCY appointment simultaneously");
+      throw new BadRequestException("Cannot schedule two EMERGENCY appointment simultaneously");
     }
   }
 

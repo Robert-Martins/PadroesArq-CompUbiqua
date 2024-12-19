@@ -6,7 +6,7 @@ import br.com.agendesaude.api.domain.dto.TokenDto;
 import br.com.agendesaude.api.domain.service.TokenService;
 import br.com.agendesaude.api.infra.config.security.AuthenticationManager;
 import br.com.agendesaude.api.infra.config.security.jwt.TokenProvider;
-import br.com.agendesaude.api.infra.exception.CustomException;
+import br.com.agendesaude.api.infra.exception.BadRequestException;
 import br.com.agendesaude.api.infra.exception.ValidationException;
 import br.com.agendesaude.api.infra.utils.StringUtil;
 import java.util.HashMap;
@@ -53,7 +53,7 @@ public class LoginController {
       tokens.put("refreshToken", refreshToken);
       return tokens;
     } catch (UsernameNotFoundException e) {
-      throw new CustomException("Usuário ou senha inválidos");
+      throw new BadRequestException("Usuário ou senha inválidos");
     }
   }
 
