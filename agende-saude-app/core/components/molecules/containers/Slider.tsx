@@ -41,7 +41,7 @@ const Dot = styled.TouchableOpacity<{ active: boolean }>`
 `;
 
 const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAttributes<unknown>> = forwardRef((props, ref) => {
-    const { children, showNavigation = true } = props;
+    const { children, showNavigation = true, allowDotsNavigation = true } = props;
 
     const [currentSlide, setCurrentSlide] = useState(0);
     const slideCount = React.Children.count(children);
@@ -50,6 +50,12 @@ const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAttributes<
     const slideWidth = width - themeSpacing * 2;
 
     const animatedValue = useRef(new Animated.Value(0)).current;
+
+    const goToSlideFromDot = (index: number) => {
+        if (allowDotsNavigation) {
+            goToSlide(index);
+        }
+    }
 
     const goToSlide = (index: number, callback?: () => void) => {
         if (index >= 0 && index < slideCount) {
@@ -97,7 +103,7 @@ const Slider: React.ForwardRefExoticComponent<SliderProps & React.RefAttributes<
                         <Dot
                             key={index}
                             active={currentSlide === index}
-                            onPress={() => goToSlide(index)}
+                            onPress={() => goToSlideFromDot(index)}
                         />
                     ))}
                 </NavigationDots>

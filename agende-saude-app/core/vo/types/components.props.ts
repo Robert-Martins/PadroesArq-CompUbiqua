@@ -116,7 +116,7 @@ export type ConfirmationModalProps = {
 }
 
 export type SliderRef = {
-    nextSlide: (callback: () => void) => void;
+    nextSlide: (callback?: () => void) => void;
     previousSlide: (callback: () => void) => void;
     goToLastSlide: () => void;
     isLastSlide: () => boolean;
@@ -126,6 +126,7 @@ export type SliderRef = {
 export type SliderProps = {
     showNavigation?: boolean;
     children: ReactNode;
+    allowDotsNavigation?: boolean;
 }
 
 export type HomeSlideProps = {

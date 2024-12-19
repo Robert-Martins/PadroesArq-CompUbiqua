@@ -1,10 +1,39 @@
+import { Address } from "../models/address.model";
 import { PageableFilter } from "../vo/types/filters";
 import { Optional } from "./optional";
+
+const isValidDate = (date: Date): boolean => {
+    return date instanceof Date || Object.prototype.toString.call(date) === "[object Date]";
+}
+
+const formatAddress = (address: Address): string => {
+    return `${address.address}, ${address.neighborhood}, ${address.city} - ${address.state}, ${address.zipcode}`;
+};
+
+const formatDistance = (distanceInMeters: number): string => {
+    return Optional.ofNullable(distanceInMeters)
+        .map(distance => {
+            if (distance < 1000) {
+                return `${distance} m`;
+            } else {
+                const distanceInKilometers = (distance / 1000).toFixed(2);
+                return `${distanceInKilometers} km`;
+            }
+        })
+        .orElse(null);
+};
+
+export const formatDate = (date: Date): string => {
+    return Optional.ofNullable(date)
+        .filter(isValidDate)
+        .map(d => new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(d))
+        .orElse(null);
+};
 
 const transformRequestParamValue = (value: any): string => {
     return Optional.ofNullable(value)
         .map(val => {
-            if (val instanceof Date || Object.prototype.toString.call(val) === "[object Date]") {
+            if (isValidDate(val)) {
                 return new Date(val).toISOString();
             }
             if (typeof val === 'boolean') {

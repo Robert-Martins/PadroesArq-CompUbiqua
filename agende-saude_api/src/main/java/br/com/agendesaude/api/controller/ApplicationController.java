@@ -19,6 +19,11 @@ public class ApplicationController {
     this.enumService = enumService;
   }
 
+  @GetMapping("/health")
+  public ResponseEntity<String> health() {
+    return ResponseEntity.ok("OK");
+  }
+
   @GetMapping("/enum-by-name/{name}")
   public ResponseEntity<List<EnumDto>> findEnumByName(@PathVariable String name) {
     List<EnumDto> enumValues = enumService.findEnumByName(name);
