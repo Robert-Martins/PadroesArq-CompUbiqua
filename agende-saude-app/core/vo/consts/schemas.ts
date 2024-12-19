@@ -1,5 +1,18 @@
 import * as yup from "yup";
 
+export const loginSchema = yup.object().shape({
+    taxId: yup
+        .string()
+        .min(11, "CPF deve ter no mínimo 11 caracteres")
+        .max(11, "CPF pode ter no máximo 11 caracteres")
+        .required("CPF é obrigatório"),
+    password: yup
+        .string()
+        .min(6, "A senha deve ter no mínimo 6 caracteres")
+        .max(255, "A senha pode ter no máximo 25 caracteres")
+        .required("Senha é obrigatória"),
+});
+
 export const createPersonSchema = yup.object().shape({
     fullName: yup.string().required("Nome completo é obrigatório"),
     user: yup.object().shape({
