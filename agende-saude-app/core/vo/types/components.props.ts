@@ -21,7 +21,7 @@ export type TextButtonProps = {
 }
 
 export type ButtonProps = {
-    children: ReactNode;
+    children?: ReactNode;
     onPress: (() => void | Promise<void>) | (<T> (parameter: T) => void);
     icon?: AppIcon;
     type: "primary" | "secondary" | "tertiary";
@@ -94,6 +94,10 @@ export type FlexContainerProps = {
     rowGap?: number;
     columnGap?: number;
 }
+
+export type CopyToClipboardProps = {
+    text: string;
+};
 
 export type MediaRenderProps = {
     media: Media;

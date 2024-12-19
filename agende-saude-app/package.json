@@ -40,7 +40,8 @@
     "react-native-toast-message": "^2.2.1",
     "react-native-web": "~0.19.13",
     "styled-components": "^6.1.13",
-    "yup": "^1.6.1"
+    "yup": "^1.6.1",
+    "expo-clipboard": "~7.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
