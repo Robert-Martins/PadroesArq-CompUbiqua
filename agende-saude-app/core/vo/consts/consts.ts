@@ -8,3 +8,5 @@ export const imagePickerOptions: ImagePicker.ImagePickerOptions = {
     aspect: [1, 1],
     quality: 1
 };
+
+export const BASIC_ACCESS_LEVEL: string = 'BASIC';

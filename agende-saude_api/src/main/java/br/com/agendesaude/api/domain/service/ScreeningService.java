@@ -1,5 +1,7 @@
 package br.com.agendesaude.api.domain.service;
 
+import br.com.agendesaude.api.domain.model.Screening;
+import br.com.agendesaude.api.domain.repository.ScreeningRepository;
 import br.com.agendesaude.api.infra.exception.BadRequestException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +18,9 @@ import org.springframework.web.client.RestTemplate;
 public class ScreeningService {
 
   @Autowired
+  ScreeningRepository screeningRepository;
+  @Autowired
   private RestTemplate restTemplate;
-
   @Value("${nest.api.url}")
   private String nestApiUrl;
 
@@ -43,5 +46,15 @@ public class ScreeningService {
     }
 
     return response.getBody();
+  }
+
+  @Transactional
+  public Object getAnsweredScreening(Long screeningId) {
+    Screening screening = screeningRepository.findById(screeningId)
+        .orElseThrow(() -> new BadRequestException("Screening not found"));
+
+    Object screeningQuestionnaire = screening.getQuestionnaire();
+
+    return screeningQuestionnaire;
   }
 }

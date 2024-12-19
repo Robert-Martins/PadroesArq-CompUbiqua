@@ -6,7 +6,6 @@ import br.com.agendesaude.api.domain.model.Screening;
 import br.com.agendesaude.api.infra.base.BaseEntityDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +14,7 @@ import lombok.Setter;
 public class ScreeningDto extends BaseEntityDto<Screening> {
 
   @NotNull
-  private List<ScreeningQuestionnaireAnswerDto> questionnaire;
+  private Object questionnaire;
 
   @NotNull
   private Appointment appointment;
@@ -35,8 +34,7 @@ public class ScreeningDto extends BaseEntityDto<Screening> {
 
   public ScreeningDto(Screening screening) {
     this.setId(screening.getId());
-    this.setQuestionnaire(
-        ScreeningQuestionnaireAnswerDto.fromMap(screening.getQuestionnaire()));
+    this.setQuestionnaire(screening.getQuestionnaire());
     this.setNotes(screening.getNotes());
     this.setClassification(screening.getClassification());
     this.setJustification(screening.getJustification());
@@ -49,9 +47,7 @@ public class ScreeningDto extends BaseEntityDto<Screening> {
   public Screening mapDtoToEntity() {
     Screening screening = new Screening();
     screening.setId(this.getId());
-    screening.setQuestionnaire(
-        this.questionnaire != null ? ScreeningQuestionnaireAnswerDto.toMap(this.getQuestionnaire()) :
-            null);
+    screening.setQuestionnaire(this.questionnaire != null ? this.getQuestionnaire() : null);
     screening.setNotes(this.getNotes());
     screening.setClassification(this.getClassification());
     screening.setJustification(this.getJustification());

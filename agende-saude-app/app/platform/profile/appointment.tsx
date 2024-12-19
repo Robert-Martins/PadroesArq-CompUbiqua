@@ -1,11 +1,18 @@
-import { Text } from "react-native";
-import { Flex } from "@/core/components";
+import { Flex, Layout, TabTitle } from "@/core/components";
+import { styled } from "styled-components";
+
+const AppointmentContainer = styled(Flex)`
+    margin-top: ${({ theme }) => theme.spacing.top}px;
+`;
 
 const Appointment: React.FC = () => {
     return (
-        <Flex>
-            <Text>Appointment</Text>
-        </Flex>
+        <Layout>
+            <TabTitle>Agendamentos</TabTitle>
+            <AppointmentContainer>
+                
+            </AppointmentContainer>
+        </Layout>
     )
 }
 

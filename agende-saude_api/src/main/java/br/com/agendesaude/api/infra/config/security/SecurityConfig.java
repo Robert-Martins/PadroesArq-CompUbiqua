@@ -35,6 +35,7 @@ public class SecurityConfig {
     http.authorizeHttpRequests(authz -> authz
             .requestMatchers(HttpMethod.POST, "/person").permitAll()
             .requestMatchers("/auth/login", "/auth/refresh-token", "/auth/password-reset-request", "/auth/password-reset",
+                "application/health", "application/enum-by-name/*",
                 "/token/validate").permitAll()
             .anyRequest().authenticated()
         ).csrf(AbstractHttpConfigurer::disable)

@@ -2,8 +2,13 @@ import { ASTheme } from "@/core/design-system/theme";
 import { Media } from "@/core/models/media.model";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ReactNode } from "react";
+import { AlertType, Page } from "./types";
+import { Location } from "@/core/models/location.model";
+import { Consultation } from "@/core/models/consultation.model";
+import { Appointment } from "@/core/models/appointment.model";
+import { Address } from "@/core/models/address.model";
 
-type AppIcon = keyof typeof MaterialCommunityIcons.glyphMap;
+export type AppIcon = keyof typeof MaterialCommunityIcons.glyphMap;
 
 export type IconProps = {
     name : AppIcon;
@@ -19,7 +24,7 @@ export type TextButtonProps = {
 }
 
 export type ButtonProps = {
-    children: ReactNode;
+    children?: ReactNode;
     onPress: (() => void | Promise<void>) | (<T> (parameter: T) => void);
     icon?: AppIcon;
     type: "primary" | "secondary" | "tertiary";
@@ -93,6 +98,10 @@ export type FlexContainerProps = {
     columnGap?: number;
 }
 
+export type CopyToClipboardProps = {
+    text: string;
+};
+
 export type MediaRenderProps = {
     media: Media;
     icon: AppIcon;
@@ -129,6 +138,40 @@ export type SliderProps = {
     allowDotsNavigation?: boolean;
 }
 
-export type HomeSlideProps = {
-    children: ReactNode;
+export type CounterProps = {
+    milliseconds: number;
+    onEnd?: () => void;
+}
+
+export type AlertProps = {
+    type: AlertType;
+    title: string;
+    message: string;
+}
+
+export type ProfileListItemProps = {
+    icon: AppIcon;
+    title: string;
+}
+
+export type MapViewProps = {
+    address: Address;
+}
+
+export type LocationCardProps = {
+    location: Location;
+}
+
+export type ConsultationCardProps = {
+    consultation: Consultation;
+}
+
+export type AppointmentCardProps = {
+    appointment: Appointment;
+}
+
+export type PaginatedListProps<T> = {
+    page: Page<T>;
+    onFetchNextPage: () => Promise<T[]>;
+    children: (item: T) => React.ReactElement;
 }
