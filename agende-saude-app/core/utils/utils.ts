@@ -6,11 +6,11 @@ const isValidDate = (date: Date): boolean => {
     return date instanceof Date || Object.prototype.toString.call(date) === "[object Date]";
 }
 
-const formatAddress = (address: Address): string => {
+export const formatAddress = (address: Address): string => {
     return `${address.address}, ${address.neighborhood}, ${address.city} - ${address.state}, ${address.zipcode}`;
 };
 
-const formatDistance = (distanceInMeters: number): string => {
+export const formatDistance = (distanceInMeters: number): string => {
     return Optional.ofNullable(distanceInMeters)
         .map(distance => {
             if (distance < 1000) {
@@ -29,6 +29,15 @@ export const formatDate = (date: Date): string => {
         .map(d => new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(d))
         .orElse(null);
 };
+
+export const formatTime = (ms: number): string => {
+    if(ms || ms < 0) {
+        return '00:00';
+    }
+    const seconds = Math.floor(ms / 1000) % 60;
+    const minutes = Math.floor(ms / 1000 / 60);
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
 
 const transformRequestParamValue = (value: any): string => {
     return Optional.ofNullable(value)

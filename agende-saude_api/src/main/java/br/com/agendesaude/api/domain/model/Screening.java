@@ -1,7 +1,6 @@
 package br.com.agendesaude.api.domain.model;
 
 import br.com.agendesaude.api.domain.dto.ScreeningDto;
-import br.com.agendesaude.api.domain.dto.ScreeningQuestionnaireAnswerDto;
 import br.com.agendesaude.api.domain.enums.ScreeningStatus;
 import br.com.agendesaude.api.infra.base.BaseEntity;
 import com.vladmihalcea.hibernate.type.json.JsonType;
@@ -11,7 +10,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
-import java.util.Map;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Type;
@@ -24,7 +22,7 @@ public class Screening extends BaseEntity {
 
   @Type(JsonType.class)
   @Column(columnDefinition = "jsonb")
-  private Map<String, Boolean> questionnaire;
+  private Object questionnaire;
 
   @Enumerated(EnumType.STRING)
   private ScreeningStatus status;
@@ -46,11 +44,7 @@ public class Screening extends BaseEntity {
 
     ScreeningDto screeningDto = new ScreeningDto();
     screeningDto.setId(this.getId());
-    screeningDto.setQuestionnaire(
-        this.getQuestionnaire() != null ?
-            ScreeningQuestionnaireAnswerDto.fromMap(this.getQuestionnaire()) :
-            new ArrayList<>()
-    );
+    screeningDto.setQuestionnaire(this.getQuestionnaire() != null ? this.getQuestionnaire() : new ArrayList<>());
     screeningDto.setNotes(this.getNotes() != null ? this.getNotes() : "");
     screeningDto.setClassification(this.getClassification() != null ? this.getClassification() : "");
     screeningDto.setJustification(this.getJustification() != null ? this.getJustification() : "");

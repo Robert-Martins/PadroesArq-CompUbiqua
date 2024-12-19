@@ -15,8 +15,8 @@ export const findAllByPerson = (appointmentFilter: PageableFilter<AppointmentFil
         .then(response => response.data);
 }
 
-export const findNextByPerson = (): Promise<Appointment> => {
-    return api.get<Appointment>(`${APPOINTMENT_PATH}/next`)
+export const findNextByPerson = (): Promise<Appointment[]> => {
+    return api.get<Appointment[]>(`${APPOINTMENT_PATH}/next`)
         .then(response => response.data);
 }
 

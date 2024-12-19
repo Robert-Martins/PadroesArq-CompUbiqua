@@ -92,3 +92,5 @@ export type DisplayModalArguments<T> = {
     showCloseButton?: boolean;
     modalProps?: T;
 };
+
+export type AlertType = 'success' | 'error' | 'warning' | 'info';

@@ -1,12 +1,19 @@
-import { Text } from "react-native";
-import { Flex } from "@/core/components";
+import { Flex, Layout, TabTitle } from "@/core/components";
+import { styled } from "styled-components";
 
-const Consulation: React.FC = () => {
+const ConsultationContainer = styled(Flex)`
+    margin-top: ${({ theme }) => theme.spacing.top}px;
+`;
+
+const Consultation: React.FC = () => {
     return (
-        <Flex>
-            <Text> Consulation</Text>
-        </Flex>
+        <Layout>
+            <TabTitle>Consultation</TabTitle>
+            <ConsultationContainer>
+                
+            </ConsultationContainer>
+        </Layout>
     )
 }
 
-export default Consulation;
+export default Consultation;

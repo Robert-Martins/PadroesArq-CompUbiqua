@@ -1,11 +1,18 @@
-import { Text } from "react-native";
-import { Flex } from "@/core/components";
+import { Flex, Layout, TabTitle } from "@/core/components";
+import { styled } from "styled-components";
+
+const LocationsContainer = styled(Flex)`
+    margin-top: ${({ theme }) => theme.spacing.top}px;
+`;
 
 const Locations: React.FC = () => {
     return (
-        <Flex>
-            <Text>Locations</Text>
-        </Flex>
+        <Layout>
+            <TabTitle>Locais de Atendimento</TabTitle>
+            <LocationsContainer>
+                
+            </LocationsContainer>
+        </Layout>
     )
 }
 

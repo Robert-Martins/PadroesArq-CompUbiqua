@@ -1,6 +1,7 @@
 export type ASTheme = {
     spacing: {
         layout: number;
+        top: number;
     },
     colors: {
         primary: string;
@@ -13,6 +14,18 @@ export type ASTheme = {
         icons: {
             unfocused: string;
             disabled: string;
+        },
+        alert: {
+            error: string;
+            warning: string;
+            info: string;
+            success: string;
+            icon: {
+                error: string;
+                warning: string;
+                info: string;
+                success: string;
+            }
         },
         buttons: {
             primary: {
@@ -71,6 +84,7 @@ export type ASTheme = {
 const asCommonTheme: Partial<ASTheme> = {
     spacing: {
         layout: 16,
+        top: 48,
     },
     border: {
         lg: 28,
@@ -117,6 +131,18 @@ export const asLightTheme: ASTheme = {
             unfocused: "#E9ECEF",
             disabled: "#E9ECEF",
         },
+        alert: {
+            error: "#FE3333",
+            warning: "#FFC107",
+            info: "#4E74F8",
+            success: "#41E165",
+            icon: {
+                error: "#690303",
+                warning: "#B78900",
+                info: "#052BA8",
+                success: "#099729",
+            }
+        },
         buttons: {
             primary: {
                 background: "#007BFF",
@@ -155,6 +181,18 @@ export const asDarkTheme: ASTheme = {
         icons: {
             unfocused: "#E9ECEF",
             disabled: "#E9ECEF",
+        },
+        alert: {
+            error: "#EB2D2D",
+            warning: "#FFC107",
+            info: "#17A2B8",
+            success: "#28A745",
+            icon: {
+                error: "#EB2D2D",
+                warning: "#FFC107",
+                info: "#17A2B8",
+                success: "#28A745",
+            }
         },
         buttons: {
             primary: {

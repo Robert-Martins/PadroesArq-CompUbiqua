@@ -9,3 +9,4 @@ export { default as Emphasis } from "./Emphasis";
 export { default as Small } from "./Small";
 export { default as InputLabel } from "./InputLabel";
 export { default as AppName } from "./AppName";
+export { default as TabTitle } from "./TabTitle";
