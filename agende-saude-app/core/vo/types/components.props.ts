@@ -2,10 +2,11 @@ import { ASTheme } from "@/core/design-system/theme";
 import { Media } from "@/core/models/media.model";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ReactNode } from "react";
-import { AlertType } from "./types";
+import { AlertType, Page } from "./types";
 import { Location } from "@/core/models/location.model";
 import { Consultation } from "@/core/models/consultation.model";
 import { Appointment } from "@/core/models/appointment.model";
+import { Address } from "@/core/models/address.model";
 
 export type AppIcon = keyof typeof MaterialCommunityIcons.glyphMap;
 
@@ -151,6 +152,10 @@ export type AlertProps = {
 export type ProfileListItemProps = {
     icon: AppIcon;
     title: string;
+}
+
+export type MapViewProps = {
+    address: Address;
 }
 
 export type LocationCardProps = {
