@@ -4,11 +4,11 @@ import { useEffect } from "react";
 
 const AppEntrypoint: React.FC = () => {
     const router = useRouter();
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, isLoading } = useAuth();
   
     useEffect(() => {
         setTimeout(() => {
-            if (isAuthenticated !== undefined) {
+            if (!isLoading && isAuthenticated !== undefined) {
                 router.replace(
                     isAuthenticated ? "/platform/home" : "/auth/welcome"
                 );

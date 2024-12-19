@@ -5,6 +5,7 @@ import { getToken, removeTokens, setTokens } from "../utils/auth.utils";
 import { AuthenticationResponse } from "../vo/types/types";
 import { Optional } from "../utils/optional";
 import { findCurrent } from "../services/user.service";
+import { BASIC_ACCESS_LEVEL } from "../vo/consts/consts";
 
 type AuthProviderProps = {
     children: ReactNode;
@@ -12,9 +13,12 @@ type AuthProviderProps = {
 
 type AuthContextData = {
     isAuthenticated: boolean;
+    isLoading: boolean;
     login: (authenticationResponse: AuthenticationResponse) => void;
     logout: () => void;
     user: Person | Location;
+    reloadUser: () => void;
+    hasBasicAccessLevelOnly: () => boolean;
 };
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -23,7 +27,8 @@ export const useAuth = () => useContext(AuthContext);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
 
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState<Person | Location>(null);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     useEffect(() => {
         const onStartApp = async () => {
@@ -36,6 +41,11 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     const findCurrentUser = async () => {
         const currentUser: Person | Location = await findCurrent();
         setUser(currentUser);
+        setIsLoading(false);
+    }
+
+    const hasBasicAccessLevelOnly = (): boolean => {
+        return user?.user?.accessLevelType === BASIC_ACCESS_LEVEL;
     }
 
     const login = async (authenticationResponse: AuthenticationResponse) => {
@@ -49,7 +59,15 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     };
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated: !!user, login, logout, user }}>
+        <AuthContext.Provider value={{ 
+            isAuthenticated: !!user,
+            isLoading,
+            login, 
+            logout, 
+            user,
+            reloadUser: findCurrentUser,
+            hasBasicAccessLevelOnly
+        }}>
             {children}
         </AuthContext.Provider>
     );
