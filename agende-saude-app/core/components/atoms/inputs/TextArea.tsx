@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components/native";
-import { TextAreaProps } from "@/core/vo/types/components.props";
+import { Controller } from "react-hook-form";
 import { FormField } from "../../molecules";
 import { InputLabel } from "../texts";
 
@@ -16,31 +16,45 @@ const StyledTextArea = styled.TextInput`
     height: 120px;
 `;
 
-const TextArea: React.FC<TextAreaProps> = ({
-  placeholder,
-  value,
-  onValueChange,
-  onBlur,
-  label
-}) => {
+const ErrorText = styled.Text`
+    color: ${({ theme }) => theme.colors.error};
+    font-size: ${({ theme }) => theme.fontSizes.xxxs}px;
+    margin-top: 4px;
+`;
+
+const TextArea: React.FC<{
+    name: string;
+    control: any;
+    rules?: object;
+    label: string;
+    defaultValue?: string;
+}> = ({ name, control, rules, label, defaultValue }) => {
     const [isFocused, setIsFocused] = useState(false);
 
     return (
-        <FormField>
-            <InputLabel isFocused={isFocused}>{label}</InputLabel>
-            <StyledTextArea
-                placeholder={placeholder}
-                value={value}
-                onChangeText={onValueChange}
-                isFocused={isFocused}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => {
-                    setIsFocused(false);
-                    onBlur?.();
-                }}
-                multiline={true}
-            />
-        </FormField>
+        <Controller
+            name={name}
+            control={control}
+            rules={rules}
+            defaultValue={defaultValue || ""}
+            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                <FormField>
+                    <InputLabel isFocused={isFocused || !!value}>{label}</InputLabel>
+                    <StyledTextArea
+                        value={value}
+                        onChangeText={onChange}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => {
+                            setIsFocused(false);
+                            onBlur();
+                        }}
+                        isFocused={isFocused}
+                        multiline
+                    />
+                    {error && <ErrorText>{error.message}</ErrorText>}
+                </FormField>
+            )}
+        />
     );
 };
 

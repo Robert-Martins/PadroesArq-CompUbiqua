@@ -21,7 +21,7 @@ const Home: React.FC = () => {
                 }
             </HomeContainer>
         </Layout>
-    )
+    );
 }
 
 export default Home;

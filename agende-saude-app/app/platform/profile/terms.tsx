@@ -10,10 +10,10 @@ const Terms: React.FC = () => {
         <Layout>
             <TabTitle>Termos da plataforma</TabTitle>
             <TermsContainer>
-                
+
             </TermsContainer>
         </Layout>
-    )
+    );
 }
 
 export default Terms;

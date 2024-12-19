@@ -67,32 +67,35 @@ const MediaInput: React.FC<FileInputProps> = ({ media, icon, onChangeValue }) =>
     };
 
     return (
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
-          <MediaRender media={localMedia} icon={icon} />
+        <View style={{ alignItems: "center", justifyContent: "center" }}>
+            <MediaRender media={localMedia} icon={icon} />
 
-          <View style={{ flexDirection: "row", marginTop: 10 }}>
-              <FlatButton
-                  onPress={handleSelectFile}
-                  disabled={isLoading}
-              >
-                  Selecionar arquivo
-              </FlatButton>
-              <FlatButton
-                  onPress={handleCapturePhoto}
-                  disabled={isLoading}
-              >
-                  Abrir câmera
-              </FlatButton>
-              {localMedia && (
-                  <FlatButton
-                      onPress={handleDeleteMedia}
-                      disabled={isLoading}
-                  >
-                      Remover
-                  </FlatButton>
-              )}
-          </View>
-      </View>
+            <View style={{ flexDirection: "row", marginTop: 10 }}>
+                <FlatButton
+                    type="primary"
+                    onPress={handleSelectFile}
+                    disabled={isLoading}
+                >
+                    Selecionar arquivo
+                </FlatButton>
+                <FlatButton
+                    type="primary"
+                    onPress={handleCapturePhoto}
+                    disabled={isLoading}
+                >
+                    Abrir câmera
+                </FlatButton>
+                {localMedia && (
+                    <FlatButton
+                    type="primary"
+                        onPress={handleDeleteMedia}
+                        disabled={isLoading}
+                    >
+                        Remover
+                    </FlatButton>
+                )}
+            </View>
+        </View>
     );
 };
 
