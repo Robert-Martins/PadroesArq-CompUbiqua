@@ -7,14 +7,10 @@ import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.service.ConsultationService;
 import jakarta.validation.Valid;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -51,8 +47,8 @@ public class ConsultationController {
 
   @GetMapping("/location/{locationId}")
   public ResponseEntity<Page<ConsultationDto>> findAllCommonConsultationsByLocationId(
-          @PathVariable Long locationId,
-          Pageable pageable) {
+      @PathVariable Long locationId,
+      Pageable pageable) {
 
     Page<ConsultationDto> result = consultationService.findAllCommonConsultationsByLocationId(locationId, pageable);
 
@@ -77,20 +73,21 @@ public class ConsultationController {
     return ResponseEntity.ok(id);
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<Void> updateConsultation(@PathVariable Long id,
-      @Valid @RequestBody ConsultationDto consultationDto, Authentication principal) {
+  @PutMapping
+  public ResponseEntity<ConsultationDto> updateConsultation(@Valid @RequestBody ConsultationDto consultationDto,
+      Authentication principal) {
     User user = ((User) principal.getPrincipal());
     verifyFullAcessUser(user);
-    consultationService.updateConsultation(id, consultationDto);
-    return ResponseEntity.ok().build();
+    ConsultationDto consultation = consultationService.updateConsultation(consultationDto.getId(), consultationDto);
+    return ResponseEntity.ok(consultation);
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> deleteConsultation(@PathVariable Long id, Authentication principal) {
+  @DeleteMapping
+  public ResponseEntity<Void> deleteConsultation(@Valid @RequestBody ConsultationDto consultationDto,
+      Authentication principal) {
     User user = ((User) principal.getPrincipal());
     verifyFullAcessUser(user);
-    consultationService.deleteConsultation(id);
+    consultationService.deleteConsultation(consultationDto.getId());
     return ResponseEntity.ok().build();
   }
 }

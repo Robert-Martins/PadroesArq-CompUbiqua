@@ -63,7 +63,7 @@ public class AppointmentController {
     return ResponseEntity.ok(appointment);
   }
 
-  @PutMapping("/{id}")
+  @PutMapping
   public ResponseEntity<AppointmentDto> updateAppointment(@Valid @RequestBody AppointmentDto appointmentDto,
       Authentication principal) {
     User user = ((User) principal.getPrincipal());
@@ -71,6 +71,5 @@ public class AppointmentController {
     appointmentService.updateAppointment(appointmentDto);
     return ResponseEntity.ok().build();
   }
-
 
 }

@@ -12,7 +12,6 @@ import br.com.agendesaude.api.domain.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +74,7 @@ public class ConsultationService {
 
   public Page<ConsultationDto> findAllCommonConsultationsByLocationId(Long locationId, Pageable pageable) {
     return consultationRepository.findAllByLocationId(locationId, pageable)
-            .map(Consultation::mapEntityToDto);
+        .map(Consultation::mapEntityToDto);
   }
 
   @Transactional
@@ -91,11 +90,11 @@ public class ConsultationService {
   @Transactional
   public Page<ConsultationDto> findAllConsultations(Pageable pageable) {
     return consultationRepository.findAll(pageable)
-            .map(Consultation::mapEntityToDto);
+        .map(Consultation::mapEntityToDto);
   }
 
   @Transactional
-  public void updateConsultation(Long id, ConsultationDto consultationDto) {
+  public ConsultationDto updateConsultation(Long id, ConsultationDto consultationDto) {
     Consultation consultation = consultationRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("Consultation not found"));
 
@@ -109,7 +108,7 @@ public class ConsultationService {
     consultation.setType(consultationDto.getType());
     consultation.setSpecialty(consultationDto.getSpecialty());
     consultation.setDate(consultationDto.getDate());
-    consultationRepository.save(consultation);
+    return consultationRepository.save(consultation).mapEntityToDto();
   }
 
   @Transactional

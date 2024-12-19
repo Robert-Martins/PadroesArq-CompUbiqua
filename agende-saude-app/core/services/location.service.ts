@@ -14,4 +14,4 @@ export const findAllLocations = (locationFilter: PageableFilter<LocationFilter>)
 export const findLocationById = (id: number): Promise<Location> => {
     return api.get<Location>(`${LOCATION_PATH}/${id}`)
         .then(response => response.data);
-}
+}   
