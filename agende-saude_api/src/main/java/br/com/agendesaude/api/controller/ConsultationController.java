@@ -36,8 +36,7 @@ public class ConsultationController {
   private ConsultationService consultationService;
 
   @GetMapping
-  public ResponseEntity<Page<ConsultationDto>> findAllCommonConsultations(
-          @PageableDefault(size = 10, sort = "date", direction = Sort.Direction.ASC) Pageable pageable) {
+  public ResponseEntity<Page<ConsultationDto>> findAllCommonConsultations(Pageable pageable) {
 
     Page<ConsultationDto> result = consultationService.findAllConsultations(pageable);
 
@@ -53,7 +52,7 @@ public class ConsultationController {
   @GetMapping("/location/{locationId}")
   public ResponseEntity<Page<ConsultationDto>> findAllCommonConsultationsByLocationId(
           @PathVariable Long locationId,
-          @PageableDefault(size = 10, sort = "date", direction = Sort.Direction.ASC) Pageable pageable) {
+          Pageable pageable) {
 
     Page<ConsultationDto> result = consultationService.findAllCommonConsultationsByLocationId(locationId, pageable);
 

@@ -33,9 +33,7 @@ public class LocationController {
   }
 
   @GetMapping
-  public ResponseEntity<Page<LocationDto>> findAllLocations(
-          @PageableDefault(size = 10, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-
+  public ResponseEntity<Page<LocationDto>> findAllLocations(Pageable pageable) {
     Page<LocationDto> result = locationService.findAllLocations(pageable);
     return ResponseEntity.ok(result);
   }
