@@ -14,7 +14,11 @@ export const getPreviousUsers = (): Promise<string[] | null> => {
 export const includeNewUser = (user: string): Promise<void> => {
     return getPreviousUsers()
         .then((previousUsers) => {
-            const newUsers = previousUsers ? [...previousUsers, user] : [user];
+            const userExists: boolean = previousUsers?.includes(user);
+            if (userExists) {
+                return Promise.resolve();
+            }
+            const newUsers: string[] = previousUsers ? [...previousUsers, user] : [user];
             return AsyncStorage.setItem(PREVIOUS_USERS_KEY, JSON.stringify(newUsers));
         });
 }
