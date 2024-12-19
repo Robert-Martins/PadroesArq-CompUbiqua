@@ -15,7 +15,7 @@ type AuthContextData = {
     isAuthenticated: boolean;
     isLoading: boolean;
     login: (authenticationResponse: AuthenticationResponse) => void;
-    logout: () => void;
+    logout: () => Promise<void>;
     user: Person | Location;
     reloadUser: () => void;
     hasBasicAccessLevelOnly: () => boolean;
