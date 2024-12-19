@@ -8,7 +8,7 @@ import { TouchableOpacity } from "react-native";
 import styled from "styled-components";
 
 const ProfileList = styled(Flex)`
-    margin-top: 48px;
+    margin-top: ${({ theme }) => theme.spacing.top}px;
 `;
 
 const Profile: React.FC = () => {

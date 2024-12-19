@@ -1,19 +1,20 @@
 import { AlertProps } from "@/core/vo/types/components.props";
 import styled, { useTheme } from "styled-components";
 import { Flex } from "../../molecules";
-import { H5, Icon, Paragraph } from "../../atoms";
+import { H5, H6, Icon, Paragraph } from "../../atoms";
 import { ASTheme } from "@/core/design-system/theme";
-import { handleAlertIcon, handleAlertIconColor } from "@/core/utils/components.utils";
+import { handleAlertColor, handleAlertIcon, handleAlertIconColor } from "@/core/utils/components.utils";
+import { AlertType } from "@/core/vo/types/types";
 
-const StyledAlertContainer = styled(Flex)`
-    background-color: ${({ theme }) => theme.colors.primary};
+const StyledAlertContainer = styled(Flex)<{ type: AlertType }>`
+    background-color: ${({ type, theme }) => handleAlertColor(type, theme)};
     color: ${({ theme }) => theme.colors.white};
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
 `;
 
-const StyledAlertTitle = styled(H5)`
+const StyledAlertTitle = styled(H6)`
 
 `
 
@@ -27,12 +28,12 @@ const Alert: React.FC<AlertProps> = (props) => {
     const theme: ASTheme = useTheme();
 
     return (
-        <StyledAlertContainer>
-            <Icon name={handleAlertIcon(type)} color={handleAlertIconColor(type, theme)} size={32} />
-            <Flex>
+        <StyledAlertContainer align="center" gap={8} type={type}>
+            <Flex direction="row" align="center" gap={8}>
+                <Icon name={handleAlertIcon(type)} color={handleAlertIconColor(type, theme)} size={32} />
                 <StyledAlertTitle>{title}</StyledAlertTitle>
-                <StyledAlertMessage>{message}</StyledAlertMessage>
             </Flex>
+            <StyledAlertMessage>{message}</StyledAlertMessage>
         </StyledAlertContainer>
     );
 }

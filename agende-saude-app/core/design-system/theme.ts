@@ -1,6 +1,7 @@
 export type ASTheme = {
     spacing: {
         layout: number;
+        top: number;
     },
     colors: {
         primary: string;
@@ -83,6 +84,7 @@ export type ASTheme = {
 const asCommonTheme: Partial<ASTheme> = {
     spacing: {
         layout: 16,
+        top: 48,
     },
     border: {
         lg: 28,
@@ -130,15 +132,15 @@ export const asLightTheme: ASTheme = {
             disabled: "#E9ECEF",
         },
         alert: {
-            error: "#EB2D2D",
+            error: "#FE3333",
             warning: "#FFC107",
-            info: "#17A2B8",
-            success: "#28A745",
+            info: "#4E74F8",
+            success: "#41E165",
             icon: {
-                error: "#EB2D2D",
-                warning: "#FFC107",
-                info: "#17A2B8",
-                success: "#28A745",
+                error: "#690303",
+                warning: "#B78900",
+                info: "#052BA8",
+                success: "#099729",
             }
         },
         buttons: {

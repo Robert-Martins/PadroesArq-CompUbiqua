@@ -18,7 +18,7 @@ type AuthContextData = {
     logout: () => Promise<void>;
     user: Person | Location;
     reloadUser: () => void;
-    hasBasicAccessLevelOnly: () => boolean;
+    hasBasicAccessLevelOnly: boolean;
 };
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -44,9 +44,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setIsLoading(false);
     }
 
-    const hasBasicAccessLevelOnly = (): boolean => {
-        return user?.user?.accessLevelType === BASIC_ACCESS_LEVEL;
-    }
+    const hasBasicAccessLevelOnly: boolean = true; //user?.user?.accessLevelType === BASIC_ACCESS_LEVEL
 
     const login = async (authenticationResponse: AuthenticationResponse) => {
         await setTokens(authenticationResponse);
