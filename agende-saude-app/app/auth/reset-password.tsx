@@ -1,9 +1,10 @@
 import { AppName, Flex, Layout, Slider } from "@/core/components";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { SliderRef } from "@/core/vo/types/components.props";
 
 const ResetPassword: React.FC = () => {
     const sliderRef = useRef<SliderRef>(null);
+    const [email, setEmail] = useState("");
 
     return (
         <Layout>
