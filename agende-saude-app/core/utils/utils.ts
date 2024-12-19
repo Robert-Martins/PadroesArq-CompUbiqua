@@ -6,11 +6,11 @@ const isValidDate = (date: Date): boolean => {
     return date instanceof Date || Object.prototype.toString.call(date) === "[object Date]";
 }
 
-const formatAddress = (address: Address): string => {
+export const formatAddress = (address: Address): string => {
     return `${address.address}, ${address.neighborhood}, ${address.city} - ${address.state}, ${address.zipcode}`;
 };
 
-const formatDistance = (distanceInMeters: number): string => {
+export const formatDistance = (distanceInMeters: number): string => {
     return Optional.ofNullable(distanceInMeters)
         .map(distance => {
             if (distance < 1000) {

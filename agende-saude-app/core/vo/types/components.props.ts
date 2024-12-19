@@ -3,6 +3,7 @@ import { Media } from "@/core/models/media.model";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { ReactNode } from "react";
 import { AlertType } from "./types";
+import { Location } from "@/core/models/location.model";
 
 export type AppIcon = keyof typeof MaterialCommunityIcons.glyphMap;
 
@@ -139,4 +140,8 @@ export type AlertProps = {
 export type ProfileListItemProps = {
     icon: AppIcon;
     title: string;
+}
+
+export type LocationCardProps = {
+    location: Location;
 }
