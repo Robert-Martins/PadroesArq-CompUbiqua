@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -34,15 +36,9 @@ public class ConsultationController {
   private ConsultationService consultationService;
 
   @GetMapping
-  public ResponseEntity<Page<ConsultationDto>> findAllCommonConsultations(
-      @RequestParam(required = false) String responsibleDoctor,
-      @RequestParam(required = false) String specialty,
-      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime startDate,
-      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime endDate,
-      Pageable pageable) {
+  public ResponseEntity<Page<ConsultationDto>> findAllCommonConsultations(Pageable pageable) {
 
-    Page<ConsultationDto> result = consultationService.findAllConsultations(
-        responsibleDoctor, specialty, startDate, endDate, pageable);
+    Page<ConsultationDto> result = consultationService.findAllConsultations(pageable);
 
     return ResponseEntity.ok(result);
   }
@@ -51,6 +47,16 @@ public class ConsultationController {
   public ResponseEntity<ConsultationDto> findConsultationById(@PathVariable Long id) {
     ConsultationDto consultationDto = consultationService.getConsultationById(id);
     return ResponseEntity.ok(consultationDto);
+  }
+
+  @GetMapping("/location/{locationId}")
+  public ResponseEntity<Page<ConsultationDto>> findAllCommonConsultationsByLocationId(
+          @PathVariable Long locationId,
+          Pageable pageable) {
+
+    Page<ConsultationDto> result = consultationService.findAllCommonConsultationsByLocationId(locationId, pageable);
+
+    return ResponseEntity.ok(result);
   }
 
   @GetMapping("/available")

@@ -65,7 +65,6 @@ public class PersonService {
     return savedPerson.mapEntityToDto();
   }
 
-
   public PersonDto findById(Long id) {
     Person person = personRepository.findById(id)
         .orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada."));

@@ -1,6 +1,8 @@
 package br.com.agendesaude.api.domain.service;
 
 import br.com.agendesaude.api.domain.dto.AppointmentDto;
+import br.com.agendesaude.api.domain.dto.ConsultationDto;
+import br.com.agendesaude.api.domain.dto.ScreeningDto;
 import br.com.agendesaude.api.domain.enums.AppointmentStatusType;
 import br.com.agendesaude.api.domain.enums.ConsultationType;
 import br.com.agendesaude.api.domain.model.Appointment;
@@ -49,53 +51,22 @@ public class AppointmentService {
 
   @Transactional
   public AppointmentDto createAppointment(AppointmentDto appointmentDto, User user) {
-
     Person person = personRepository.findByUserId(user.getId());
 
-    Consultation consultation = appointmentDto.getConsultation().mapDtoToEntity();
-    Location location = locationRepository.findById(consultation.getLocation().getId())
-        .orElseThrow(() -> new CustomException("Location not found"));
+    Consultation consultation = processConsultation(appointmentDto.getConsultation());
 
-    if (consultation.getId() == null) {
-      consultation.setLocation(location);
-      consultation = consultationRepository.save(consultation);
-    } else {
-      consultation = consultationRepository.findById(consultation.getId())
-          .orElseThrow(() -> new CustomException("Consultation not found"));
-    }
+    Screening screening = processScreening(appointmentDto.getScreening());
 
-    Screening screening = appointmentDto.getScreening().mapDtoToEntity();
-    if (screening.getId() == null) {
-      screening = screeningRepository.save(screening);
-    } else {
-      screening = screeningRepository.findById(screening.getId())
-          .orElseThrow(() -> new CustomException("Screening not found"));
-    }
-
-    boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(
-        consultation.getId(), AppointmentStatusType.SCHEDULED);
-    if (hasScheduledAppointments) {
-      throw new CustomException(
-          "Cannot schedule appointment for consultation with an existing SCHEDULED appointment");
-    }
-
-    boolean hasScheduledEmergencyAppointments = appointmentRepository.existsEmergencyScheduledAppointment(
-        person.getId(), ConsultationType.EMERGENCY, AppointmentStatusType.SCHEDULED);
-
-    if (hasScheduledEmergencyAppointments) {
-      throw new CustomException(
-          "Cannot schedule two EMERGENCY appointment simultaneously");
-    }
+    checkExistingAppointments(consultation, person);
 
     Appointment appointment = appointmentDto.mapDtoToEntity();
     appointment.setConsultation(consultation);
-    appointment.setScreening(screening);
+    appointment.setScreening(screening.getId() != null ? screening : null);
     appointment.setPerson(person);
 
     appointmentRepository.save(appointment);
     return appointment.mapEntityToDto();
   }
-
 
   @Transactional
   public AppointmentDto updateAppointment(AppointmentDto appointmentDto) {
@@ -116,8 +87,7 @@ public class AppointmentService {
       screening = new Screening();
       screeningRepository.save(screening);
     } else {
-      screening = screeningRepository.findById(screening.getId())
-          .orElseThrow(() -> new CustomException("Screening not found"));
+      screening = null;
     }
 
     Appointment appointment = appointmentRepository.findById(appointmentDtoId)
@@ -157,20 +127,56 @@ public class AppointmentService {
   }
 
   @Transactional
-  public List<AppointmentDto> getScheduledEmergencyAppointments(User user) {
+  public AppointmentDto getScheduledEmergencyAppointments(User user) {
 
     Person person = personRepository.findByUserId(user.getId());
 
     List<Appointment> appointments = appointmentRepository.findScheduledEmergencyAppointments(person.getId());
 
-    return appointments.stream()
-        .map(appointment -> appointment.mapEntityToDto())
-        .collect(Collectors.toList());
+    return !appointments.isEmpty() ? appointments.get(0).mapEntityToDto() : null;
   }
+
+  //METODOS AUXILIARES
 
   public Page<AppointmentDto> findAllByPerson(AppointmentStatusType status, Pageable pageable) {
     return appointmentRepository.findByStatus(status, pageable)
         .map(Appointment::mapEntityToDto);
+  }
+
+  private Consultation processConsultation(ConsultationDto consultationDto) {
+    Consultation consultation = consultationDto.mapDtoToEntity();
+    Location location = locationRepository.findById(consultation.getLocation().getId())
+        .orElseThrow(() -> new CustomException("Location not found"));
+
+    if (consultation.getId() == null) {
+      consultation.setLocation(location);
+      return consultationRepository.save(consultation);
+    } else {
+      return consultationRepository.findById(consultation.getId())
+          .orElseThrow(() -> new CustomException("Consultation not found"));
+    }
+  }
+
+  private Screening processScreening(ScreeningDto screeningDto) {
+    Screening screening = screeningDto.mapDtoToEntity();
+    if (screening.getId() == null) {
+      return new Screening();
+    }
+    return null;
+  }
+
+  private void checkExistingAppointments(Consultation consultation, Person person) {
+    boolean hasScheduledAppointments = appointmentRepository.existsByConsultationIdAndStatus(
+        consultation.getId(), AppointmentStatusType.SCHEDULED);
+    if (hasScheduledAppointments) {
+      throw new CustomException("Cannot schedule appointment for consultation with an existing SCHEDULED appointment");
+    }
+
+    boolean hasScheduledEmergencyAppointments = appointmentRepository.existsEmergencyScheduledAppointment(
+        person.getId(), ConsultationType.EMERGENCY, AppointmentStatusType.SCHEDULED);
+    if (hasScheduledEmergencyAppointments) {
+      throw new CustomException("Cannot schedule two EMERGENCY appointment simultaneously");
+    }
   }
 
 }

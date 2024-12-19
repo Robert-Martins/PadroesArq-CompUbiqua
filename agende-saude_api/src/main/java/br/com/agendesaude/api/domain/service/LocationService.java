@@ -82,16 +82,10 @@ public class LocationService {
   }
 
   @Transactional
-  public Page<LocationDto> findAllLocations(String name, Boolean acceptsEmergencies, Pageable pageable) {
-
-    if (name != null) {
-      name.toLowerCase();
-    }
-
-    return locationRepository.findByNameContainingAndAcceptsEmergencies(name, acceptsEmergencies, pageable)
-        .map(Location::mapEntityToDto);
+  public Page<LocationDto> findAllLocations(Pageable pageable) {
+    return locationRepository.findAllLocations(pageable)
+            .map(Location::mapEntityToDto);
   }
-
 
   @Transactional
   public void updateLocation(Long id, LocationDto locationDto) {

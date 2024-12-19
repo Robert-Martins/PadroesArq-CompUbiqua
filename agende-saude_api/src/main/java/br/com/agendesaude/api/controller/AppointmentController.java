@@ -11,9 +11,9 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,16 +34,13 @@ public class AppointmentController {
 
   @GetMapping
   public ResponseEntity<Page<AppointmentDto>> findAllByPerson(
-      @RequestParam int page,
-      @RequestParam int size,
-      @RequestParam String sort,
-      @RequestParam String direction,
-      @RequestParam(required = false) AppointmentStatusType status
-  ) {
-    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort));
+      @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+      @RequestParam(required = false) AppointmentStatusType status) {
+
     Page<AppointmentDto> result = appointmentService.findAllByPerson(status, pageable);
     return ResponseEntity.ok(result);
   }
+
 
   @GetMapping("/next")
   public ResponseEntity<List<AppointmentDto>> getNextAppointments(Authentication principal) {
@@ -53,7 +50,7 @@ public class AppointmentController {
   }
 
   @GetMapping("/scheduled-emergency")
-  public List<AppointmentDto> getScheduledEmergencyAppointments(Authentication principal) {
+  public AppointmentDto getScheduledEmergencyAppointments(Authentication principal) {
     User user = ((User) principal.getPrincipal());
     return appointmentService.getScheduledEmergencyAppointments(user);
   }

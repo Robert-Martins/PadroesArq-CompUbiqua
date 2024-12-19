@@ -16,6 +16,11 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
   Page<Location> findByAcceptsEmergencies(Boolean acceptsEmergencies, Pageable pageable);
 
   @Query(value = """
+    FROM Location l
+    """)
+  Page<Location> findAllLocations(Pageable pageable);
+
+  @Query(value = """
       FROM Location l
       WHERE (:name IS NULL OR lower(l.name) LIKE %:name%)
       AND (:acceptsEmergencies IS NULL OR l.acceptsEmergencies = :acceptsEmergencies)
@@ -25,7 +30,6 @@ public interface LocationRepository extends JpaRepository<Location, Long> {
       @Param("acceptsEmergencies") Boolean acceptsEmergencies,
       Pageable pageable
   );
-
 
 }
 

@@ -27,11 +27,17 @@ public class ScreeningQuestionnaireAnswerDto {
 
   public static List<ScreeningQuestionnaireAnswerDto> fromMap(Map<String, Boolean> questionnaire) {
     List<ScreeningQuestionnaireAnswerDto> dtoList = new ArrayList<>();
-    questionnaire.forEach((question, answer) -> {
-      dtoList.add(new ScreeningQuestionnaireAnswerDto(question, answer, new ArrayList<>()));
-    });
+    if (questionnaire != null && !questionnaire.isEmpty()) {
+      questionnaire.forEach((question, answer) -> {
+        if (question != null && answer != null) {
+          dtoList.add(new ScreeningQuestionnaireAnswerDto(question, answer, new ArrayList<>()));
+        } else {
+        }
+      });
+    }
     return dtoList;
   }
+
 
   public static Map<String, Boolean> toMap(List<ScreeningQuestionnaireAnswerDto> questionnaireDtos) {
     Map<String, Boolean> map = new HashMap<>();

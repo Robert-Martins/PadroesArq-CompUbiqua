@@ -25,7 +25,7 @@ public class Appointment extends BaseEntity {
   private Person person;
 
   @OneToOne
-  @JoinColumn(name = "screening_id", nullable = false)
+  @JoinColumn(name = "screening_id")
   private Screening screening;
 
   @ManyToOne
