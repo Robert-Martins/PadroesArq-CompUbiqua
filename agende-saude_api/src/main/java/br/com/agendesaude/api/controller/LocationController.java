@@ -1,6 +1,7 @@
 package br.com.agendesaude.api.controller;
 
 import br.com.agendesaude.api.domain.dto.LocationDto;
+import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.service.LocationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,8 +33,9 @@ public class LocationController {
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<LocationDto> findLocationById(@PathVariable Long id) {
-    LocationDto locationDto = locationService.getLocationById(id);
+  public ResponseEntity<LocationDto> findLocationById(@PathVariable Long id, Authentication principal) {
+    User user = (User) principal.getPrincipal();
+    LocationDto locationDto = locationService.getLocationById(id, user);
     return ResponseEntity.ok(locationDto);
   }
 
@@ -43,8 +46,10 @@ public class LocationController {
   }
 
   @PutMapping
-  public ResponseEntity<LocationDto> updateLocation(@Valid @RequestBody LocationDto locationDto) {
-    LocationDto updatedLocation = locationService.updateLocation(locationDto);
+  public ResponseEntity<LocationDto> updateLocation(@Valid @RequestBody LocationDto locationDto,
+      Authentication principal) {
+    User user = (User) principal.getPrincipal();
+    LocationDto updatedLocation = locationService.updateLocation(locationDto, user);
     return ResponseEntity.ok(updatedLocation);
   }
 }
