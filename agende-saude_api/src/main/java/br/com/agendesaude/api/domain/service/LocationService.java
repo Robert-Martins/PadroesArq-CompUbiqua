@@ -11,7 +11,7 @@ import br.com.agendesaude.api.domain.repository.AddressRepository;
 import br.com.agendesaude.api.domain.repository.LocationRepository;
 import br.com.agendesaude.api.domain.repository.MediaRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
-import br.com.agendesaude.api.infra.exception.CustomException;
+import br.com.agendesaude.api.infra.exception.BadRequestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,7 +41,7 @@ public class LocationService {
 
   private static void verifyUserLocation(User user, Location location) {
     if (location.getUser().getId() != user.getId()) {
-      throw new CustomException("Location does not match the logged-in user");
+      throw new BadRequestException("Location does not match the logged-in user");
     }
   }
 
@@ -54,7 +54,7 @@ public class LocationService {
     if (address != null) {
       address = addressRepository.save(address);
     } else {
-      throw new CustomException("Null address");
+      throw new BadRequestException("Null address");
     }
 
     Media thumbnail = locationDto.getThumbnail();
@@ -80,7 +80,7 @@ public class LocationService {
   @Transactional(readOnly = true)
   public LocationDto getLocationById(Long id, User user) {
     Location location = locationRepository.findById(id)
-        .orElseThrow(() -> new CustomException("Location not found"));
+        .orElseThrow(() -> new BadRequestException("Location not found"));
 
     verifyUserLocation(user, location);
 
@@ -105,7 +105,7 @@ public class LocationService {
   @Transactional
   public LocationDto updateLocation(LocationDto locationDto, User user) {
     Location existingLocation = locationRepository.findById(locationDto.getId())
-        .orElseThrow(() -> new CustomException("Location not found"));
+        .orElseThrow(() -> new BadRequestException("Location not found"));
 
     verifyUserLocation(user, existingLocation);
 

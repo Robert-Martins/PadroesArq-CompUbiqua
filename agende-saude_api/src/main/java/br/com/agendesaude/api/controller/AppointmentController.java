@@ -17,6 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,15 +42,21 @@ public class AppointmentController {
     return ResponseEntity.ok(result);
   }
 
+  @GetMapping("/{id}")
+  public ResponseEntity<AppointmentDto> findAppointmentById(@PathVariable Long id) {
+    AppointmentDto appointmentDto = appointmentService.getAppointmentById(id);
+    return ResponseEntity.ok(appointmentDto);
+  }
+
   @GetMapping("/next")
-  public ResponseEntity<List<AppointmentDto>> getNextAppointments(Authentication principal) {
+  public ResponseEntity<List<AppointmentDto>> findNextByPerson(Authentication principal) {
     User user = ((User) principal.getPrincipal());
     List<AppointmentDto> appointments = appointmentService.getNextAppointments(user.getId());
     return ResponseEntity.ok(appointments);
   }
 
   @GetMapping("/scheduled-emergency")
-  public AppointmentDto getScheduledEmergencyAppointments(Authentication principal) {
+  public AppointmentDto findScheduledEmergencyByPerson(Authentication principal) {
     User user = ((User) principal.getPrincipal());
     return appointmentService.getScheduledEmergencyAppointments(user);
   }
@@ -68,8 +75,17 @@ public class AppointmentController {
       Authentication principal) {
     User user = ((User) principal.getPrincipal());
     verifyFullAcessUser(user);
-    appointmentService.updateAppointment(appointmentDto);
-    return ResponseEntity.ok().build();
+    AppointmentDto appointment = appointmentService.updateAppointment(appointmentDto);
+    return ResponseEntity.ok(appointment);
+  }
+
+  @PutMapping("/cancel/{appointmentId}")
+  public ResponseEntity<AppointmentDto> cancelAppointment(@PathVariable Long appointmentId,
+      Authentication principal) {
+    User user = ((User) principal.getPrincipal());
+    verifyFullAcessUser(user);
+    AppointmentDto appointmentDto = appointmentService.cancelAppointment(appointmentId);
+    return ResponseEntity.ok(appointmentDto);
   }
 
 }

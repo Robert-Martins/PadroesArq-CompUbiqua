@@ -1,5 +1,6 @@
 package br.com.agendesaude.api.domain.service;
 
+import br.com.agendesaude.api.infra.exception.BadRequestException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -39,7 +40,7 @@ public class ApiPlacesService {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             return response.body();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException("Erro ao consumir API: " + e.getMessage(), e);
+            throw new BadRequestException("Erro ao consumir API: " + e.getMessage(), e);
         }
     }
 }

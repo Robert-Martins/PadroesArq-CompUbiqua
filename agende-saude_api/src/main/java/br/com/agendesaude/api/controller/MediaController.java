@@ -2,7 +2,7 @@ package br.com.agendesaude.api.controller;
 
 import br.com.agendesaude.api.domain.dto.MediaDto;
 import br.com.agendesaude.api.domain.service.MediaService;
-import br.com.agendesaude.api.infra.exception.CustomException;
+import br.com.agendesaude.api.infra.exception.BadRequestException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class MediaController {
       MediaDto mediaDto = mediaService.createMedia(file);
       return ResponseEntity.ok(mediaDto);
     } catch (Exception e) {
-      throw new CustomException("Error uploading media file");
+      throw new BadRequestException("Error uploading media file");
     }
   }
 

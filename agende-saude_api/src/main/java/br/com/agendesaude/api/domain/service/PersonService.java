@@ -16,7 +16,7 @@ import br.com.agendesaude.api.domain.repository.MediaRepository;
 import br.com.agendesaude.api.domain.repository.MedicalHistoryRepository;
 import br.com.agendesaude.api.domain.repository.PersonRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
-import br.com.agendesaude.api.infra.exception.CustomException;
+import br.com.agendesaude.api.infra.exception.BadRequestException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -74,7 +74,7 @@ public class PersonService {
 
   public PersonDto findById(Long id) {
     Person person = personRepository.findById(id)
-        .orElseThrow(() -> new CustomException("Pessoa não encontrada."));
+        .orElseThrow(() -> new BadRequestException("Pessoa não encontrada."));
     return person.mapEntityToDto();
   }
 
@@ -82,7 +82,7 @@ public class PersonService {
   public PersonDto update(PersonDto personDto) {
     Long id = personDto.getId();
     Person existingPerson = personRepository.findById(id)
-        .orElseThrow(() -> new CustomException("Pessoa não encontrada."));
+        .orElseThrow(() -> new BadRequestException("Pessoa não encontrada."));
 
     existingPerson.setFullName(
         personDto.getFullName() != null ? personDto.getFullName() : existingPerson.getFullName());
@@ -153,7 +153,7 @@ public class PersonService {
   @Transactional
   public void delete(Long id) {
     if (!personRepository.existsById(id)) {
-      throw new CustomException("Pessoa não encontrada.");
+      throw new BadRequestException("Pessoa não encontrada.");
     }
     personRepository.deleteById(id);
   }

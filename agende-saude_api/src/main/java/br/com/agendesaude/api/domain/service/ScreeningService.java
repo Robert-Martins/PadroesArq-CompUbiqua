@@ -4,7 +4,7 @@ import br.com.agendesaude.api.domain.dto.ScreeningDto;
 import br.com.agendesaude.api.domain.dto.ScreeningQuestionnaireAnswerDto;
 import br.com.agendesaude.api.domain.model.Screening;
 import br.com.agendesaude.api.domain.repository.ScreeningRepository;
-import br.com.agendesaude.api.infra.exception.CustomException;
+import br.com.agendesaude.api.infra.exception.BadRequestException;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class ScreeningService {
   @Transactional
   public List<ScreeningQuestionnaireAnswerDto> getAnsweredScreening(Long screeningId) {
     Screening screening = screeningRepository.findById(screeningId)
-        .orElseThrow(() -> new CustomException("Screening not found"));
+        .orElseThrow(() -> new BadRequestException("Screening not found"));
 
     Map<String, Boolean> questionnaire = screening.getQuestionnaire();
 
