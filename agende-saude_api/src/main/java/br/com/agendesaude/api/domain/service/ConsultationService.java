@@ -84,21 +84,10 @@ public class ConsultationService {
   }
 
   @Transactional
-  public Page<ConsultationDto> findAllConsultations(
-      String responsibleDoctor, String specialty, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
-
-    responsibleDoctor = (responsibleDoctor != null && !responsibleDoctor.isEmpty())
-        ? responsibleDoctor.toLowerCase()
-        : null;
-
-    specialty = (specialty != null && !specialty.isEmpty())
-        ? specialty.toLowerCase()
-        : null;
-
-    return consultationRepository.findConsultations(responsibleDoctor, specialty, startDate, endDate, pageable)
-        .map(Consultation::mapEntityToDto);
+  public Page<ConsultationDto> findAllConsultations(Pageable pageable) {
+    return consultationRepository.findAll(pageable)
+            .map(Consultation::mapEntityToDto);
   }
-
 
   @Transactional
   public void updateConsultation(Long id, ConsultationDto consultationDto) {

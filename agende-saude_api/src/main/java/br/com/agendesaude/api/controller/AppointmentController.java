@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,19 +35,11 @@ public class AppointmentController {
 
   @GetMapping
   public ResponseEntity<Page<AppointmentDto>> findAllByPerson(
-          @RequestParam(defaultValue = "0") int page,
-          @RequestParam(defaultValue = "10") int size,
-          @RequestParam(defaultValue = "id") String sort,
-          @RequestParam(defaultValue = "ASC") String direction,
-          @RequestParam(required = false) AppointmentStatusType status
-  ) {
-    try {
-      Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(direction), sort));
-      Page<AppointmentDto> result = appointmentService.findAllByPerson(status, pageable);
-      return ResponseEntity.ok(result);
-    } catch (IllegalArgumentException e) {
-      return ResponseEntity.badRequest().body(Page.empty());
-    }
+          @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable,
+          @RequestParam(required = false) AppointmentStatusType status) {
+
+    Page<AppointmentDto> result = appointmentService.findAllByPerson(status, pageable);
+    return ResponseEntity.ok(result);
   }
 
 

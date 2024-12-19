@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -35,14 +37,9 @@ public class ConsultationController {
 
   @GetMapping
   public ResponseEntity<Page<ConsultationDto>> findAllCommonConsultations(
-      @RequestParam(required = false) String responsibleDoctor,
-      @RequestParam(required = false) String specialty,
-      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime startDate,
-      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDateTime endDate,
-      Pageable pageable) {
+          @PageableDefault(size = 10, sort = "date", direction = Sort.Direction.ASC) Pageable pageable) {
 
-    Page<ConsultationDto> result = consultationService.findAllConsultations(
-        responsibleDoctor, specialty, startDate, endDate, pageable);
+    Page<ConsultationDto> result = consultationService.findAllConsultations(pageable);
 
     return ResponseEntity.ok(result);
   }

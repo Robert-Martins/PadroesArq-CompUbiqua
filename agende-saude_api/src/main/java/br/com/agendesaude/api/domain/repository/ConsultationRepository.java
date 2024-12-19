@@ -13,19 +13,19 @@ import org.springframework.data.repository.query.Param;
 public interface ConsultationRepository extends JpaRepository<Consultation, Long> {
 
   @Query(value = """
-      SELECT c
-      FROM Consultation c
-      WHERE (:responsibleDoctor IS NULL OR lower(c.responsibleDoctor) LIKE CONCAT('%', :responsibleDoctor, '%'))
-      AND (:specialty IS NULL OR lower(c.specialty) LIKE CONCAT('%', :specialty, '%'))
-      AND (:startDate IS NULL OR c.date >= CAST(:startDate AS timestamp))
-      AND (:endDate IS NULL OR c.date <= CAST(:endDate AS timestamp))
-      """)
+    SELECT c
+    FROM Consultation c
+    WHERE (:responsibleDoctor IS NULL OR LOWER(c.responsibleDoctor) LIKE LOWER(CONCAT('%', :responsibleDoctor, '%')))
+    AND (:specialty IS NULL OR LOWER(c.specialty) LIKE LOWER(CONCAT('%', :specialty, '%')))
+    AND (:startDate IS NULL OR c.date >= :startDate)
+    AND (:endDate IS NULL OR c.date <= :endDate)
+    """)
   Page<Consultation> findConsultations(
-      @Param("responsibleDoctor") String responsibleDoctor,
-      @Param("specialty") String specialty,
-      @Param("startDate") LocalDateTime startDate,
-      @Param("endDate") LocalDateTime endDate,
-      Pageable pageable
+          @Param("responsibleDoctor") String responsibleDoctor,
+          @Param("specialty") String specialty,
+          @Param("startDate") LocalDateTime startDate,
+          @Param("endDate") LocalDateTime endDate,
+          Pageable pageable
   );
 
   @Query("SELECT c FROM Consultation c WHERE c.date BETWEEN :startDate AND :endDate")
