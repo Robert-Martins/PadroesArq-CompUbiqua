@@ -21,16 +21,16 @@ public class PersonController {
   @Autowired
   private PersonService personService;
 
-  @PostMapping
-  public ResponseEntity<PersonDto> create(@Valid @RequestBody PersonDto personDto) {
-    PersonDto createdPerson = personService.create(personDto);
-    return ResponseEntity.ok(createdPerson);
-  }
-
   @GetMapping("/{id}")
   public ResponseEntity<PersonDto> findById(@PathVariable Long id) {
     PersonDto personDto = personService.findById(id);
     return ResponseEntity.ok(personDto);
+  }
+
+  @PostMapping
+  public ResponseEntity<PersonDto> create(@Valid @RequestBody PersonDto personDto) {
+    PersonDto createdPerson = personService.create(personDto);
+    return ResponseEntity.ok(createdPerson);
   }
 
   @PutMapping
@@ -39,9 +39,9 @@ public class PersonController {
     return ResponseEntity.ok(updatedPerson);
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<Void> delete(@PathVariable Long id) {
-    personService.delete(id);
+  @DeleteMapping
+  public ResponseEntity<Void> delete(@Valid @RequestBody PersonDto personDto) {
+    personService.delete(personDto.getId());
     return ResponseEntity.noContent().build();
   }
 }
