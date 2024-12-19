@@ -5,6 +5,7 @@ import { ReactNode } from "react";
 import { AlertType } from "./types";
 import { Location } from "@/core/models/location.model";
 import { Consultation } from "@/core/models/consultation.model";
+import { Appointment } from "@/core/models/appointment.model";
 
 export type AppIcon = keyof typeof MaterialCommunityIcons.glyphMap;
 
@@ -134,6 +135,11 @@ export type SliderProps = {
     showNavigation?: boolean;
     children: ReactNode;
     allowDotsNavigation?: boolean;
+}
+
+export type CounterProps = {
+    milliseconds: number;
+    onEnd?: () => void;
 }
 
 export type AlertProps = {
