@@ -50,6 +50,16 @@ public class ConsultationController {
     return ResponseEntity.ok(consultationDto);
   }
 
+  @GetMapping("/location/{locationId}")
+  public ResponseEntity<Page<ConsultationDto>> findAllCommonConsultationsByLocationId(
+          @PathVariable Long locationId,
+          @PageableDefault(size = 10, sort = "date", direction = Sort.Direction.ASC) Pageable pageable) {
+
+    Page<ConsultationDto> result = consultationService.findAllCommonConsultationsByLocationId(locationId, pageable);
+
+    return ResponseEntity.ok(result);
+  }
+
   @GetMapping("/available")
   public boolean checkConsultationsAvailability(
       @RequestParam(required = false) BigDecimal latitude,

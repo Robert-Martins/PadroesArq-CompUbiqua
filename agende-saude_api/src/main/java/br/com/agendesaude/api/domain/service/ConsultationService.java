@@ -73,6 +73,11 @@ public class ConsultationService {
     return !consultations.isEmpty();
   }
 
+  public Page<ConsultationDto> findAllCommonConsultationsByLocationId(Long locationId, Pageable pageable) {
+    return consultationRepository.findAllByLocationId(locationId, pageable)
+            .map(Consultation::mapEntityToDto);
+  }
+
   @Transactional
   public boolean findConsultationsWithinNext7Days() {
     LocalDateTime now = LocalDateTime.now();
