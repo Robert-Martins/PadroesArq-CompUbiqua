@@ -8,7 +8,7 @@ import br.com.agendesaude.api.domain.model.Token;
 import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.repository.TokenRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
-import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
+import br.com.agendesaude.api.infra.exception.CustomException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;

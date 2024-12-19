@@ -16,8 +16,7 @@ import br.com.agendesaude.api.domain.repository.MediaRepository;
 import br.com.agendesaude.api.domain.repository.MedicalHistoryRepository;
 import br.com.agendesaude.api.domain.repository.PersonRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
-import br.com.agendesaude.api.infra.exception.ResourceNotFoundException;
-import br.com.agendesaude.api.infra.exception.ValidationException;
+import br.com.agendesaude.api.infra.exception.CustomException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -48,11 +47,12 @@ public class PersonService {
   @Autowired
   private UserRepository userRepository;
 
+  @Autowired
+  private UserService userService;
+
   @Transactional
   public PersonDto create(PersonDto personDto) {
-    if (userRepository.existsByTaxId(personDto.getUser().getTaxId())) {
-      throw new ValidationException("CPF já cadastrado.");
-    }
+    userService.verifyTaxIdAndEmailExists(personDto.getUser());
 
     User user = personDto.getUser();
     user.setType(UserType.PERSON);
@@ -74,7 +74,7 @@ public class PersonService {
 
   public PersonDto findById(Long id) {
     Person person = personRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada."));
+        .orElseThrow(() -> new CustomException("Pessoa não encontrada."));
     return person.mapEntityToDto();
   }
 
@@ -82,7 +82,7 @@ public class PersonService {
   public PersonDto update(PersonDto personDto) {
     Long id = personDto.getId();
     Person existingPerson = personRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException("Pessoa não encontrada."));
+        .orElseThrow(() -> new CustomException("Pessoa não encontrada."));
 
     existingPerson.setFullName(
         personDto.getFullName() != null ? personDto.getFullName() : existingPerson.getFullName());
@@ -132,7 +132,15 @@ public class PersonService {
       existingPerson.setMedicalHistory(medicalHistories);
     }
 
-    if (personDto.getUser().getAccessLevel() == AccessLevelType.FULL) {
+    if (personDto.getUser().getId() != null
+        && personDto.getUser().getAddress() != null && personDto.getUser().getAddress().getId() != null
+        && personDto.getProfilePicture() != null && personDto.getProfilePicture().getId() != null
+        && personDto.getFullName() != null && !personDto.getFullName().isEmpty()
+        && personDto.getBirthDate() != null
+        && personDto.getUser().getEmail() != null && !personDto.getUser().getEmail().isEmpty()
+        && personDto.getUser().getTaxId() != null && !personDto.getUser().getTaxId().isEmpty()
+        && personDto.getUser().getPhone() != null && !personDto.getUser().getPhone().isEmpty()) {
+
       existingPerson.getUser().setAccessLevel(AccessLevelType.FULL);
     }
 
@@ -145,7 +153,7 @@ public class PersonService {
   @Transactional
   public void delete(Long id) {
     if (!personRepository.existsById(id)) {
-      throw new ResourceNotFoundException("Pessoa não encontrada.");
+      throw new CustomException("Pessoa não encontrada.");
     }
     personRepository.deleteById(id);
   }

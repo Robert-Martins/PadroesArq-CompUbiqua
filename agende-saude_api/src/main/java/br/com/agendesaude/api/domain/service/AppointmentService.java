@@ -16,7 +16,7 @@ import br.com.agendesaude.api.domain.repository.ConsultationRepository;
 import br.com.agendesaude.api.domain.repository.LocationRepository;
 import br.com.agendesaude.api.domain.repository.PersonRepository;
 import br.com.agendesaude.api.domain.repository.ScreeningRepository;
-import br.com.agendesaude.api.infra.exception.ErrorHandler.CustomException;
+import br.com.agendesaude.api.infra.exception.CustomException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;

@@ -15,17 +15,20 @@ import lombok.Setter;
 public class ScreeningDto extends BaseEntityDto<Screening> {
 
   @NotNull
-  private Appointment appointment;
+  private List<ScreeningQuestionnaireAnswerDto> questionnaire;
 
   @NotNull
-  private List<ScreeningQuestionnaireAnswerDto> questionnaire;
+  private Appointment appointment;
 
   @NotBlank
   private String notes;
 
-  private String classification;
-  private String justification;
+  @NotBlank
   private String status;
+
+  private String classification;
+
+  private String justification;
 
   public ScreeningDto() {
   }
@@ -46,7 +49,9 @@ public class ScreeningDto extends BaseEntityDto<Screening> {
   public Screening mapDtoToEntity() {
     Screening screening = new Screening();
     screening.setId(this.getId());
-    screening.setQuestionnaire(ScreeningQuestionnaireAnswerDto.toMap(this.getQuestionnaire()));
+    screening.setQuestionnaire(
+        this.questionnaire != null ? ScreeningQuestionnaireAnswerDto.toMap(this.getQuestionnaire()) :
+            null);
     screening.setNotes(this.getNotes());
     screening.setClassification(this.getClassification());
     screening.setJustification(this.getJustification());
