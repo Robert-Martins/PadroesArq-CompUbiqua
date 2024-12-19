@@ -1,8 +1,8 @@
-import { AppName, FlatButton, Flex, H4, H5, Layout, Slider, TextInput } from "@/core/components";
+import { AppName, FlatButton, Flex, H5, Layout, Paragraph, Slider, TextButton, TextInput } from "@/core/components";
 import { useEffect, useRef } from "react";
 import { ConfirmationModalProps, SliderRef } from "@/core/vo/types/components.props";
 import { FieldError, useForm } from "react-hook-form";
-import { displayErrorMessage, displayInfoMessage, displaySuccessMessage } from "@/core/utils/toast.utils";
+import { displayErrorMessage, displaySuccessMessage } from "@/core/utils/toast.utils";
 import { getForm, saveForm, clearForm } from "@/core/utils/storage.utils";
 import { useModal } from "@/core/contexts/modal.provider";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -28,30 +28,11 @@ const Register: React.FC = () => {
 
     const { errors } = formState;
 
-    useEffect(() => {
-        const checkFormFillAttempt = async () => {
-            const form = await getForm("register");
-            if (form) {
-                displayModal({
-                    modal: (props: ConfirmationModalProps) => <ConfirmationModal {...props} />,
-                    header: null,
-                    showCloseButton: false,
-                    modalProps: {
-                        title: "Recuperar formulário",
-                        message: "Você deseja carregar os dados previamente preenchidos?",
-                        onCancel: () => closeModal(),
-                        onConfirm: () => {
-                            reset(form);
-                            closeModal();
-                        },
-                    },
-                });
-            }
-        };
-        checkFormFillAttempt();
-    }, []);
+    const goToLogin = () => {
+        router.navigate("/auth/login");
+    };
 
-    const validateStep = (fieldError: FieldError) => {
+    const validateStep = (fieldError: FieldError): void => {
         acceptTrueOrElse(
             fieldError?.message?.length > 0,
             () => displayErrorMessage("Erro no formulário", "Preencha todos os campos corretamente!"),
@@ -59,21 +40,48 @@ const Register: React.FC = () => {
         );
     }
 
-    const proceedToNextStep = () => {
+    const proceedToNextStep = (): void => {
         saveForm("register", getValues());
         sliderRef.current?.nextSlide();
     };
 
-    const onSubmit = async (data: Person) => {
+    const onSubmit = async (data: Person): Promise<void> => {
         await createPerson(data);
         clearForm("register");
         displaySuccessMessage("Formulário enviado", "Os dados foram enviados com sucesso!");
         router.navigate("/auth/login");
     };
 
+    const displayPreviousFormFillAttemptConfirmation = (form: Person): void => {
+        displayModal({
+            modal: (props: ConfirmationModalProps) => <ConfirmationModal {...props} />,
+            header: null,
+            showCloseButton: false,
+            modalProps: {
+                title: "Recuperar formulário",
+                message: "Você deseja carregar os dados previamente preenchidos?",
+                onCancel: () => closeModal(),
+                onConfirm: () => {
+                    reset(form);
+                    closeModal();
+                },
+            },
+        });
+    }
+
+    useEffect(() => {
+        const checkFormFillAttempt = async () => {
+            const form = await getForm<Person>("register");
+            if (form) {
+                displayPreviousFormFillAttemptConfirmation(form);
+            }
+        };
+        checkFormFillAttempt();
+    }, []);
+
     return (
         <Layout>
-            <Flex flex={1} justify="space-between" align="center">
+            <Flex flex={1} justify="space-between" align="center" gap={32}>
                 <Flex align="center" gap={32}>
                     <AppName />
                     <H5>Cadastro de novo usuário</H5>
@@ -139,6 +147,10 @@ const Register: React.FC = () => {
                         </FlatButton>
                     </Flex>
                 </Slider>
+                <Flex align="center">
+                    <Paragraph>Já possui cadastro?</Paragraph>
+                    <TextButton type="primary" onPress={goToLogin}>Acesse sua conta</TextButton>
+                </Flex>
             </Flex>
         </Layout>
     );
