@@ -38,7 +38,6 @@ public class ScreeningQuestionnaireAnswerDto {
     return dtoList;
   }
 
-
   public static Map<String, Boolean> toMap(List<ScreeningQuestionnaireAnswerDto> questionnaireDtos) {
     Map<String, Boolean> map = new HashMap<>();
     for (ScreeningQuestionnaireAnswerDto dto : questionnaireDtos) {
