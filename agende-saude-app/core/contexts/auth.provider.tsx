@@ -2,8 +2,7 @@ import { createContext, ReactNode, useContext, useEffect, useState } from "react
 import { Location } from "../models/location.model";
 import { Person } from "../models/person.model";
 import { getToken, removeTokens, setTokens } from "../utils/auth.utils";
-import { AuthenticationRequest, AuthenticationResponse } from "../vo/types/types";
-import { authenticate } from "../services/auth.service";
+import { AuthenticationResponse } from "../vo/types/types";
 import { Optional } from "../utils/optional";
 import { findCurrent } from "../services/user.service";
 
@@ -13,7 +12,7 @@ type AuthProviderProps = {
 
 type AuthContextData = {
     isAuthenticated: boolean;
-    login: (authenticationRequest: AuthenticationRequest) => void;
+    login: (authenticationResponse: AuthenticationResponse) => void;
     logout: () => void;
     user: Person | Location;
 };
@@ -39,9 +38,8 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setUser(currentUser);
     }
 
-    const login = async (authenticationRequest: AuthenticationRequest) => {
-        const response: AuthenticationResponse = await authenticate(authenticationRequest);
-        await setTokens(response);
+    const login = async (authenticationResponse: AuthenticationResponse) => {
+        await setTokens(authenticationResponse);
         await findCurrentUser();
     };
 

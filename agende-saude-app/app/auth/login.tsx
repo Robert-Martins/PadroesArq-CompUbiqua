@@ -7,13 +7,15 @@ import { loginSchema } from "@/core/vo/consts/schemas";
 import { useForm } from "react-hook-form";
 import { displaySuccessMessage } from "@/core/utils/toast.utils";
 import { getPreviousUsers, includeNewUser } from "@/core/utils/storage.utils";
-import { AuthenticationRequest } from "@/core/vo/types/types";
+import { AuthenticationRequest, AuthenticationResponse } from "@/core/vo/types/types";
 import { authenticate } from "@/core/services/auth.service";
 import { acceptTrueOrElse } from "@/core/utils/functions";
+import { useAuth } from "@/core/contexts/auth.provider";
 
 const Login: React.FC = () => {
     const sliderRef = useRef<SliderRef>(null);
     const router = useRouter();
+    const { login } = useAuth();
     const [previousAccesses, setPreviousAccesses] = useState<string[]>([]);
 
     const { control, handleSubmit, setValue } = useForm({
@@ -24,19 +26,25 @@ const Login: React.FC = () => {
         },
     });
 
-    const goToRegister = () => {
+    const goToRegister = (): void => {
         router.navigate("/auth/register");
     };
 
-    const goToResetPassword = () => {
+    const goToResetPassword = (): void => {
         router.navigate("/auth/reset-password");
     };
 
+    const useFoundUser = (user: string): void => {
+        setValue("taxId", user);
+        sliderRef.current?.goToLastSlide();
+    }
+
     const onSubmit = async (data: AuthenticationRequest): Promise<void> => {
-        const dt = await authenticate(data);
-        displaySuccessMessage("Acesso autorizado", "Você foi autenticado com sucesso!");
+        const authenticationResponse: AuthenticationResponse = await authenticate(data);
         await includeNewUser(data.taxId);
-        console.log(dt);
+        login(authenticationResponse);
+        router.navigate("/platform/home");
+        displaySuccessMessage("Acesso autorizado", "Você foi autenticado com sucesso!");
     };
 
     useEffect(() => {
@@ -57,22 +65,27 @@ const Login: React.FC = () => {
             <Flex flex={1} justify="space-between" align="center">
                 <AppName />
                 <Slider ref={sliderRef} showNavigation={false}>
-                    <Flex align="center" gap={4}>
-                        <H4 style={{ textAlign: 'center' }}>
-                            Acessos recentes
-                        </H4>
-                        <Paragraph style={{ textAlign: 'center' }}>
-                            Encontramos acessos recentes, selecione um ou clique em novo acesso.
-                        </Paragraph>
+                    <Flex align="center" gap={48}>
+                        <Flex align="center" gap={16}>
+                            <H4 style={{ textAlign: 'center' }}>
+                                Acessos recentes
+                            </H4>
+                            <Paragraph style={{ textAlign: 'center' }}>
+                                Encontramos acessos recentes, selecione um ou clique em novo acesso.
+                            </Paragraph>
+                        </Flex>
                         <Flex>
                             {
                                 previousAccesses.map((user, index) => (
-                                    <FlatButton type="primary" ghost key={index} onPress={() => setValue("taxId", user)}>
+                                    <FlatButton type="primary" ghost key={index} onPress={() => useFoundUser(user)}>
                                         {user}
                                     </FlatButton>
                                 ))
                             }
                         </Flex>
+                        <FlatButton type="primary" onPress={() => sliderRef.current?.goToLastSlide()}>
+                            Novo acesso
+                        </FlatButton>
                     </Flex>
                     <Flex align="center" gap={32}>
                         <H5>Acesse sua conta</H5>
