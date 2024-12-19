@@ -1,4 +1,4 @@
-import { AppName, ConfirmationModal, FlatButton, Flex, H4, H5, Layout, Slider, TextInput } from "@/core/components";
+import { AppName, FlatButton, Flex, H4, H5, Layout, Slider, TextInput } from "@/core/components";
 import { useEffect, useRef } from "react";
 import { ConfirmationModalProps, SliderRef } from "@/core/vo/types/components.props";
 import { FieldError, useForm } from "react-hook-form";
@@ -11,6 +11,8 @@ import { acceptTrueOrElse } from "@/core/utils/functions";
 import { Person } from "@/core/models/person.model";
 import { createPerson } from "@/core/services/person.service";
 import { useRouter } from "expo-router";
+import { ConfirmationModal } from "@/core/components/molecules/modals/ConfirmationModal";
+import { applicationHealthCheck } from "@/core/services/application.service";
 
 const Register: React.FC = () => {
     const sliderRef = useRef<SliderRef>(null);
@@ -30,7 +32,6 @@ const Register: React.FC = () => {
     useEffect(() => {
         const checkFormFillAttempt = async () => {
             const form = await getForm("register");
-            console.log(form);
             if (form) {
                 displayModal({
                     modal: (props: ConfirmationModalProps) => <ConfirmationModal {...props} />,

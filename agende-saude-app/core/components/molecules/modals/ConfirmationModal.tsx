@@ -11,7 +11,7 @@ const StyledConfirmationModalMessage = styled(Paragraph)`
     text-align: center;
 `;
 
-const ConfirmationModal = (props: ConfirmationModalProps) => {
+export const ConfirmationModal = (props: ConfirmationModalProps) => {
     const { title, message, onCancel, onConfirm } = props;
 
     return (
@@ -30,5 +30,3 @@ const ConfirmationModal = (props: ConfirmationModalProps) => {
         </Flex>
     )
 }
-
-export default ConfirmationModal;
