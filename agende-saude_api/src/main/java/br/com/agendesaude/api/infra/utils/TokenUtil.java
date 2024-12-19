@@ -1,5 +1,6 @@
 package br.com.agendesaude.api.infra.utils;
 
+import br.com.agendesaude.api.infra.exception.BadRequestException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
@@ -24,7 +25,7 @@ public class TokenUtil {
       }
       return hexString.toString();
     } catch (NoSuchAlgorithmException e) {
-      throw new RuntimeException("Error generating hash", e);
+      throw new BadRequestException("Error generating hash", e);
     }
   }
 }

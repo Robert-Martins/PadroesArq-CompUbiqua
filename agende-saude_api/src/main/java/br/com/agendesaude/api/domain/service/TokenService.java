@@ -8,7 +8,7 @@ import br.com.agendesaude.api.domain.model.Token;
 import br.com.agendesaude.api.domain.model.User;
 import br.com.agendesaude.api.domain.repository.TokenRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
-import br.com.agendesaude.api.infra.exception.CustomException;
+import br.com.agendesaude.api.infra.exception.BadRequestException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
@@ -59,7 +59,7 @@ public class TokenService {
       MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, StandardCharsets.UTF_8.toString());
       messageHelper.setSubject(subject);
       messageHelper.setText(message, true);
-      messageHelper.setFrom("yuan_calixto@discente.ufg.com");
+      messageHelper.setFrom("agendesaude@robert-martins.com");
       messageHelper.setTo(email);
 
       javaMailSender.send(mimeMessage);
@@ -89,7 +89,7 @@ public class TokenService {
           userRepository.save(user);
           tokenRepository.delete(token);
         }, () -> {
-          throw new CustomException("Usuário não encontrado para o hash fornecido");
+          throw new BadRequestException("Usuário não encontrado para o hash fornecido");
         });
   }
 
@@ -103,7 +103,7 @@ public class TokenService {
 
   public TokenDto validateToken(String tokenIdentification) {
     return this.tokenRepository.findByToken(tokenIdentification)
-        .orElseThrow(() -> new CustomException("Token not found"))
+        .orElseThrow(() -> new BadRequestException("Token not found"))
         .mapEntityToDto();
   }
 }

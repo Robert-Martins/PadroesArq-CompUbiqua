@@ -16,7 +16,7 @@ import br.com.agendesaude.api.domain.repository.MediaRepository;
 import br.com.agendesaude.api.domain.repository.MedicalHistoryRepository;
 import br.com.agendesaude.api.domain.repository.PersonRepository;
 import br.com.agendesaude.api.domain.repository.UserRepository;
-import br.com.agendesaude.api.infra.exception.CustomException;
+import br.com.agendesaude.api.infra.exception.BadRequestException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +67,22 @@ public class PersonService {
     Person person = personDto.mapDtoToEntity();
     person.setUser(savedUser);
     person.setProfilePicture(profilePicture);
+
+    if (person.getUser().getId() != null
+        && person.getUser().getAddress() != null && person.getUser().getAddress().getId() != null
+        && person.getUser().getEmail() != null && !person.getUser().getEmail().isEmpty()
+        && person.getUser().getTaxId() != null && !person.getUser().getTaxId().isEmpty()
+        && person.getUser().getPhone() != null && !person.getUser().getPhone().isEmpty()
+
+        && person.getProfilePicture() != null && person.getProfilePicture().getId() != null
+
+        && person.getFullName() != null && !person.getFullName().isEmpty()
+        && person.getBirthDate() != null
+    ) {
+
+      person.getUser().setAccessLevel(AccessLevelType.FULL);
+    }
+
     Person savedPerson = personRepository.save(person);
 
     return savedPerson.mapEntityToDto();
@@ -74,7 +90,7 @@ public class PersonService {
 
   public PersonDto findById(Long id) {
     Person person = personRepository.findById(id)
-        .orElseThrow(() -> new CustomException("Pessoa não encontrada."));
+        .orElseThrow(() -> new BadRequestException("Person not found."));
     return person.mapEntityToDto();
   }
 
@@ -82,7 +98,7 @@ public class PersonService {
   public PersonDto update(PersonDto personDto) {
     Long id = personDto.getId();
     Person existingPerson = personRepository.findById(id)
-        .orElseThrow(() -> new CustomException("Pessoa não encontrada."));
+        .orElseThrow(() -> new BadRequestException("Person not found."));
 
     existingPerson.setFullName(
         personDto.getFullName() != null ? personDto.getFullName() : existingPerson.getFullName());
@@ -132,14 +148,17 @@ public class PersonService {
       existingPerson.setMedicalHistory(medicalHistories);
     }
 
-    if (personDto.getUser().getId() != null
-        && personDto.getUser().getAddress() != null && personDto.getUser().getAddress().getId() != null
-        && personDto.getProfilePicture() != null && personDto.getProfilePicture().getId() != null
-        && personDto.getFullName() != null && !personDto.getFullName().isEmpty()
-        && personDto.getBirthDate() != null
-        && personDto.getUser().getEmail() != null && !personDto.getUser().getEmail().isEmpty()
-        && personDto.getUser().getTaxId() != null && !personDto.getUser().getTaxId().isEmpty()
-        && personDto.getUser().getPhone() != null && !personDto.getUser().getPhone().isEmpty()) {
+    if (existingPerson.getUser().getId() != null
+        && existingPerson.getUser().getAddress() != null && existingPerson.getUser().getAddress().getId() != null
+        && existingPerson.getUser().getEmail() != null && !existingPerson.getUser().getEmail().isEmpty()
+        && existingPerson.getUser().getTaxId() != null && !existingPerson.getUser().getTaxId().isEmpty()
+        && existingPerson.getUser().getPhone() != null && !existingPerson.getUser().getPhone().isEmpty()
+
+        && existingPerson.getProfilePicture() != null && existingPerson.getProfilePicture().getId() != null
+
+        && existingPerson.getFullName() != null && !existingPerson.getFullName().isEmpty()
+        && existingPerson.getBirthDate() != null
+    ) {
 
       existingPerson.getUser().setAccessLevel(AccessLevelType.FULL);
     }
@@ -153,7 +172,7 @@ public class PersonService {
   @Transactional
   public void delete(Long id) {
     if (!personRepository.existsById(id)) {
-      throw new CustomException("Pessoa não encontrada.");
+      throw new BadRequestException("Pessoa não encontrada.");
     }
     personRepository.deleteById(id);
   }
