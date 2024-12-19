@@ -1,6 +1,6 @@
 import { ConfirmationModalProps } from "@/core/vo/types/components.props";
 import { Flex } from "../containers";
-import { Divider, H4, H6, Paragraph, TextButton } from "../../atoms";
+import { Divider,  H6, Paragraph, TextButton } from "../../atoms";
 import styled from "styled-components";
 
 const StyledConfirmationModalHeader = styled(H6)`
