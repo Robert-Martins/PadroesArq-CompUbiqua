@@ -39,15 +39,15 @@ export type Token = {
 }
 
 export type Page<T> = {
-    content: T[];
-    totalElements: number;
-    totalPages: number;
-    size: number;
-    number: number;
-    numberOfElements: number;
-    first: boolean;
-    last: boolean;
-    empty: boolean;
+    content?: T[];
+    totalElements?: number;
+    totalPages?: number;
+    size?: number;
+    number?: number;
+    numberOfElements?: number;
+    first?: boolean;
+    last?: boolean;
+    empty?: boolean;
 }
 
 export type CepRequestResponse = {

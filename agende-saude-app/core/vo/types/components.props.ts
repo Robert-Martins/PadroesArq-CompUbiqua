@@ -171,7 +171,6 @@ export type AppointmentCardProps = {
 }
 
 export type PaginatedListProps<T> = {
-    page: Page<T>;
-    onFetchNextPage: () => Promise<T[]>;
+    onFetchNextPage: (page: number, size: number) => Promise<Page<T>>;
     children: (item: T) => React.ReactElement;
 }
