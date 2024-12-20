@@ -13,12 +13,13 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // Permite CORS em todas as rotas da API
-                        .allowedOrigins("http://127.0.0.1:5501/") // Substitua pela URL do seu frontend
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                registry.addMapping("/**")
+                        .allowedOrigins("*")
+                        .allowedMethods("*")
                         .allowedHeaders("*")
-                        .allowCredentials(true);
+                        .allowCredentials(false);
             }
         };
     }
+
 }
