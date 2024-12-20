@@ -5,7 +5,7 @@ import { Page } from "../vo/types/types";
 
 const APPOINTMENT_PATH: string = 'appointment';
 
-export const createAppointment = (consultationId: string, notes: string): Promise<Appointment> => {
+export const createAppointment = (consultationId: number, notes: string): Promise<Appointment> => {
     return api.post<Appointment>(`${APPOINTMENT_PATH}/appoint/${consultationId}`, {notes})
         .then(response => response.data);
 }
@@ -20,7 +20,7 @@ export const findNextByPerson = (): Promise<Appointment[]> => {
         .then(response => response.data);
 }
 
-export const findById = (appointmentId: string): Promise<Appointment> => {
+export const findAppointmentById = (appointmentId: number): Promise<Appointment> => {
     return api.get<Appointment>(`${APPOINTMENT_PATH}/${appointmentId}`)
         .then(response => response.data);
 }
@@ -35,7 +35,7 @@ export const updateAppointment = (appointment: Appointment): Promise<Appointment
         .then(response => response.data);
 }
 
-export const cancelAppointment = (appointmentId: string): Promise<Appointment> => {
+export const cancelAppointment = (appointmentId: number): Promise<Appointment> => {
     return api.put<Appointment>(`${APPOINTMENT_PATH}/cancel/${appointmentId}`)
         .then(response => response.data);
 }
