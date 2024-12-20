@@ -47,6 +47,21 @@ public class LocationService {
   }
 
   @Transactional
+  public Page<LocationDto> findAllLocations(Pageable pageable) {
+    return locationRepository.findAllLocations(pageable)
+        .map(Location::mapEntityToDto);
+  }
+
+  @Transactional
+  public LocationDto findByUserId(Long userId) {
+    Location location = locationRepository.findByUserId(userId);
+    if (location.getId() == null) {
+      throw new BadRequestException("Location not found.");
+    }
+    return location.mapEntityToDto();
+  }
+
+  @Transactional
   public LocationDto createLocation(LocationDto locationDto) {
 
     userService.verifyTaxIdAndEmailExists(locationDto.getUser());
@@ -107,20 +122,26 @@ public class LocationService {
     return locationDto;
   }
 
-  @Transactional
-  public Page<LocationDto> findAllLocations(Pageable pageable) {
-    return locationRepository.findAllLocations(pageable)
-        .map(Location::mapEntityToDto);
-  }
+  //    @Transactional
+//    public void deleteLocation(Long id) {
+//        Location location = locationRepository.findById(id)
+//                .orElseThrow(() -> new CustomException("Location not found"));
+//
+//        if (location.getConsultations() != null && !location.getConsultations().isEmpty()) {
+//            throw new IllegalStateException("Cannot delete location with associated consultations");
+//        }
+//
+//        locationRepository.delete(location);
+//    }
 
-  //Metodos auxiliares
+  //HELPER METHODS
 
   @Transactional
   public LocationDto updateLocation(LocationDto locationDto, User user) {
     Location existingLocation = locationRepository.findById(locationDto.getId())
         .orElseThrow(() -> new BadRequestException("Location not found"));
 
-//    verifyUserLocation(user, existingLocation);
+    verifyUserLocation(user, existingLocation);
 
     existingLocation.setName(
         locationDto.getName() != null ? locationDto.getName() : existingLocation.getName());
@@ -173,15 +194,4 @@ public class LocationService {
     return existingLocation.mapEntityToDto();
   }
 
-//    @Transactional
-//    public void deleteLocation(Long id) {
-//        Location location = locationRepository.findById(id)
-//                .orElseThrow(() -> new CustomException("Location not found"));
-//
-//        if (location.getConsultations() != null && !location.getConsultations().isEmpty()) {
-//            throw new IllegalStateException("Cannot delete location with associated consultations");
-//        }
-//
-//        locationRepository.delete(location);
-//    }
 }

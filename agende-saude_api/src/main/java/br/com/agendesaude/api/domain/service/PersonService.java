@@ -51,6 +51,22 @@ public class PersonService {
   private UserService userService;
 
   @Transactional
+  public PersonDto findById(Long id) {
+    Person person = personRepository.findById(id)
+        .orElseThrow(() -> new BadRequestException("Person not found."));
+    return person.mapEntityToDto();
+  }
+
+  @Transactional
+  public PersonDto findByUserId(Long userId) {
+    Person person = personRepository.findByUserId(userId);
+    if (person.getId() == null) {
+      throw new BadRequestException("Person not found.");
+    }
+    return person.mapEntityToDto();
+  }
+
+  @Transactional
   public PersonDto create(PersonDto personDto) {
     userService.verifyTaxIdAndEmailExists(personDto.getUser());
 
@@ -86,12 +102,6 @@ public class PersonService {
     Person savedPerson = personRepository.save(person);
 
     return savedPerson.mapEntityToDto();
-  }
-
-  public PersonDto findById(Long id) {
-    Person person = personRepository.findById(id)
-        .orElseThrow(() -> new BadRequestException("Person not found."));
-    return person.mapEntityToDto();
   }
 
   @Transactional
@@ -167,7 +177,6 @@ public class PersonService {
 
     return existingPerson.mapEntityToDto();
   }
-
 
   @Transactional
   public void delete(Long id) {
