@@ -1,5 +1,6 @@
 import { BasicLevelUserInstruction, Flex, Layout, TabTitle } from "@/core/components";
 import { useAuth } from "@/core/contexts/auth.provider";
+import React from "react";
 import styled from "styled-components";
 
 const HomeContainer = styled(Flex)`

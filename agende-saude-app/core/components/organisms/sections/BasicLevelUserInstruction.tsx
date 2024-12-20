@@ -2,6 +2,7 @@ import { Link } from "expo-router";
 import { Emphasis, FlatButton, Paragraph } from "../../atoms";
 import { Flex } from "../../molecules";
 import { Alert } from "../cards";
+import React from "react";
 
 const BasicLevelUserInstruction: React.FC = () => {
 

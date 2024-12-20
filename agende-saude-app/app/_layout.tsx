@@ -5,6 +5,7 @@ import ModalProvider from '@/core/contexts/modal.provider';
 import { asDarkTheme, asLightTheme } from '@/core/design-system/theme';
 import { agendeSaudeAppToastConfig } from '@/core/utils/toast.utils';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFonts } from 'expo-font';
 import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';

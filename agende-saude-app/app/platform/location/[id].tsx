@@ -5,6 +5,7 @@ import { findAllCommonConsultationsByLocationId } from "@/core/services/consulta
 import { findLocationById } from "@/core/services/location.service";
 import { Page } from "@/core/vo/types/types";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import React from "react";
 import { useEffect, useState } from "react";
 import { Text } from "react-native";
 import { styled } from "styled-components";
