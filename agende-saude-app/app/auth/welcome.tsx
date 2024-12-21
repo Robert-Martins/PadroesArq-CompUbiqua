@@ -1,6 +1,7 @@
 import { AppName, FlatButton, Flex, H4, Layout, Paragraph, Slider, TextButton } from "@/core/components";
 import { SliderRef } from "@/core/vo/types/components.props";
 import { useRouter } from "expo-router";
+import React from "react";
 import { useRef, useState } from "react";
 
 const Welcome: React.FC = () => {

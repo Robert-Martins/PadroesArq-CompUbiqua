@@ -2,14 +2,14 @@ import { AppName, FlatButton, Flex, H5, Layout, Paragraph, Slider, TextButton, T
 import { useEffect, useRef } from "react";
 import { ConfirmationModalProps, SliderRef } from "@/core/vo/types/components.props";
 import { FieldError, useForm } from "react-hook-form";
-import { displayErrorMessage, displaySuccessMessage } from "@/core/utils/toast.utils";
+import { displayErrorMessage, displayInfoMessage, displaySuccessMessage } from "@/core/utils/toast.utils";
 import { getForm, saveForm, clearForm } from "@/core/utils/storage.utils";
 import { useModal } from "@/core/contexts/modal.provider";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { createPersonSchema } from "@/core/vo/consts/schemas";
 import { acceptTrueOrElse } from "@/core/utils/functions";
 import { Person } from "@/core/models/person.model";
-import { createPerson } from "@/core/services/person.service";
+import { createPerson, existsByTaxId } from "@/core/services/person.service";
 import { useRouter } from "expo-router";
 import { ConfirmationModal } from "@/core/components/molecules/modals/ConfirmationModal";
 
@@ -32,6 +32,11 @@ const Register: React.FC = () => {
         router.navigate("/auth/login");
     };
 
+    const proceedToNextStep = (): void => {
+        saveForm("register", getValues());
+        sliderRef.current?.nextSlide();
+    };
+
     const validateStep = (fieldError: FieldError): void => {
         acceptTrueOrElse(
             fieldError?.message?.length > 0,
@@ -40,10 +45,27 @@ const Register: React.FC = () => {
         );
     }
 
-    const proceedToNextStep = (): void => {
-        saveForm("register", getValues());
-        sliderRef.current?.nextSlide();
-    };
+    const validateTaxIdStep = async (taxId: string, fieldError: FieldError): Promise<void> => {
+        const bool: boolean = await existsByTaxId(taxId);
+        if(bool) 
+            validateStep(fieldError);
+        else 
+            displayInfoMessage(
+                'CPF já cadastrado', 
+                'Já existe uma pessoa em nossa base de dados com esse CPF cadastrado'
+            );
+    }
+
+    const onClickAdvanceTaxIdStep = async (fieldError: FieldError): Promise<void> => {
+        const taxId: string = getValues()?.user?.taxId;
+        if(taxId && taxId?.length === 1) {
+            validateTaxIdStep(taxId, fieldError)
+        } else 
+            displayInfoMessage(
+                'CPF não preenchido',
+                'O campo deve ser preenchido para prosseguir'
+            );
+    }
 
     const onSubmit = async (data: Person): Promise<void> => {
         await createPerson(data);
@@ -110,7 +132,7 @@ const Register: React.FC = () => {
                         />
                         <FlatButton
                             type="primary"
-                            onPress={() => validateStep(errors?.user?.taxId)}
+                            onPress={() => onClickAdvanceTaxIdStep(errors?.user?.taxId)}
                         >
                             Seguinte
                         </FlatButton>

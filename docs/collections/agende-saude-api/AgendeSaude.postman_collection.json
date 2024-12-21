@@ -1,0 +1,1026 @@
+{
+	"info": {
+		"_postman_id": "6b488887-121e-4a6a-8039-253929fc4dcd",
+		"name": "AgendeSaude",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29390776"
+	},
+	"item": [
+		{
+			"name": "Application",
+			"item": [
+				{
+					"name": "findEnumByName",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NTI2NzE0LCJleHAiOjE3MzQ2MTMxMTR9.wvAstVDWz9mrngyVIUvAgOYrlTeWxynr-pKLmZ55rmbkFdKU5xMm3-Dtma474WgO9xWRDf1f66_mr-6qNhnaLg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/application/enum-by-name/genderType",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"application",
+								"enum-by-name",
+								"genderType"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Appointment",
+			"item": [
+				{
+					"name": "Create Appointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NjA4NzEzLCJleHAiOjE3MzQ2OTUxMTN9.TaMR1tg5koUSeG33kWh3dgzJF0vvuGZSp66AW4wBItuGZJarTcvk2S1190_0tuzVVDai7yn7tX-HxxKlccufsA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"notes\": \"Some notes\",\r\n    \"status\": \"SCHEDULED\",\r\n    \"consultation\": {\r\n        \"id\": null,\r\n        \"responsibleDoctor\": \"Dr. João Silva\",\r\n        \"type\": \"COMMON\",\r\n        \"specialty\": \"Cardiology\",\r\n        \"date\": \"2024-12-17T10:00:00\",\r\n        \"location\": {\r\n            \"id\": 1\r\n        },\r\n        \"createdAt\": \"2024-12-01T08:00:00\",\r\n        \"updatedAt\": \"2024-12-10T09:00:00\"\r\n    },\r\n    \"screening\": {\r\n        \"questionnaire\": [\r\n            {\r\n                \"id\": 1,\r\n                \"question\": \"Do you have any symptoms?\",\r\n                \"answer\": true,\r\n                \"subQuestionsAnswer\": [\r\n                    {\r\n                        \"id\": 2,\r\n                        \"question\": \"Do you have a fever?\",\r\n                        \"answer\": false\r\n                    },\r\n                    {\r\n                        \"id\": 3,\r\n                        \"question\": \"Do you have a cough?\",\r\n                        \"answer\": true\r\n                    }\r\n                ]\r\n            },\r\n            {\r\n                \"id\": 2,\r\n                \"question\": \"Are you currently taking any medication?\",\r\n                \"answer\": false\r\n            }\r\n        ],\r\n        \"notes\": \"Patient has mild symptoms but is not on medication.\",\r\n        \"status\": \"PROCESSING\",\r\n        \"classification\": \"Medium Risk\",\r\n        \"justification\": \"Patient exhibits a mild fever and cough.\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/appointment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"appointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateAppointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NjA4NzEzLCJleHAiOjE3MzQ2OTUxMTN9.TaMR1tg5koUSeG33kWh3dgzJF0vvuGZSp66AW4wBItuGZJarTcvk2S1190_0tuzVVDai7yn7tX-HxxKlccufsA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"notes\": \"Some more notes\",\r\n    \"status\": \"SCHEDULED\",\r\n    \"consultation\": {\r\n        \"id\": 1,\r\n        \"responsibleDoctor\": \"Dr. Joãoa Silva\",\r\n        \"type\": \"COMMON\",\r\n        \"specialty\": \"Cardiology\",\r\n        \"date\": \"2024-12-17T10:00:00\",\r\n        \"location\": {\r\n            \"id\": 1\r\n        },\r\n        \"createdAt\": \"2024-12-01T08:00:00\",\r\n        \"updatedAt\": \"2024-12-10T09:00:00\"\r\n    },\r\n    \"screening\": {\r\n        \"questionnaire\": [\r\n            {\r\n                \"question\": \"Do you have anyyyyyyyyyyy symptoms?\",\r\n                \"answer\": true,\r\n                \"subQuestionsAnswer\": [\r\n                    {\r\n                        \"id\": 2,\r\n                        \"question\": \"Do you have a fever?\",\r\n                        \"answer\": false\r\n                    },\r\n                    {\r\n                        \"id\": 3,\r\n                        \"question\": \"Do you have a cough?\",\r\n                        \"answer\": true\r\n                    }\r\n                ]\r\n            },\r\n            {\r\n                \"id\": 2,\r\n                \"question\": \"Are you currently taking any medication?\",\r\n                \"answer\": false\r\n            }\r\n        ],\r\n        \"notes\": \"Patient has mild symptoms but is not on medication.\",\r\n        \"status\": \"PROCESSING\",\r\n        \"classification\": \"Medium Risk\",\r\n        \"justification\": \"Patient exhibits a mild fever and cough.\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/appointment",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"appointment"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllByPerson",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NDAzMTk0LCJleHAiOjE3MzQ0ODk1OTR9.u57KCwjvEAeEDwhRmQuue4_38c-Y9CQivzqEqjySUHl39DuDxVE4K77RzsDgHvpqCkOLKtDNLaOTq-jVzh2vjA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/appointment?page=1&size=10&sort=consultationDate&direction=ASC&status=SCHEDULED&consultationType=COMMON&consultationDate=2024-12-17",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"appointment"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "consultationDate"
+								},
+								{
+									"key": "direction",
+									"value": "ASC"
+								},
+								{
+									"key": "status",
+									"value": "SCHEDULED"
+								},
+								{
+									"key": "consultationType",
+									"value": "COMMON"
+								},
+								{
+									"key": "consultationDate",
+									"value": "2024-12-17"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getNextAppointments",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NTI2NzE0LCJleHAiOjE3MzQ2MTMxMTR9.wvAstVDWz9mrngyVIUvAgOYrlTeWxynr-pKLmZ55rmbkFdKU5xMm3-Dtma474WgO9xWRDf1f66_mr-6qNhnaLg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/appointment/next",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"appointment",
+								"next"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getNextAppointments Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NTI2NzE0LCJleHAiOjE3MzQ2MTMxMTR9.wvAstVDWz9mrngyVIUvAgOYrlTeWxynr-pKLmZ55rmbkFdKU5xMm3-Dtma474WgO9xWRDf1f66_mr-6qNhnaLg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/appointment/scheduled-emergency",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"appointment",
+								"scheduled-emergency"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAppointmentById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NjA4NzEzLCJleHAiOjE3MzQ2OTUxMTN9.TaMR1tg5koUSeG33kWh3dgzJF0vvuGZSp66AW4wBItuGZJarTcvk2S1190_0tuzVVDai7yn7tX-HxxKlccufsA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/appointment/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"appointment",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancelAppointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NjA4NzEzLCJleHAiOjE3MzQ2OTUxMTN9.TaMR1tg5koUSeG33kWh3dgzJF0vvuGZSp66AW4wBItuGZJarTcvk2S1190_0tuzVVDai7yn7tX-HxxKlccufsA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/appointment/cancel/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"appointment",
+								"cancel",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"taxId\": \"78484410080\",\r\n  \"password\": \"123456789\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"refreshToken\": \"REFRESH_TOKEN_VALUE\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/refresh-token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordResetFlow",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"yuancalixto@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/password-reset-request",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"password-reset-request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "passwordReset",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"yuancalixto@gmail.com\",\r\n    \"hash\": \"75ba9257fc7aef2ca64d17c3b0802efd616e3333810734398cd8d0875f934ca0\",\r\n    \"newPassword\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/password-reset",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"password-reset"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Consultation",
+			"item": [
+				{
+					"name": "findConsultationById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NDgxNzYyLCJleHAiOjE3MzQ1NjgxNjJ9.Gqpdtagdwlx1SZROT9xzRxcwHx7MaocV0E1s5K_NCYJppCtXM4YGWBOdA_qye2OucynHgcy_HsoWAqWcELBjgw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/consultation/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"consultation",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllCommonConsultations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NDc1OTY1LCJleHAiOjE3MzQ1NjIzNjV9.fDeLAtdxdO4WzWpyh8NnFxvwjRb9y1Hd5otz1XVlu3fS2ScEl21bYGvQiB29f3LDIdWms9J3y3C_M4q7z5do8g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/consultation?page=0&size=10&sort=responsibleDoctor,ASC&responsibleDoctor&specialty&startDate&endDate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"consultation"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "responsibleDoctor,ASC"
+								},
+								{
+									"key": "responsibleDoctor",
+									"value": null
+								},
+								{
+									"key": "specialty",
+									"value": null
+								},
+								{
+									"key": "startDate",
+									"value": null
+								},
+								{
+									"key": "endDate",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Location",
+			"item": [
+				{
+					"name": "createLocation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NTkwMTc4LCJleHAiOjE3MzQ2NzY1Nzh9.ScMS4lUd9qHTDj7hvPbOgvIFuD6qPySPz13RdLIgFvHI6xhfr2aIcG9zwQ2MjLq7K9zT0-ndFb_4IDt2AaCnYQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"John Doe\",\r\n    \"accessEmergencies\": true,\r\n    \"user\": {\r\n        \"id\": 101,\r\n        \"username\": \"johndoe\",\r\n        \"taxId\": 74585541236,\r\n        \"email\": \"johndoe@example.com\",\r\n        \"password\": 12345678,\r\n        \"address\": {\r\n            \"address\": \"123 Main St\",\r\n            \"neighborhood\": \"Downtown\",\r\n            \"city\": \"Some City\",\r\n            \"state\": \"Some State\",\r\n            \"zipcode\": \"12345\",\r\n            \"latitude\": 40.712776,\r\n            \"longitude\": -74.005974\r\n        }\r\n    },\r\n    \"thumbnail\": {\r\n        \"url\": \"http://example.com/imagens/perfil.jpg\",\r\n        \"altText\": \"Foto de perfil de João\",\r\n        \"filename\": \"perfil.jpg\",\r\n        \"size\": 102400,\r\n        \"type\": \"image/jpeg\",\r\n        \"data\": \"iVBORw0KGgoAAAANSUhEUgAAAAUA\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/location",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getLocationbyId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NTkwMTc4LCJleHAiOjE3MzQ2NzY1Nzh9.ScMS4lUd9qHTDj7hvPbOgvIFuD6qPySPz13RdLIgFvHI6xhfr2aIcG9zwQ2MjLq7K9zT0-ndFb_4IDt2AaCnYQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/location/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"location",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findAllLocations",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NDc1OTY1LCJleHAiOjE3MzQ1NjIzNjV9.fDeLAtdxdO4WzWpyh8NnFxvwjRb9y1Hd5otz1XVlu3fS2ScEl21bYGvQiB29f3LDIdWms9J3y3C_M4q7z5do8g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/location?page=0&size=10&sort=name,ASC&name=&acceptsEmergencies=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"location"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "name,ASC"
+								},
+								{
+									"key": "name",
+									"value": ""
+								},
+								{
+									"key": "acceptsEmergencies",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateLocation",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDMxNzQ4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NTg4MjQ2LCJleHAiOjE3MzQ2NzQ2NDZ9.qMKdLiqKAWCsPZGcbM9DU8FHLSZjsf5ZJnKnJAvJj_ZzUQpF8ta98Fr_WFlmoyi4TenjIiM2Jl3hQ6UZhX1aww",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"user\": {\r\n        \"email\": \"location@gmail.com\",\r\n        \"taxId\": \"789456123\",\r\n        \"password\": \"12345678\",\r\n        \"phone\": \"45646546546\"\r\n    },\r\n    \"name\": \"João da Silva Sauro\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/location",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"location"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Media",
+			"item": [
+				{
+					"name": "createMedia",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NDUzNDEwLCJleHAiOjE3MzQ1Mzk4MTB9.3SNXPLBYBPfBffhhyttiCNTBbEscADF7OVIYXAfodqdBaB_M59dN8-KhYwmFmTYVKmEQwF8d7PLqaGN1dig24Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"url\": \"http://example.com/imagens/perfil.jpg\",\r\n    \"altText\": \"Foto de perfil de João\",\r\n    \"filename\": \"perfil.jpg\",\r\n    \"size\": 102400,\r\n    \"type\": \"image/jpeg\",\r\n    \"data\": \"iVBORw0KGgoAAAANSUhEUgAAAAUA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/media",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"media"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteMedia",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NDUzNDEwLCJleHAiOjE3MzQ1Mzk4MTB9.3SNXPLBYBPfBffhhyttiCNTBbEscADF7OVIYXAfodqdBaB_M59dN8-KhYwmFmTYVKmEQwF8d7PLqaGN1dig24Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/media/59",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"media",
+								"59"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Person",
+			"item": [
+				{
+					"name": "Create Person",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user\": {\r\n        \"email\": \"usuaaio@ewample.com\",\r\n        \"taxId\": \"78484317480\",\r\n        \"password\": \"12345678\",\r\n        \"type\": \"PERSON\",\r\n        \"accessLevel\": \"BASIC\",\r\n        \"isActive\": true,\r\n        \"address\": {\r\n            \"address\": \"123 Main St\",\r\n            \"neighborhood\": \"Downtown\",\r\n            \"city\": \"Some City\",\r\n            \"state\": \"Some State\",\r\n            \"zipcode\": \"12345\",\r\n            \"latitude\": 40.712776,\r\n            \"longitude\": -74.005974\r\n        }\r\n    },\r\n    \"fullName\": \"João da Silva\",\r\n    \"phone\": \"6299999999\",\r\n    \"birthDate\": \"1985-04-15\",\r\n    \"genderType\": \"MALE\",\r\n    \"bloodType\": \"O_POS\",\r\n      \"allergies\": [\r\n        {\r\n          \"name\": \"Amendoim\",\r\n          \"severity\": \"SEVERE\",\r\n          \"description\": \"Alergia amendoim\"\r\n        }\r\n      ],\r\n      \"medicalHistories\": [\r\n        {\r\n          \"condition\": \"Asma\",\r\n          \"description\": \"Asma brônquica diagnosticada na infância\"\r\n        }\r\n      ],\r\n    \"profilePicture\": {\r\n        \"url\": \"http://example.com/imagens/perfil.jpg\",\r\n        \"altText\": \"Foto de perfil de João\",\r\n        \"filename\": \"perfil.jpg\",\r\n        \"size\": 102400,\r\n        \"type\": \"image/jpeg\",\r\n        \"data\": \"iVBORw0KGgoAAAANSUhEUgAAAAUA\"\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/person",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"person"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updatePerson",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDMxNzQ4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NTg4MjQ2LCJleHAiOjE3MzQ2NzQ2NDZ9.qMKdLiqKAWCsPZGcbM9DU8FHLSZjsf5ZJnKnJAvJj_ZzUQpF8ta98Fr_WFlmoyi4TenjIiM2Jl3hQ6UZhX1aww",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 1,\r\n    \"user\": {\r\n        \"email\": \"yuancalixto@gmail.com\",\r\n        \"taxId\": \"78484410080\",\r\n        \"password\": \"12345678\"\r\n    },\r\n    \"fullName\": \"João da Silva Sauro\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/person",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"person"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Screening",
+			"item": [
+				{
+					"name": "sendScreeningAnswers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NTkwMTc4LCJleHAiOjE3MzQ2NzY1Nzh9.ScMS4lUd9qHTDj7hvPbOgvIFuD6qPySPz13RdLIgFvHI6xhfr2aIcG9zwQ2MjLq7K9zT0-ndFb_4IDt2AaCnYQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/screening/answers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"screening",
+								"answers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAnsweredScreening",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NTkwMTc4LCJleHAiOjE3MzQ2NzY1Nzh9.ScMS4lUd9qHTDj7hvPbOgvIFuD6qPySPz13RdLIgFvHI6xhfr2aIcG9zwQ2MjLq7K9zT0-ndFb_4IDt2AaCnYQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/screening/1/answered",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"screening",
+								"1",
+								"answered"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Token",
+			"item": [
+				{
+					"name": "validateToken",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\": 2091\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/token/validate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"token",
+								"validate"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get Current User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI3ODQ4NDQxMDA4MCIsImF1dGgiOiJ1c2VyIiwiaWF0IjoxNzM0NDAzMTk0LCJleHAiOjE3MzQ0ODk1OTR9.u57KCwjvEAeEDwhRmQuue4_38c-Y9CQivzqEqjySUHl39DuDxVE4K77RzsDgHvpqCkOLKtDNLaOTq-jVzh2vjA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/user/current",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"current"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
