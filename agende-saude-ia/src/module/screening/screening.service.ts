@@ -54,7 +54,13 @@ export class ScreeningService {
                             Informações: [${prompt}]
                             A classificação deve ser uma das seguintes: 'verde', 'azul', 'amarelo', 'laranja', 'vermelho'. Nessa ordem, verde seria o mais saudável, e vermelho alguém correndo riscos mais severos de saúde.
                             A resposta deve vir no seguinte formato:
-                            {"classification": 'verde | azul | amarelo | laranja | vermelho', "description": 'breve descrição dos sintomas do paciente e por que a classificação foi feita'}`
+                            {"classification": 'verde | azul | amarelo | laranja | vermelho', "description": 'breve descrição dos sintomas do paciente e por que a classificação foi feita'}
+                            Se atenha somente a esse modelo e não produza nada que não seja no padrão desse JSON.
+                            Pacientes que apresentem poucos sintomas, somente dor ou sintomas que não são muito graves devem receber classificações azul ou verde.
+                            Pacientes que apresentem sintomas graves, como falta de ar, febre alta, dor intensa, devem receber classificações laranja ou vermelho.
+                            Pacientes só devem apresentar classificação vermelha na presença de ao menos 6 sintomas marcados com true.
+                            `
+                            
                         }
                     ]
                 },
